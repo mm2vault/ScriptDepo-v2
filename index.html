@@ -4065,6 +4065,7 @@ header {
 </head>
 <body>
 
+
   <!-- Ambient Background Glows -->
   <div class="ambient-glow glow-1"></div>
   <div class="ambient-glow glow-2"></div>
@@ -4624,38 +4625,42 @@ header {
     </div>
   </div>
 
-  <!-- Unlock Choice Modal -->
+  <!-- Script Detail / Unlock Modal -->
   <div class="modal-overlay" id="unlockChoiceModal">
-    <div class="modal-container">
+    <div class="modal-container modal-lg" style="max-width:820px;">
       <div class="modal-header">
-        <h3 class="modal-title"><i class="fa-solid fa-unlock-keyhole"></i> <span id="unlockModalTitle">Scripti Aç</span></h3>
+        <h3 class="modal-title"><i class="fa-solid fa-scroll" style="color:var(--accent-light);"></i> Script Detayı</h3>
         <button class="modal-close-btn" onclick="closeModal('unlockChoiceModal')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
-        <div style="text-align: center;">
-          <h4 id="unlockScriptName" style="font-size: 18px; margin-bottom: 6px; color: var(--accent-light);">Script Adı</h4>
-          <p style="font-size: 14px; color: var(--text-muted);">Bu scripti açmak için 2 seçeneğin var:</p>
-        </div>
-
-        <div class="unlock-options">
-          <div class="unlock-box coin-box" onclick="confirmCoinUnlock()">
-            <i class="fa-solid fa-coins"></i>
-            <h4 style="font-size: 16px; font-weight: 700;">Coin ile Aç</h4>
-            <span style="font-weight: 800; color: var(--gold);" id="unlockCoinPriceLabel">30 coin</span>
-            <span style="font-size: 11px; color: var(--text-muted);">Anında açılır</span>
+        <div style="display:grid;grid-template-columns:minmax(220px,.85fr) 1.4fr;gap:22px;align-items:start;">
+          <div style="position:relative;">
+            <img id="unlockScriptImage" src="" alt="Script" style="width:100%;height:220px;object-fit:cover;border-radius:22px;border:1px solid var(--border-color);box-shadow:0 16px 45px rgba(0,0,0,.35);">
+            <div id="unlockScriptPriceBadge" style="position:absolute;right:12px;bottom:12px;padding:8px 12px;border-radius:14px;background:rgba(0,0,0,.78);color:var(--gold);font-weight:800;font-size:13px;"><i class="fa-solid fa-coins"></i> 30 coin</div>
           </div>
-
-          <div class="unlock-box tasks-box" onclick="startTasksUnlock()">
-            <i class="fa-solid fa-list-check"></i>
-            <h4 style="font-size: 16px; font-weight: 700;">Görevlerle Aç</h4>
-            <span style="font-weight: 800; color: var(--green);">Bedava</span>
-            <span style="font-size: 11px; color: var(--text-muted);">3 görev tamamla</span>
+          <div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+              <span id="unlockScriptCategory" class="feature-tag">Kategori</span>
+              <span id="unlockScriptStatus" class="feature-tag">Aktif</span>
+            </div>
+            <h2 id="unlockScriptName" style="font-size:26px;line-height:1.15;margin-bottom:8px;">Script Adı</h2>
+            <p id="unlockScriptDesc" style="font-size:14px;color:var(--text-secondary);line-height:1.65;margin-bottom:14px;">Script açıklaması burada görünecek.</p>
+            <div id="unlockScriptFeatures" style="display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px;"></div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px;">
+              <div style="padding:10px;border:1px solid var(--border-color);border-radius:14px;text-align:center;background:var(--bg-card);"><small style="color:var(--text-muted);">Görüntülenme</small><strong id="unlockViews" style="display:block;margin-top:3px;">0</strong></div>
+              <div style="padding:10px;border:1px solid var(--border-color);border-radius:14px;text-align:center;background:var(--bg-card);"><small style="color:var(--text-muted);">İndirme</small><strong id="unlockDownloads" style="display:block;margin-top:3px;">0</strong></div>
+              <div style="padding:10px;border:1px solid var(--border-color);border-radius:14px;text-align:center;background:var(--bg-card);"><small style="color:var(--text-muted);">Puan</small><strong id="unlockRating" style="display:block;margin-top:3px;color:var(--gold);">0.0</strong></div>
+              <div style="padding:10px;border:1px solid var(--border-color);border-radius:14px;text-align:center;background:var(--bg-card);"><small style="color:var(--text-muted);">Sürüm</small><strong id="unlockVersion" style="display:block;margin-top:3px;">v1.0</strong></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <button class="btn btn-gold" id="confirmCoinUnlockBtn" onclick="confirmCoinUnlock()"><i class="fa-solid fa-coins"></i> Coin ile Aç <span id="unlockCoinPriceLabel">30 coin</span></button>
+              <button class="btn btn-green" onclick="startTasksUnlock()"><i class="fa-solid fa-list-check"></i> Görevlerle Ücretsiz Aç</button>
+            </div>
+            <div style="margin-top:10px;padding:10px 12px;border-radius:13px;background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.18);font-size:11px;color:var(--text-muted);">
+              <i class="fa-solid fa-circle-info" style="color:var(--accent-light);"></i> Coin seçeneği anında açar. Görev seçeneğinde Discord, YouTube ve TikTok adımlarını tamamlayınca erişim verilir.
+            </div>
           </div>
         </div>
-
-        <p style="font-size: 12px; color: var(--text-muted); text-align: center; margin-top: 10px;">
-          <i class="fa-solid fa-lightbulb" style="color: var(--gold);"></i> Satın aldığın scriptler kalıcı olarak sana ait olur.
-        </p>
       </div>
     </div>
   </div>
@@ -5460,6 +5465,10 @@ header {
             <i class="fa-solid fa-shield-halved" style="color:#ef4444;"></i>
             <span>Admin Paneli</span>
           </button>
+          <button class="drawer-btn" id="drawerAdminBtn" style="display:none; border-color: rgba(239,68,68,.45);" onclick="closeModal('mobileDrawerModal'); openAdminModal();">
+            <i class="fa-solid fa-shield-halved" style="color:#ef4444;"></i>
+            <span>Admin Paneli</span>
+          </button>
         </div>
 
         <!-- Preferences / Settings -->
@@ -5525,7 +5534,9 @@ header {
   </div>
 
 
-  <script>
+  
+<script>
+
 
 // ==================== CONFIG & CONSTANTS ====================
 const ADMIN_EMAILS = ['mm2ultimatehub@gmail.com'];
@@ -6624,15 +6635,8 @@ function syncFromFirestore() {
       });
       if (remoteScripts.length > 0) {
         // combine with initial premium scripts
-        const deleted = new Set(getDeletedScriptIds());
-        const remoteMap = new Map(remoteScripts.map(rs => [rs.id, rs]));
-        const merged = INITIAL_PREMIUM_SCRIPTS
-          .filter(s => !deleted.has(s.id))
-          .map(s => remoteMap.has(s.id) ? { ...s, ...remoteMap.get(s.id) } : s);
-        const extras = remoteScripts
-          .filter(rs => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === rs.id))
-          .filter(rs => !deleted.has(rs.id));
-        scriptsData = [...merged, ...extras].map(s => s.coinPrice > 0 ? { ...s, code: '' } : s);
+        const nonDuplicateRemote = remoteScripts.filter(rs => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === rs.id));
+        scriptsData = [...INITIAL_PREMIUM_SCRIPTS, ...nonDuplicateRemote];
         renderMainGrid();
       }
     }, err => {
@@ -7403,35 +7407,19 @@ function renderMainGrid() {
       execsHtml += `<span class="badge-executor">${ex}</span>`;
     });
 
-    // Action buttons: locked scripts never expose direct copy/inspect actions.
-    let actionsHtml = '';
-    if (isUnlocked) {
-      actionsHtml = `
-        <div class="card-action-btns">
-          <button class="btn btn-primary btn-copy-loadstring" onclick="copyScriptCode('${s.id}', event)" title="1-Tıkla Loadstring Kopyala">
-            <i class="fa-solid fa-copy"></i>
-            <span>Kodu Kopyala</span>
-          </button>
-          <button class="btn btn-outline btn-view-code" onclick="openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}'))" title="Kodu İncele & İndir">
-            <i class="fa-solid fa-code"></i>
-            <span>İncele</span>
-          </button>
-        </div>
-      `;
-    } else {
-      actionsHtml = `
-        <div class="card-action-btns">
-          <button class="btn btn-primary" onclick="handleGetScript('${s.id}')" title="Coin veya görevlerle scripti aç">
-            <i class="fa-solid fa-lock"></i>
-            <span>Scripti Aç</span>
-          </button>
-          <button class="btn btn-outline" onclick="handleGetScript('${s.id}')" title="Açma seçeneklerini göster">
-            <i class="fa-solid fa-unlock-keyhole"></i>
-            <span>Seçenekler</span>
-          </button>
-        </div>
-      `;
-    }
+    // Action buttons (RBLXScripts 1-Click Fast Copy & Inspect)
+    actionsHtml = `
+      <div class="card-action-btns">
+        <button class="btn btn-primary btn-copy-loadstring" onclick="copyScriptCode('${s.id}', event)" title="1-Tıkla Loadstring Kopyala">
+          <i class="fa-solid fa-copy"></i>
+          <span>Kodu Kopyala</span>
+        </button>
+        <button class="btn btn-outline btn-view-code" onclick="openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}'))" title="Kodu İncele & İndir">
+          <i class="fa-solid fa-code"></i>
+          <span>İncele</span>
+        </button>
+      </div>
+    `;
     // Owner or admin action buttons
     let adminOrOwnerActions = '';
     if (isOwner || (isUserAdmin(currentUser))) {
@@ -7481,7 +7469,7 @@ function renderMainGrid() {
     html += `
       <div class="script-card" id="scriptCard_${s.id}">
         <!-- Top Image Banner -->
-        <div class="script-card-img-wrap" onclick="handleGetScript('${s.id}')">
+        <div class="script-card-img-wrap" onclick="isUnlocked ? openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}')) : handleGetScript('${s.id}')">
           <img src="${catImage}" class="script-card-img" alt="${s.name}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${DEFAULT_SCRIPT_IMAGE}'" />
           <div class="script-card-img-overlay"></div>
 
@@ -7531,7 +7519,7 @@ function renderMainGrid() {
         <!-- Body Content -->
         <div class="script-card-body">
           <div class="card-title-row">
-            <h4 class="card-title" title="${s.name}" onclick="handleGetScript('${s.id}')">${s.name}</h4>
+            <h4 class="card-title" title="${s.name}" onclick="isUnlocked ? openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}')) : handleGetScript('${s.id}')">${s.name}</h4>
           </div>
           
           <p class="card-desc">${s.desc || 'Bu script için henüz detaylı bir açıklama eklenmedi.'}</p>
@@ -7716,9 +7704,21 @@ function handleGetScript(scriptId) {
     return;
   }
 
-  // Show 2-option unlock modal
-  document.getElementById('unlockScriptName').textContent = s.name;
-  document.getElementById('unlockCoinPriceLabel').textContent = `${s.coinPrice || 30} coin`;
+  // Populate polished script detail / unlock modal
+  const setText = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value ?? ''; };
+  const img = document.getElementById('unlockScriptImage'); if (img) img.src = s.image || DEFAULT_SCRIPT_IMAGE;
+  setText('unlockScriptName', s.name);
+  setText('unlockScriptDesc', s.desc || 'Topluluk tarafından paylaşılan Roblox scripti.');
+  setText('unlockScriptCategory', s.category || 'Genel');
+  setText('unlockScriptStatus', s.status || 'Aktif');
+  setText('unlockViews', Number(s.views || 0).toLocaleString('tr-TR'));
+  setText('unlockDownloads', Number(s.downloads || 0).toLocaleString('tr-TR'));
+  setText('unlockRating', Number(s.rating || 0).toFixed(1));
+  setText('unlockVersion', s.version || 'v1.0');
+  setText('unlockCoinPriceLabel', String(s.coinPrice || 30) + ' coin');
+  setText('unlockScriptPriceBadge', String(s.coinPrice || 30) + ' coin');
+  const featureBox = document.getElementById('unlockScriptFeatures');
+  if (featureBox) featureBox.innerHTML = (s.features || []).slice(0,8).map(f => '<span class="feature-tag"><i class="fa-solid fa-check"></i> ' + f + '</span>').join('');
   openModal('unlockChoiceModal');
 }
 
@@ -8137,40 +8137,531 @@ async function quickCopyScript(scriptId, event) {
   }).catch(() => showToast("Kopyalama izni verilmedi.", "fa-circle-xmark", "red"));
 }
 
+function toggleCardComments(scriptId, event) {
+  if (event) event.stopPropagation();
+  const box = document.getElementById(`commentsBox_${scriptId}`);
+  const chevron = document.getElementById(`commentChevron_${scriptId}`);
+  if (!box) return;
 
-// ==================== SCRIPT/GAME MANAGEMENT ====================
-let editingScriptId = null;
-
-function getDeletedScriptIds() {
-  try { return JSON.parse(localStorage.getItem('scriptHubDeletedIds') || '[]'); } catch (e) { return []; }
-}
-function setDeletedScriptIds(ids) {
-  localStorage.setItem('scriptHubDeletedIds', JSON.stringify([...new Set(ids)]));
-}
-
-function resetScriptForm() {
-  editingScriptId = null;
-  const ids = ['addScriptName','addScriptDesc','addScriptFeatures','addScriptCode','addScriptImage'];
-  ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  const cat = document.getElementById('addScriptCategory'); if (cat) cat.value = 'mm2';
-  const price = document.getElementById('addScriptPrice'); if (price) price.value = '30';
-  const file = document.getElementById('addScriptImageFile'); if (file) file.value = '';
-  const title = document.getElementById('addScriptModalTitle'); if (title) title.textContent = 'Script Ekle';
-  const submit = document.getElementById('addScriptSubmitText'); if (submit) submit.textContent = 'Herkese Açık Ekle! (+25 Coin)';
-  previewAddScriptImage('');
+  const isExpanded = box.classList.contains('expanded');
+  if (isExpanded) {
+    box.classList.remove('expanded');
+    if (chevron) chevron.style.transform = 'rotate(0deg)';
+  } else {
+    box.classList.add('expanded');
+    if (chevron) chevron.style.transform = 'rotate(180deg)';
+  }
 }
 
-function openAddScriptModal() {
-  if (!currentUser) { showToast("Script eklemek için giriş yapmalısın.", "fa-right-to-bracket", "blue"); openAuthModal(); return; }
-  if (isUserAdmin(currentUser)) resetScriptForm();
+
+// ==================== PROMO CODES SYSTEM ====================
+function openPromoCodeModal() {
+  const input = document.getElementById('promoCodeInput');
+  if (input) input.value = '';
+  const msg = document.getElementById('promoResultMsg');
+  if (msg) msg.style.display = 'none';
+  openModal('promoCodeModal');
+}
+
+function submitPromoCode() {
+  const input = document.getElementById('promoCodeInput');
+  const code = (input.value || '').trim().toUpperCase();
+  const msgEl = document.getElementById('promoResultMsg');
+
+  if (!code) {
+    showToast("Lütfen bir promosyon kodu girin.", "fa-circle-xmark", "red");
+    playErrorSound();
+    return;
+  }
+
+  if (!userProfile.usedPromoCodes) userProfile.usedPromoCodes = [];
+  if (userProfile.usedPromoCodes.includes(code)) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = 'Bu kupon kodunu daha önce kullandınız!';
+    playErrorSound();
+    return;
+  }
+
+  const promo = PROMO_CODES[code];
+  if (!promo) {
+    msgEl.style.display = 'block';
+    msgEl.style.color = '#ef4444';
+    msgEl.textContent = 'Geçersiz veya süresi dolmuş kod.';
+    playErrorSound();
+    return;
+  }
+
+  userProfile.usedPromoCodes.push(code);
+  addCoins(promo.coins, `Kupon: ${code}`);
+  playSuccessSound();
+
+  msgEl.style.display = 'block';
+  msgEl.style.color = 'var(--green)';
+  msgEl.textContent = `Tebrikler! ${promo.desc} uygulandı: +${promo.coins} Coin!`;
+  input.value = '';
+
+  setTimeout(() => {
+    closeModal('promoCodeModal');
+  }, 1800);
+}
+
+// ==================== MOBILE NAVIGATION ====================
+function switchMobileNav(tab) {
+  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
+  const activeEl = document.getElementById(`mobNav_${tab}`);
+  if (activeEl) activeEl.classList.add('active');
+
+  if (tab === 'home') {
+    selectCategory('all');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (tab === 'games') {
+    selectCategory('games');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  } else if (tab === 'tasks') {
+    const banner = document.getElementById('dailyTasksSection');
+    if (banner) {
+      banner.classList.add('visible');
+      banner.scrollIntoView({ behavior: 'smooth' });
+    }
+  } else if (tab === 'promo') {
+    openPromoCodeModal();
+  } else if (tab === 'profile') {
+    handleAuthOrProfileClick();
+  }
+}
+
+// ==================== STORE & COSMETICS ====================
+function openCoinStoreModal(tab = 'scripts') {
+  document.getElementById('storeBalanceDisplay').textContent = `${userProfile.coins} coin`;
+  switchStoreTab(tab);
+  openModal('coinStoreModal');
+}
+
+function switchStoreTab(tab) {
+  ['scripts', 'cosmetics', 'inventory'].forEach(t => {
+    const btn = document.getElementById(`storeTab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`);
+    const content = document.getElementById(`store${t.charAt(0).toUpperCase() + t.slice(1)}Tab`);
+    if (btn) btn.classList.toggle('active', t === tab);
+    if (content) content.style.display = t === tab ? 'block' : 'none';
+  });
+
+  if (tab === 'scripts') renderStorePremiumScripts();
+  if (tab === 'cosmetics') renderStoreCosmetics();
+  if (tab === 'inventory') renderStoreInventory();
+}
+
+function renderStorePremiumScripts() {
+  const grid = document.getElementById('storePremiumScriptsGrid');
+  if (!grid) return;
+
+  let html = '';
+  INITIAL_PREMIUM_SCRIPTS.forEach(p => {
+    const isBought = (userProfile.purchasedScripts || []).includes(p.id);
+    html += `
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;">
+        <h5 style="font-size: 15px; font-weight: 700;">${p.name}</h5>
+        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.3;">${p.desc}</p>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+          <span style="font-weight: 800; color: var(--gold); font-size: 14px;"><i class="fa-solid fa-coins"></i> ${p.coinPrice}</span>
+          ${isBought 
+            ? `<button class="btn btn-outline btn-sm" onclick="closeModal('coinStoreModal'); openScriptCodeModal(scriptsData.find(x => x.id === '${p.id}'))">Kullan</button>`
+            : `<button class="btn btn-primary btn-sm" onclick="buyStoreItem('script', '${p.id}', ${p.coinPrice})">Satın Al</button>`
+          }
+        </div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
+
+function renderStoreCosmetics() {
+  const grid = document.getElementById('storeCosmeticsGrid');
+  if (!grid) return;
+
+  let html = '';
+  COSMETICS_LIST.forEach(c => {
+    const isOwned = (userProfile.inventory || []).includes(c.id);
+    const isActive = (userProfile.activeCosmetics || []).includes(c.id);
+
+    let actionBtn = '';
+    if (isOwned) {
+      actionBtn = `
+        <button class="btn btn-outline btn-sm" onclick="toggleCosmeticActive('${c.id}')" style="border-color: ${isActive ? 'var(--green)' : 'var(--border-color)'}; color: ${isActive ? 'var(--green)' : 'var(--text-primary)'};">
+          ${isActive ? '<i class="fa-solid fa-check"></i> Aktif' : 'Aktifleştir'}
+        </button>
+      `;
+    } else {
+      actionBtn = `
+        <button class="btn btn-primary btn-sm" onclick="buyStoreItem('cosmetic', '${c.id}', ${c.price})">
+          Satın Al
+        </button>
+      `;
+    }
+
+    html += `
+      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;">
+        <div>
+          <h5 style="font-size: 15px; font-weight: 700;" class="${c.type === 'name' ? c.class : ''}">${c.name}</h5>
+          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.3; margin-top: 4px;">${c.desc}</p>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
+          <span style="font-weight: 800; color: var(--gold); font-size: 14px;"><i class="fa-solid fa-coins"></i> ${c.price}</span>
+          ${actionBtn}
+        </div>
+      </div>
+    `;
+  });
+  grid.innerHTML = html;
+}
+
+function renderStoreInventory() {
+  const container = document.getElementById('storeInventoryContent');
+  if (!container) return;
+
+  const purchased = (userProfile.purchasedScripts || []).map(id => scriptsData.find(s => s.id === id)).filter(Boolean);
+  const ownedCosmetics = (userProfile.inventory || []).map(id => COSMETICS_LIST.find(c => c.id === id)).filter(Boolean);
+
+  let html = `
+    <div>
+      <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-scroll"></i> Sahip Olduğun Scriptler (${purchased.length})</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;">
+  `;
+
+  if (purchased.length === 0) {
+    html += `<p style="font-size: 13px; color: var(--text-muted);">Henüz bir script satın almadınız.</p>`;
+  } else {
+    purchased.forEach(p => {
+      html += `
+        <div style="background: var(--bg-card); padding: 12px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 13px; font-weight: 700;">${p.name}</span>
+          <button class="btn btn-outline btn-sm" onclick="closeModal('coinStoreModal'); openScriptCodeModal(scriptsData.find(x => x.id === '${p.id}'))">Kullan</button>
+        </div>
+      `;
+    });
+  }
+
+  html += `
+      </div>
+    </div>
+    <div style="margin-top: 14px;">
+      <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Sahip Olduğun Kozmetikler (${ownedCosmetics.length})</h4>
+      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;">
+  `;
+
+  if (ownedCosmetics.length === 0) {
+    html += `<p style="font-size: 13px; color: var(--text-muted);">Henüz bir kozmetik eşya açmadınız.</p>`;
+  } else {
+    ownedCosmetics.forEach(c => {
+      const isActive = (userProfile.activeCosmetics || []).includes(c.id);
+      html += `
+        <div style="background: var(--bg-card); padding: 12px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-size: 13px; font-weight: 700;">${c.name}</span>
+          <button class="btn btn-outline btn-sm" onclick="toggleCosmeticActive('${c.id}')" style="border-color: ${isActive ? 'var(--green)' : 'var(--border-color)'}; color: ${isActive ? 'var(--green)' : 'var(--text-primary)'};">
+            ${isActive ? 'Devre Dışı' : 'Aktifleştir'}
+          </button>
+        </div>
+      `;
+    });
+  }
+
+  html += `
+      </div>
+    </div>
+  `;
+
+  container.innerHTML = html;
+}
+
+function buyStoreItem(type, itemId, price) {
+  if (userProfile.coins < price) {
+    showToast("Yetersiz bakiye! Görevleri tamamlayarak coin kazanabilirsiniz.", "fa-triangle-exclamation", "red");
+    return;
+  }
+
+  if (type === 'script') {
+    if (deductCoins(price, "Premium Script")) {
+      if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
+      userProfile.purchasedScripts.push(itemId);
+      saveUserProfile();
+      showToast("Script koleksiyonunuza eklendi!", "fa-circle-check", "green");
+      renderStorePremiumScripts();
+      renderMainGrid();
+    }
+  } else if (type === 'cosmetic') {
+    if (deductCoins(price, "Kozmetik")) {
+      if (!userProfile.inventory) userProfile.inventory = [];
+      userProfile.inventory.push(itemId);
+      saveUserProfile();
+      showToast("Kozmetik eşya açıldı!", "fa-sparkles", "green");
+      renderStoreCosmetics();
+      updateUIUserInfo();
+    }
+  }
+}
+
+function toggleCosmeticActive(cosmeticId) {
+  if (!userProfile.activeCosmetics) userProfile.activeCosmetics = [];
+  const index = userProfile.activeCosmetics.indexOf(cosmeticId);
+  if (index > -1) {
+    userProfile.activeCosmetics.splice(index, 1);
+    showToast("Kozmetik devre dışı bırakıldı.", "fa-circle-minus");
+  } else {
+    userProfile.activeCosmetics.push(cosmeticId);
+    showToast("Kozmetik aktifleştirildi!", "fa-wand-magic-sparkles", "green");
+  }
+  saveUserProfile();
+  renderStoreCosmetics();
+  renderStoreInventory();
+  updateUIUserInfo();
+}
+
+// ==================== AUTHENTICATION ====================
+function handleAuthOrProfileClick() {
+  if (currentUser) {
+    openUserProfileModal();
+  } else {
+    openModal('authModal');
+  }
+}
+
+function switchAuthTab(tab) {
+  const isSignIn = tab === 'signin';
+  document.getElementById('tabSignInBtn').classList.toggle('active', isSignIn);
+  document.getElementById('tabSignUpBtn').classList.toggle('active', !isSignIn);
+  document.getElementById('signInFormWrap').style.display = isSignIn ? 'block' : 'none';
+  document.getElementById('signUpFormWrap').style.display = !isSignIn ? 'block' : 'none';
+}
+
+function calculatePasswordStrength(pwd) {
+  let score = 0;
+  if (!pwd) score = 0;
+  else {
+    if (pwd.length >= 6) score += 25;
+    if (pwd.length >= 10) score += 25;
+    if (/[A-Z]/.test(pwd)) score += 25;
+    if (/[0-9]/.test(pwd)) score += 25;
+  }
+
+  const bars = [document.getElementById('pwdBar1'), document.getElementById('pwdBar2'), document.getElementById('pwdBar3'), document.getElementById('pwdBar4')];
+  bars.forEach(b => { b.className = 'meter-bar'; });
+
+  if (score >= 25) bars[0].className = 'meter-bar ' + (score < 50 ? 'active-red' : score < 75 ? 'active-yellow' : 'active-green');
+  if (score >= 50) bars[1].className = 'meter-bar ' + (score < 75 ? 'active-yellow' : 'active-green');
+  if (score >= 75) bars[2].className = 'meter-bar active-green';
+  if (score >= 100) bars[3].className = 'meter-bar active-green';
+}
+
+function generateRandomSignUpAvatar() {
+  const seed = "Hero_" + Math.floor(Math.random() * 99999);
+  const url = `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
+  document.getElementById('signUpAvatarPreview').src = url;
+}
+
+async function handleSignInSubmit(e) {
+  e.preventDefault();
+  const email=document.getElementById('signInEmail').value.trim(), password=document.getElementById('signInPassword').value, errBox=document.getElementById('signInError');
+  errBox.style.display='none';
+  if(!supabaseClient){errBox.textContent='Giriş sistemi hazır değil. Sayfayı yenileyin.';errBox.style.display='block';return;}
+  const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+  if(error){errBox.textContent=error.message||'Giriş başarısız oldu.';errBox.style.display='block';return;}
+  closeModal('authModal'); showToast('Başarıyla giriş yapıldı!','fa-right-to-bracket','green');
+}
+async function handleSignUpSubmit(e) {
+  e.preventDefault();
+  const username=document.getElementById('signUpUsername').value.trim(), email=document.getElementById('signUpEmail').value.trim(), password=document.getElementById('signUpPassword').value, avatarUrl=document.getElementById('signUpAvatarPreview').src, errBox=document.getElementById('signUpError');
+  errBox.style.display='none';
+  if(!supabaseClient){errBox.textContent='Kayıt sistemi hazır değil. Sayfayı yenileyin.';errBox.style.display='block';return;}
+  const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name:username,avatar_url:avatarUrl}}});
+  if(error){errBox.textContent=error.message||'Kayıt işlemi başarısız.';errBox.style.display='block';return;}
+  if(data.user&&data.session){await ensureSupabaseProfile(data.user,true);closeModal('authModal');showToast('Kayıt tamamlandı! +50 Hoşgeldin Coin!','fa-sparkles','gold');}
+  else {closeModal('authModal');showToast('Kayıt oluşturuldu. E-posta doğrulaması gerekiyorsa gelen kutunu kontrol et.','fa-envelope','green');}
+}
+async function handleGoogleAuth() {
+  if(!supabaseClient){showToast('Supabase giriş sistemi hazır değil.','fa-triangle-exclamation','red');return;}
+  const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}});
+  if(error) showToast('Google girişi başarısız: '+error.message,'fa-triangle-exclamation','red');
+}
+
+
+async function handleDiscordAuth() {
+  if (!supabaseClient) {
+    showToast("Supabase giriş sistemi hazır değil.", "fa-triangle-exclamation", "red");
+    return;
+  }
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: 'discord',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if (error) showToast("Discord girişi başarısız: " + error.message, "fa-triangle-exclamation", "red");
+}
+
+function handleGuestDemoLogin() {
+  simulateLocalLogin("DemoPro", "demo@scripthub.roblox");
+}
+
+function simulateLocalLogin(name, email, photo) {
+  currentUser = {
+    uid: "usr_" + Date.now(),
+    displayName: name,
+    email: email,
+    photoURL: photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`
+  };
+  userProfile.displayName = currentUser.displayName;
+  userProfile.email = currentUser.email;
+  userProfile.photoURL = currentUser.photoURL;
+
+  closeModal('authModal');
+  showToast(`Hoş geldin, ${name}!`, "fa-user-check", "green");
+  saveUserProfile();
+  updateUIUserInfo();
+  renderDailyTasks();
+  checkHeroCollapsedState();
+  renderMainGrid();
+}
+
+async function handleSignOut() {
+  if(supabaseClient) await supabaseClient.auth.signOut();
+  currentUser=null; closeModal('userProfileModal'); showToast('Çıkış yapıldı.','fa-right-from-bracket'); updateUIUserInfo(); renderDailyTasks(); checkHeroCollapsedState(); renderMainGrid();
+}
+
+function updateUIUserInfo() {
+  const authBtnText = document.getElementById('authProfileBtnText');
+  const coinDisplay = document.getElementById('headerCoinCount');
+  const adminBtn = document.getElementById('adminBtn');
+
+  if (coinDisplay) coinDisplay.textContent = userProfile.coins || 0;
+
+  if (currentUser) {
+    if (authBtnText) {
+      let activeClass = '';
+      if ((userProfile.activeCosmetics || []).includes('c_purple_name')) activeClass = 'name-purple';
+      if ((userProfile.activeCosmetics || []).includes('c_gold_name')) activeClass = 'name-gold';
+
+      authBtnText.className = activeClass;
+      authBtnText.textContent = userProfile.displayName || "Profil";
+    }
+
+    // Admin button visibility check
+    const drawerAdminBtn = document.getElementById('drawerAdminBtn');
+    if (drawerAdminBtn) drawerAdminBtn.style.display = isUserAdmin(currentUser) ? 'flex' : 'none';
+    if (adminBtn) {
+      if (isUserAdmin(currentUser)) {
+        adminBtn.style.display = 'inline-flex';
+      } else {
+        adminBtn.style.display = 'none';
+      }
+    }
+  } else {
+    if (authBtnText) {
+      authBtnText.className = '';
+      authBtnText.textContent = I18N[currentLang].signIn;
+    }
+    if (adminBtn) adminBtn.style.display = 'none';
+  }
+}
+
+// ==================== USER PROFILE MODAL ====================
+function openUserProfileModal() {
+  document.getElementById('profileAvatarImg').src = userProfile.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=Roblox`;
+  document.getElementById('profileDisplayName').textContent = userProfile.displayName;
+  document.getElementById('profileEmail').textContent = userProfile.email || "Giriş yapılmamış";
+  const profileAdminBadge = document.getElementById('profileAdminBadge');
+  if (profileAdminBadge) {
+    profileAdminBadge.style.display = isUserAdmin(currentUser) ? 'inline-flex' : 'none';
+  }
+
+  // Check cosmetics on profile avatar
+  const avatarImg = document.getElementById('profileAvatarImg');
+  avatarImg.className = '';
+  if ((userProfile.activeCosmetics || []).includes('c_gold_frame')) avatarImg.classList.add('avatar-frame-gold');
+  if ((userProfile.activeCosmetics || []).includes('c_rainbow_frame')) avatarImg.classList.add('avatar-frame-rainbow');
+
+  const myScriptsCount = scriptsData.filter(s => currentUser && s.userId === currentUser.uid).length;
+  const myGamesCount = gamesData.filter(g => currentUser && g.userId === currentUser.uid).length;
+  const myUnlockedCount = (userProfile.purchasedScripts || []).length;
+  const myFavsCount = (userProfile.favorites || []).length;
+
+  document.getElementById('statUserScripts').textContent = myScriptsCount;
+  document.getElementById('statUserGames').textContent = myGamesCount;
+  document.getElementById('statUserCoins').textContent = userProfile.coins;
+  document.getElementById('statUserUnlocked').textContent = myUnlockedCount;
+  document.getElementById('statUserFavs').textContent = myFavsCount;
+  document.getElementById('statUserTotalCoins').textContent = userProfile.totalCoinsEarned || userProfile.coins;
+
+  openModal('userProfileModal');
+}
+
+function openEditProfileModal() {
+  closeModal('userProfileModal');
+  document.getElementById('editAvatarPreview').src = userProfile.photoURL;
+  document.getElementById('editUsernameInput').value = userProfile.displayName;
+  document.getElementById('editEmailInput').value = userProfile.email || "Misafir Oturumu";
+  document.getElementById('editAvatarUrlInput').value = userProfile.photoURL.startsWith('http') ? userProfile.photoURL : '';
+  openModal('editProfileModal');
+}
+
+function generateRandomEditAvatar() {
+  const seed = "Hero_" + Math.floor(Math.random() * 99999);
+  const url = `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
+  document.getElementById('editAvatarPreview').src = url;
+}
+
+function handleAvatarFileSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(evt) {
+    document.getElementById('editAvatarPreview').src = evt.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function previewEditAvatarUrl(url) {
+  if (url && url.startsWith('http')) {
+    document.getElementById('editAvatarPreview').src = url;
+  }
+}
+
+function saveUserProfileChanges() {
+  const newName = document.getElementById('editUsernameInput').value.trim();
+  const newAvatar = document.getElementById('editAvatarPreview').src;
+
+  if (newName.length < 3) {
+    showToast("Kullanıcı adı en az 3 karakter olmalıdır.", "fa-circle-xmark", "red");
+    return;
+  }
+
+  userProfile.displayName = newName;
+  userProfile.photoURL = newAvatar;
+  saveUserProfile();
+
+  closeModal('editProfileModal');
+  openUserProfileModal();
+  showToast("Profil bilgileri güncellendi!", "fa-user-check", "green");
+}
+
+// ==================== ADD SCRIPT & GAME ====================
+
+async function openAdminEditScript(scriptId) {
+  if (!isUserAdmin(currentUser)) return;
+  const s = scriptsData.find(x => x.id === scriptId);
+  if (!s) { showToast("Script bulunamadı.", "fa-circle-xmark", "red"); return; }
+  editingScriptId = scriptId;
+  closeModal('adminModal');
+  document.getElementById('addScriptName').value = s.name || '';
+  document.getElementById('addScriptCategory').value = s.category || 'other';
+  document.getElementById('addScriptDesc').value = s.desc || '';
+  document.getElementById('addScriptFeatures').value = (s.features || []).join(', ');
+  document.getElementById('addScriptPrice').value = s.coinPrice || 0;
+  document.getElementById('addScriptImage').value = s.image || '';
+  previewAddScriptImage(s.image || '');
+  const code = await fetchProtectedScriptCode(s, 'get');
+  if (code) document.getElementById('addScriptCode').value = code;
+  else document.getElementById('addScriptCode').value = '';
+  document.getElementById('addScriptModalTitle').textContent = 'Script Düzenle';
+  document.getElementById('addScriptSubmitText').textContent = 'Değişiklikleri Kaydet';
   openModal('addScriptModal');
-}
-
-function previewAddScriptImage(url) {
-  const img = document.getElementById('addScriptImagePreview');
-  if (!img) return;
-  if (url) { img.src = url; img.style.display = 'block'; }
-  else { img.removeAttribute('src'); img.style.display = 'none'; }
 }
 
 function handleScriptGalleryImage(event) {
@@ -8199,25 +8690,34 @@ function handleScriptGalleryImage(event) {
   reader.readAsDataURL(file);
 }
 
-async function openAdminEditScript(scriptId) {
-  if (!isUserAdmin(currentUser)) return;
-  const s = scriptsData.find(x => x.id === scriptId);
-  if (!s) { showToast("Script bulunamadı.", "fa-circle-xmark", "red"); return; }
-  editingScriptId = scriptId;
-  closeModal('adminModal');
-  document.getElementById('addScriptName').value = s.name || '';
-  document.getElementById('addScriptCategory').value = s.category || 'other';
-  document.getElementById('addScriptDesc').value = s.desc || '';
-  document.getElementById('addScriptFeatures').value = (s.features || []).join(', ');
-  document.getElementById('addScriptPrice').value = s.coinPrice || 0;
-  document.getElementById('addScriptImage').value = s.image || '';
-  previewAddScriptImage(s.image || '');
-  const code = await fetchProtectedScriptCode(s, 'get');
-  if (code) document.getElementById('addScriptCode').value = code;
-  else document.getElementById('addScriptCode').value = '';
-  document.getElementById('addScriptModalTitle').textContent = 'Script Düzenle';
-  document.getElementById('addScriptSubmitText').textContent = 'Değişiklikleri Kaydet';
+function resetScriptForm() {
+  editingScriptId = null;
+  const ids = ['addScriptName','addScriptDesc','addScriptFeatures','addScriptCode','addScriptImage'];
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const cat = document.getElementById('addScriptCategory'); if (cat) cat.value = 'mm2';
+  const price = document.getElementById('addScriptPrice'); if (price) price.value = '30';
+  const file = document.getElementById('addScriptImageFile'); if (file) file.value = '';
+  const title = document.getElementById('addScriptModalTitle'); if (title) title.textContent = 'Script Ekle';
+  const submit = document.getElementById('addScriptSubmitText'); if (submit) submit.textContent = 'Herkese Açık Ekle! (+25 Coin)';
+  previewAddScriptImage('');
+}
+function openAddScriptModal() {
+  if (!currentUser) {
+    showToast("Script eklemek için lütfen giriş yapın.", "fa-lock");
+    openModal('authModal');
+    return;
+  }
   openModal('addScriptModal');
+}
+
+function previewAddScriptImage(url) {
+  const preview = document.getElementById('addScriptImagePreview');
+  if (url && url.startsWith('http')) {
+    preview.src = url;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
 }
 
 async function handleNewScriptSubmit(e) {
@@ -8277,56 +8777,87 @@ async function handleNewScriptSubmit(e) {
 }
 
 function openAddGameModal() {
-  if (!currentUser) { showToast("Oyun eklemek için giriş yapmalısın.", "fa-right-to-bracket", "blue"); openAuthModal(); return; }
-  const ids = ['addGameName','addGameLink','addGameImage','addGameDesc'];
-  ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
-  previewAddGameImage('');
+  if (!currentUser) {
+    showToast("Oyun eklemek için lütfen giriş yapın.", "fa-lock");
+    openModal('authModal');
+    return;
+  }
   openModal('addGameModal');
 }
 
 function previewAddGameImage(url) {
-  const img = document.getElementById('addGameImagePreview');
-  if (!img) return;
-  if (url) { img.src = url; img.style.display = 'block'; }
-  else { img.removeAttribute('src'); img.style.display = 'none'; }
+  const preview = document.getElementById('addGameImagePreview');
+  if (url && url.startsWith('http')) {
+    preview.src = url;
+    preview.style.display = 'block';
+  } else {
+    preview.style.display = 'none';
+  }
 }
 
-async function handleNewGameSubmit(e) {
-  if (e && e.preventDefault) e.preventDefault();
-  if (!currentUser) return;
+function handleNewGameSubmit(e) {
+  e.preventDefault();
   const name = document.getElementById('addGameName').value.trim();
   const link = document.getElementById('addGameLink').value.trim();
-  const image = document.getElementById('addGameImage').value.trim();
+  const image = document.getElementById('addGameImage').value.trim() || DEFAULT_SCRIPT_IMAGE;
   const desc = document.getElementById('addGameDesc').value.trim();
-  if (!name || !link) { showToast("Oyun adı ve Roblox linki gerekli.", "fa-circle-exclamation", "red"); return; }
-  const game = { id:'game_' + Date.now(), name, link, image, desc, userId:currentUser.uid, userName:currentUser.displayName || currentUser.email || 'Kullanıcı', createdAt:Date.now() };
+
+  const newGame = {
+    id: "gm_" + Date.now(),
+    name: name,
+    link: link,
+    image: image,
+    desc: desc,
+    userId: currentUser ? currentUser.uid : "anon",
+    userName: currentUser ? userProfile.displayName : "Topluluk",
+    createdAt: Date.now()
+  };
+
+  gamesData.push(newGame);
+
+  const customGames = gamesData.filter(g => !INITIAL_GAMES.some(ig => ig.id === g.id));
+  localStorage.setItem('scriptHubCustomGames', JSON.stringify(customGames));
+
   if (db) {
-    try { await db.collection('games').doc(game.id).set(game); } catch (err) { showToast("Oyun kaydedilemedi.", "fa-circle-xmark", "red"); return; }
+    try {
+      db.collection('games').doc(newGame.id).set({
+        ...newGame,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      }).catch(err => {});
+    } catch (e) {}
   }
-  gamesData.unshift(game);
+
+  addCoins(20, "Oyun Ekleme");
+  recordTaskProgress('game');
   closeModal('addGameModal');
-  renderMainGrid();
-  showToast("Oyun başarıyla eklendi!", "fa-circle-check", "green");
+  renderCategories();
+  if (activeCategory === 'games') renderMainGrid();
+  showToast("Oyun başarıyla eklendi! (+20 Coin)", "fa-gamepad", "green");
 }
 
-async function deleteScript(scriptId) {
-  const s = scriptsData.find(x => x.id === scriptId);
-  if (!s) return;
-  const allowed = isUserAdmin(currentUser) || (currentUser && s.userId === currentUser.uid);
-  if (!allowed) { showToast("Bu scripti silme yetkin yok.", "fa-shield-halved", "red"); return; }
-  if (!confirm(`"${s.name}" scripti silinsin mi?`)) return;
-  if (db && !String(scriptId).startsWith('bf_') && !String(scriptId).startsWith('mm2_') && !String(scriptId).startsWith('bb_') && !String(scriptId).startsWith('dh_') && !String(scriptId).startsWith('ps99_') && !String(scriptId).startsWith('rivals_') && !String(scriptId).startsWith('bh_') && !String(scriptId).startsWith('fisch_') && !String(scriptId).startsWith('doors_') && !String(scriptId).startsWith('arsenal_') && !String(scriptId).startsWith('kl_') && !String(scriptId).startsWith('bedwars_') && !String(scriptId).startsWith('sb_')) {
-    try { await db.collection('scripts').doc(scriptId).delete(); } catch (e) {}
-  } else if (db && isUserAdmin(currentUser)) {
-    try { await db.collection('scripts').doc(scriptId).delete(); } catch (e) {}
+function deleteScript(scriptId) {
+  const s = scriptsData.find(item => item.id === scriptId);
+  const isOwner = currentUser && s && s.userId === currentUser.uid;
+  const isAdmin = isUserAdmin(currentUser);
+  if (!isOwner && !isAdmin) {
+    showToast("Bu scripti silme yetkiniz yok!", "fa-ban", "red");
+    return;
   }
-  setDeletedScriptIds([...getDeletedScriptIds(), scriptId]);
-  scriptsData = scriptsData.filter(x => x.id !== scriptId);
-  renderMainGrid();
-  showToast("Script silindi.", "fa-trash", "green");
-}
+  if (!confirm("Bu scripti silmek istediğinizden emin misiniz?")) return;
 
-// =============================================================
+  scriptsData = scriptsData.filter(s => s.id !== scriptId);
+  const customScripts = scriptsData.filter(s => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id));
+  localStorage.setItem('scriptHubCustomScripts', JSON.stringify(customScripts));
+
+  if (db) {
+    try {
+      db.collection('scripts').doc(scriptId).delete().catch(() => {});
+    } catch (e) {}
+  }
+
+  renderMainGrid();
+  showToast("Script silindi.", "fa-trash", "red");
+}
 
 // ==================== ADMIN PANEL ====================
 function openAdminModal() {
@@ -8362,7 +8893,24 @@ function openAdminModal() {
   openModal('adminModal');
 }
 
-function adminEditScriptPrompt(scriptId) { openAdminEditScript(scriptId); }
+function adminEditScriptPrompt(scriptId) {
+  const s = scriptsData.find(x => x.id === scriptId);
+  if (!s) return;
+
+  const newName = prompt("Yeni Script Adı:", s.name);
+  if (!newName) return;
+  const newPrice = prompt("Yeni Coin Fiyatı:", s.coinPrice);
+  if (newPrice === null) return;
+
+  s.name = newName;
+  s.coinPrice = parseInt(newPrice, 10) || 0;
+
+  // Save admin override
+  localStorage.setItem('scriptHubAdminPremiumOverrides', JSON.stringify(scriptsData.filter(x => x.isPremium)));
+  openAdminModal();
+  renderMainGrid();
+  showToast("Script güncellendi!", "fa-check", "green");
+}
 
 function resetAdminPremiumOverrides() {
   localStorage.removeItem('scriptHubAdminPremiumOverrides');
@@ -8539,6 +9087,21 @@ function checkCookieConsent() {
   }
 }
 
+function openAuthModal(tab) {
+  if (tab) {
+    try { switchAuthTab(tab); } catch (e) {}
+  }
+  openModal('authModal');
+}
+
+function openTasksCountdownModal() {
+  if (!selectedScriptForUnlock) {
+    showToast("Önce bir script seçmelisin.", "fa-scroll", "blue");
+    return;
+  }
+  startTasksUnlock();
+}
+
 // ==================== MODAL HELPERS ====================
 function openModal(id) {
   const m = document.getElementById(id);
@@ -8704,6 +9267,8 @@ window.handleAvatarFileSelect = handleAvatarFileSelect;
 window.previewEditAvatarUrl = previewEditAvatarUrl;
 window.saveUserProfileChanges = saveUserProfileChanges;
 window.openAddScriptModal = openAddScriptModal;
+window.openAdminEditScript = openAdminEditScript;
+window.handleScriptGalleryImage = handleScriptGalleryImage;
 window.previewAddScriptImage = previewAddScriptImage;
 window.handleNewScriptSubmit = handleNewScriptSubmit;
 window.openAddGameModal = openAddGameModal;
@@ -8835,6 +9400,7 @@ function openExecutorGuideModal(execId) {
   openModal('executorGuideModal');
 }
 
-  </script>
+  
+</script>
 </body>
 </html>
