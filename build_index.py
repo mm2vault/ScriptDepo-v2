@@ -9,9 +9,9 @@ html_content = f"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ScriptHub - Roblox Script & Oyun Platformu</title>
+  <title>ScriptDepo - Roblox Script & Oyun Platformu</title>
   <meta name="description" content="Roblox oyuncularının script paylaştığı, coin kazandığı ve oyun keşfettiği modern platform." />
-  <meta property="og:title" content="ScriptHub - Roblox Script & Oyun Platformu" />
+  <meta property="og:title" content="ScriptDepo - Roblox Script & Oyun Platformu" />
   <meta property="og:description" content="Roblox oyuncularının script paylaştığı, coin kazandığı ve oyun keşfettiği modern platform." />
   <meta property="og:image" content="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
   <meta property="og:type" content="website" />
@@ -31,7 +31,6 @@ html_content = f"""<!DOCTYPE html>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
 
   <style>
 {get_css()}
