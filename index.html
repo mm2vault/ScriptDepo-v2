@@ -6503,7 +6503,14 @@ async function ensureSupabaseProfile(user, isNewUser=false) {
   if(data){
     userProfile={...userProfile,...data.app_data,displayName:data.display_name||currentUser.displayName,email:data.email||currentUser.email,photoURL:data.app_data?.photoURL||currentUser.photoURL};
   }else{
-    userProfile={...userProfile,coins:50,totalCoinsEarned:50,displayName:currentUser.displayName,email:currentUser.email,photoURL:currentUser.photoURL,usedPromoCodes:[],favorites:[],activeCosmetics:[],purchasedScripts:[],inventory:[]};
+    userProfile={...userProfile,displayName:currentUser.displayName,email:currentUser.email,photoURL:currentUser.photoURL};
+    if (!userProfile.coins && userProfile.coins !== 0) userProfile.coins = 50;
+    if (typeof userProfile.totalCoinsEarned !== 'number') userProfile.totalCoinsEarned = userProfile.coins;
+    userProfile.purchasedScripts = userProfile.purchasedScripts || [];
+    userProfile.inventory = userProfile.inventory || [];
+    userProfile.usedPromoCodes = userProfile.usedPromoCodes || [];
+    userProfile.favorites = userProfile.favorites || [];
+    userProfile.activeCosmetics = userProfile.activeCosmetics || [];
     await saveUserProfile();
   }
   updateUIUserInfo();renderDailyTasks();checkHeroCollapsedState();renderMainGrid();
