@@ -8,6 +8,10 @@
   <meta property="og:title" content="ScriptDepo - Roblox Script & Oyun Platformu" />
   <meta property="og:description" content="Roblox oyuncularının script paylaştığı, coin kazandığı ve oyun keşfettiği modern platform." />
   <meta property="og:image" content="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#7c3aed" />
   <link rel="manifest" href="/manifest.json" />
@@ -4930,7 +4934,7 @@ header {
   <div class="modal-overlay" id="addScriptModal">
     <div class="modal-container modal-lg">
       <div class="modal-header">
-        <h3 class="modal-title"><i class="fa-solid fa-file-code"></i> Script Ekle</h3>
+        <h3 class="modal-title"><i class="fa-solid fa-file-code"></i> <span id="addScriptModalTitle">Script Ekle</span></h3>
         <button class="modal-close-btn" onclick="closeModal('addScriptModal')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
@@ -4969,9 +4973,13 @@ header {
           </div>
 
           <div class="form-group">
-            <label>Resim URL (Opsiyonel)</label>
-            <input type="url" id="addScriptImage" class="form-input" placeholder="https://..." oninput="previewAddScriptImage(this.value)" />
-            <img id="addScriptImagePreview" style="max-height: 140px; border-radius: 12px; margin-top: 6px; display: none; object-fit: cover;" />
+            <label>Resim</label>
+            <input type="url" id="addScriptImage" class="form-input" placeholder="https://... (opsiyonel)" oninput="previewAddScriptImage(this.value)" />
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <label class="btn btn-outline btn-sm" style="cursor:pointer;"><i class="fa-solid fa-images"></i> Galeriden Seç<input type="file" id="addScriptImageFile" accept="image/*" onchange="handleScriptGalleryImage(event)" style="display:none;" /></label>
+              <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('addScriptImage').value='';document.getElementById('addScriptImageFile').value='';previewAddScriptImage('');"><i class="fa-solid fa-xmark"></i> Temizle</button>
+            </div>
+            <img id="addScriptImagePreview" style="max-height:180px;max-width:100%;border-radius:12px;margin-top:8px;display:none;object-fit:cover;" />
           </div>
 
           <div class="form-group">
@@ -4981,7 +4989,7 @@ header {
           </div>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 8px;">
-            <i class="fa-solid fa-rocket"></i> <span>Herkese Açık Ekle! (+25 Coin)</span>
+            <i class="fa-solid fa-rocket"></i> <span id="addScriptSubmitText">Herkese Açık Ekle! (+25 Coin)</span>
           </button>
         </form>
       </div>
