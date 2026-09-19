@@ -4065,6 +4065,8 @@ header {
 /* POLISHED SCRIPT DETAIL */
 .script-detail-modal{max-width:960px!important;overflow:hidden}.script-detail-header{background:linear-gradient(180deg,rgba(124,58,237,.10),transparent)}.script-detail-kicker{font-size:10px;letter-spacing:1.8px;color:var(--accent-light);font-weight:900;margin-bottom:4px}.script-detail-layout{display:grid;grid-template-columns:minmax(260px,.82fr) 1.35fr;gap:24px;align-items:start}.script-detail-image-wrap{position:relative}.script-detail-image{width:100%;height:285px;object-fit:cover;border-radius:22px;border:1px solid var(--border-color);box-shadow:0 18px 55px rgba(0,0,0,.35)}.script-detail-price{position:absolute;right:12px;bottom:12px;padding:9px 13px;border-radius:14px;background:rgba(5,6,18,.88);backdrop-filter:blur(10px);color:var(--gold);font-weight:900;font-size:13px}.script-detail-mini-info{display:grid;grid-template-columns:1fr 1fr 1fr;gap:7px;margin-top:10px}.script-detail-mini-info div{padding:9px 7px;text-align:center;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-card);font-size:10px;color:var(--text-muted)}.script-detail-mini-info i{display:block;color:var(--accent-light);margin-bottom:4px}.script-detail-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:9px}.script-detail-title{font-size:30px;line-height:1.08;margin:0 0 8px;font-weight:900}.script-detail-desc{font-size:14px;color:var(--text-secondary);line-height:1.7;margin:0 0 14px}.script-detail-features{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:16px}.script-detail-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}.script-detail-stats div{padding:11px 8px;border:1px solid var(--border-color);border-radius:14px;text-align:center;background:var(--bg-card)}.script-detail-stats small{display:block;color:var(--text-muted);font-size:10px}.script-detail-stats strong{display:block;margin-top:4px;font-size:16px}.unlock-method-heading{font-size:12px;font-weight:900;margin-bottom:9px;color:var(--text-secondary)}.unlock-method-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.unlock-method-card{border:1px solid var(--border-color);border-radius:16px;padding:12px;text-align:left;background:var(--bg-card);color:var(--text-primary);display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:10px;cursor:pointer;transition:.2s}.unlock-method-card:hover{transform:translateY(-2px);border-color:var(--accent)}.unlock-method-icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(124,58,237,.13);color:var(--accent-light)}.unlock-method-card span:nth-child(2){display:flex;flex-direction:column;gap:3px}.unlock-method-card strong{font-size:12px}.unlock-method-card small{font-size:10px;color:var(--text-muted);line-height:1.35}.unlock-method-card>b{font-size:11px;color:var(--gold);white-space:nowrap}.unlock-method-task .unlock-method-icon{background:rgba(16,185,129,.12);color:#10b981}.unlock-method-task>b{color:#10b981}.script-detail-note{margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(124,58,237,.07);border:1px solid rgba(124,58,237,.16);font-size:10px;color:var(--text-muted);line-height:1.5}.script-detail-note i{color:var(--accent-light)}
 @media(max-width:720px){.script-detail-layout{grid-template-columns:1fr;gap:16px}.script-detail-image{height:210px}.script-detail-title{font-size:23px}.script-detail-stats{grid-template-columns:repeat(2,1fr)}.unlock-method-grid{grid-template-columns:1fr}}
+
+.profile-banner{height:105px;border-radius:18px;margin-bottom:14px;border:1px solid var(--border-color);background:var(--accent-gradient);position:relative;overflow:hidden}.profile-banner::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 20%,rgba(255,255,255,.28),transparent 35%)}.profile-banner-void{background:linear-gradient(135deg,#12052e,#3b0764,#0f172a)}.profile-banner-neon{background:linear-gradient(135deg,#07111f,#0e7490,#7c3aed)}.profile-banner-space{background:radial-gradient(circle at 70% 30%,#7c3aed 0 2%,transparent 3%),linear-gradient(135deg,#020617,#111827,#312e81)}.profile-banner-flame{background:linear-gradient(135deg,#1c0700,#b91c1c,#f59e0b)}.avatar-frame-neon{box-shadow:0 0 0 3px #22d3ee,0 0 18px #7c3aed}.avatar-frame-fire{box-shadow:0 0 0 3px #f97316,0 0 18px #ef4444}.avatar-frame-ice{box-shadow:0 0 0 3px #67e8f9,0 0 18px #38bdf8}.name-cyan{color:#22d3ee!important;text-shadow:0 0 10px rgba(34,211,238,.55)}.name-rainbow{background:linear-gradient(90deg,#f43f5e,#f59e0b,#10b981,#38bdf8,#a855f7);background-size:300% 100%;-webkit-background-clip:text;background-clip:text;color:transparent!important}.name-glow{color:var(--text-primary)!important;text-shadow:0 0 12px var(--accent-light)}.badge-vip{color:#fbbf24!important;border-color:#fbbf24!important}.badge-creator{color:#22d3ee!important;border-color:#22d3ee!important}.badge-legend{color:#c084fc!important;border-color:#c084fc!important}.profile-effect-glow{box-shadow:0 0 35px rgba(124,58,237,.45)}
 </style>
 <style>
 /* ===== ScriptDepo modern polish ===== */
@@ -4836,6 +4838,7 @@ header {
         <button class="modal-close-btn" onclick="closeModal('userProfileModal')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
+        <div id="profileBanner" class="profile-banner"></div>
         <div style="display: flex; align-items: center; gap: 18px;">
           <img src="" id="profileAvatarImg" style="width: 80px; height: 80px; border-radius: 50%; border: 3px solid var(--accent); object-fit: cover;" />
           <div>
@@ -4845,6 +4848,7 @@ header {
               <i class="fa-solid fa-crown"></i> <span>Yönetici (Admin)</span>
             </div>
             <span style="font-size: 11px; color: var(--accent-light);" id="profileJoinDate">Üyelik: Bugün</span>
+            <p id="profileBio" style="font-size:12px;color:var(--text-secondary);margin-top:6px;"></p><div id="profileBadges" style="display:flex;gap:6px;flex-wrap:wrap;margin-top:7px;"></div>
           </div>
         </div>
 
@@ -4914,7 +4918,7 @@ header {
           <input type="text" id="editUsernameInput" class="form-input" minlength="3" />
         </div>
 
-        <div class="form-group">
+        <div class="form-group"><label>Hakkımda</label><textarea id="editBioInput" class="form-textarea" maxlength="160" placeholder="Kendinden biraz bahset..."></textarea></div><div class="form-group"><label>Profil Banner URL</label><input type="url" id="editBannerInput" class="form-input" placeholder="https://..."/></div><div class="form-group">
           <label>E-posta (Değiştirilemez)</label>
           <input type="email" id="editEmailInput" class="form-input" disabled style="opacity: 0.6;" />
         </div>
@@ -6365,10 +6369,24 @@ const INITIAL_GAMES = [
 ];
 
 const COSMETICS_LIST = [
-  {id:"c_gold_frame",name:"Altın Çerçeve",nameEn:"Gold Frame",price:150,type:"frame",desc:"Profil avatarınızın etrafında ışıltılı altın halka.",class:"avatar-frame-gold"},
-  {id:"c_rainbow_frame",name:"Premium Çerçeve",nameEn:"Premium Frame",price:200,type:"frame",desc:"Neon mor ve camgöbeği gradient çerçeve.",class:"avatar-frame-rainbow"},
-  {id:"c_purple_name",name:"Mor İsim",nameEn:"Purple Name",price:100,type:"name",desc:"Kullanıcı adınız parlayan neon mor görünür.",class:"name-purple"},
-  {id:"c_gold_name",name:"Altın İsim",nameEn:"Gold Name",price:200,type:"name",desc:"Kullanıcı adınız altın sarısı stil alır.",class:"name-gold"}
+  {id:"c_gold_frame",name:"Altın Çerçeve",nameEn:"Gold Frame",price:150,type:"frame",desc:"Altın neon profil çerçevesi.",class:"avatar-frame-gold"},
+  {id:"c_rainbow_frame",name:"Gökkuşağı Çerçeve",nameEn:"Rainbow Frame",price:250,type:"frame",desc:"Renkli neon profil çerçevesi.",class:"avatar-frame-rainbow"},
+  {id:"c_neon_frame",name:"Neon Çerçeve",nameEn:"Neon Frame",price:300,type:"frame",desc:"Mor/camgöbeği neon çerçeve.",class:"avatar-frame-neon"},
+  {id:"c_fire_frame",name:"Alev Çerçeve",nameEn:"Fire Frame",price:350,type:"frame",desc:"Alevli profil çerçevesi.",class:"avatar-frame-fire"},
+  {id:"c_ice_frame",name:"Buz Çerçeve",nameEn:"Ice Frame",price:350,type:"frame",desc:"Buz kristali profil çerçevesi.",class:"avatar-frame-ice"},
+  {id:"c_purple_name",name:"Mor İsim",nameEn:"Purple Name",price:100,type:"name",desc:"Parlayan mor kullanıcı adı.",class:"name-purple"},
+  {id:"c_gold_name",name:"Altın İsim",nameEn:"Gold Name",price:200,type:"name",desc:"Altın kullanıcı adı.",class:"name-gold"},
+  {id:"c_cyan_name",name:"Cyan İsim",nameEn:"Cyan Name",price:180,type:"name",desc:"Cyan neon kullanıcı adı.",class:"name-cyan"},
+  {id:"c_rainbow_name",name:"Rainbow İsim",nameEn:"Rainbow Name",price:400,type:"name",desc:"Renkli kullanıcı adı.",class:"name-rainbow"},
+  {id:"c_glow_name",name:"Glow İsim",nameEn:"Glow Name",price:275,type:"name",desc:"Neon aura efektli isim.",class:"name-glow"},
+  {id:"c_banner_void",name:"Void Banner",nameEn:"Void Banner",price:300,type:"banner",desc:"Koyu mor kozmik banner.",class:"profile-banner-void"},
+  {id:"c_banner_neon",name:"Neon City Banner",nameEn:"Neon City Banner",price:400,type:"banner",desc:"Neon şehir bannerı.",class:"profile-banner-neon"},
+  {id:"c_banner_space",name:"Space Banner",nameEn:"Space Banner",price:500,type:"banner",desc:"Uzay temalı banner.",class:"profile-banner-space"},
+  {id:"c_banner_flame",name:"Flame Banner",nameEn:"Flame Banner",price:550,type:"banner",desc:"Ateş temalı banner.",class:"profile-banner-flame"},
+  {id:"c_effect_glow",name:"Glow Efekti",nameEn:"Glow Effect",price:300,type:"effect",desc:"Profil kartına neon aura verir.",class:"profile-effect-glow"},
+  {id:"c_badge_vip",name:"VIP Rozeti",nameEn:"VIP Badge",price:750,type:"badge",desc:"Profilde VIP rozeti.",class:"badge-vip"},
+  {id:"c_badge_creator",name:"Creator Rozeti",nameEn:"Creator Badge",price:600,type:"badge",desc:"İçerik üreticisi rozeti.",class:"badge-creator"},
+  {id:"c_badge_legend",name:"Legend Rozeti",nameEn:"Legend Badge",price:1000,type:"badge",desc:"Nadir koleksiyon rozeti.",class:"badge-legend"}
 ];
 
 const I18N = {
@@ -6607,7 +6625,7 @@ function saveUserProfile() {
         purchasedScripts: userProfile.purchasedScripts || [], inventory: userProfile.inventory || [],
         dailyTasks: userProfile.dailyTasks || {}, dailyTaskStats: userProfile.dailyTaskStats || {},
         usedPromoCodes: userProfile.usedPromoCodes || [], favorites: userProfile.favorites || [],
-        activeCosmetics: userProfile.activeCosmetics || [], photoURL: userProfile.photoURL || ''
+        activeCosmetics: userProfile.activeCosmetics || [], photoURL: userProfile.photoURL || '', bio: userProfile.bio || '', bannerUrl: userProfile.bannerUrl || ''
       },
       updated_at: new Date().toISOString()
     }, { onConflict: 'id' }).then(({error}) => { if (error) console.log("Supabase profile sync notice:", error.message); });
@@ -8199,33 +8217,16 @@ function renderStoreInventory() {
   container.innerHTML = html;
 }
 
-function buyStoreItem(type, itemId, price) {
-  if (userProfile.coins < price) {
-    showToast("Yetersiz bakiye! Görevleri tamamlayarak coin kazanabilirsiniz.", "fa-triangle-exclamation", "red");
-    return;
+async function buyStoreItem(type,itemId,price){
+  if(type==='cosmetic'){
+    if(!currentUser){showToast("Kozmetik satın almak için giriş yapmalısın.","fa-right-to-bracket","blue");openAuthModal();return;}
+    const {data,error}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'purchase_cosmetic',cosmeticId:itemId}});
+    if(error||!data?.ok){showToast(data?.error==='insufficient_coins'?('Yetersiz bakiye! '+price+' coin gerekiyor.'):'Kozmetik satın alınamadı.',"fa-triangle-exclamation","red");return;}
+    userProfile.coins=Number(data.coins);userProfile.inventory=Array.from(new Set([...(userProfile.inventory||[]),itemId]));saveUserProfile();renderStoreCosmetics();renderStoreInventory();updateUIUserInfo();showToast("Kozmetik satın alındı!","fa-wand-magic-sparkles","green");return;
   }
-
-  if (type === 'script') {
-    if (deductCoins(price, "Premium Script")) {
-      if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
-      userProfile.purchasedScripts.push(itemId);
-      saveUserProfile();
-      showToast("Script koleksiyonunuza eklendi!", "fa-circle-check", "green");
-      renderStorePremiumScripts();
-      renderMainGrid();
-    }
-  } else if (type === 'cosmetic') {
-    if (deductCoins(price, "Kozmetik")) {
-      if (!userProfile.inventory) userProfile.inventory = [];
-      userProfile.inventory.push(itemId);
-      saveUserProfile();
-      showToast("Kozmetik eşya açıldı!", "fa-sparkles", "green");
-      renderStoreCosmetics();
-      updateUIUserInfo();
-    }
-  }
+  if(userProfile.coins<price){showToast("Yetersiz bakiye! Görevleri tamamlayarak coin kazanabilirsiniz.","fa-triangle-exclamation","red");return;}
+  if(type==='script'&&deductCoins(price,"Premium Script")){if(!userProfile.purchasedScripts)userProfile.purchasedScripts=[];if(!userProfile.purchasedScripts.includes(itemId))userProfile.purchasedScripts.push(itemId);saveUserProfile();showToast("Script koleksiyonunuza eklendi!","fa-circle-check","green");renderStorePremiumScripts();renderMainGrid();}
 }
-
 function toggleCosmeticActive(cosmeticId) {
   if (!userProfile.activeCosmetics) userProfile.activeCosmetics = [];
   const index = userProfile.activeCosmetics.indexOf(cosmeticId);
@@ -8393,9 +8394,21 @@ function updateUIUserInfo() {
 
 // ==================== USER PROFILE MODAL ====================
 function openUserProfileModal() {
-  document.getElementById('profileAvatarImg').src = userProfile.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=Roblox`;
-  document.getElementById('profileDisplayName').textContent = userProfile.displayName;
-  document.getElementById('profileEmail').textContent = userProfile.email || "Giriş yapılmamış";
+  const avatar=document.getElementById('profileAvatarImg');
+  avatar.src=userProfile.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=Roblox`;
+  document.getElementById('profileDisplayName').textContent=userProfile.displayName;
+  document.getElementById('profileEmail').textContent=userProfile.email || "Giriş yapılmamış";
+  const active=userProfile.activeCosmetics||[];
+  const frame=COSMETICS_LIST.find(x=>active.includes(x.id)&&x.type==='frame');
+  const nameCos=COSMETICS_LIST.find(x=>active.includes(x.id)&&x.type==='name');
+  const bannerCos=COSMETICS_LIST.find(x=>active.includes(x.id)&&x.type==='banner');
+  const effect=COSMETICS_LIST.find(x=>active.includes(x.id)&&x.type==='effect');
+  avatar.className=frame?.class||'';
+  if(effect?.class) avatar.classList.add(effect.class);
+  const nameEl=document.getElementById('profileDisplayName'); nameEl.className=nameCos?.class||'';
+  const banner=document.getElementById('profileBanner'); if(banner){banner.className='profile-banner '+(bannerCos?.class||'');banner.style.backgroundImage=userProfile.bannerUrl?('url("'+userProfile.bannerUrl+'")'):'';}
+  const bio=document.getElementById('profileBio'); if(bio) bio.textContent=userProfile.bio||'';
+  const badges=document.getElementById('profileBadges'); if(badges) badges.innerHTML=COSMETICS_LIST.filter(x=>active.includes(x.id)&&x.type==='badge').map(x=>'<span class="btn btn-outline btn-sm '+x.class+'"><i class="fa-solid fa-certificate"></i> '+x.name+'</span>').join('');
   const profileAdminBadge = document.getElementById('profileAdminBadge');
   if (profileAdminBadge) {
     profileAdminBadge.style.display = isUserAdmin(currentUser) ? 'inline-flex' : 'none';
@@ -8454,21 +8467,13 @@ function previewEditAvatarUrl(url) {
 }
 
 function saveUserProfileChanges() {
-  const newName = document.getElementById('editUsernameInput').value.trim();
-  const newAvatar = document.getElementById('editAvatarPreview').src;
-
-  if (newName.length < 3) {
-    showToast("Kullanıcı adı en az 3 karakter olmalıdır.", "fa-circle-xmark", "red");
-    return;
-  }
-
-  userProfile.displayName = newName;
-  userProfile.photoURL = newAvatar;
-  saveUserProfile();
-
-  closeModal('editProfileModal');
-  openUserProfileModal();
-  showToast("Profil bilgileri güncellendi!", "fa-user-check", "green");
+  const newName=document.getElementById('editUsernameInput').value.trim();
+  if(newName.length<3){showToast("Kullanıcı adı en az 3 karakter olmalıdır.","fa-circle-xmark","red");return;}
+  userProfile.displayName=newName;
+  userProfile.photoURL=document.getElementById('editAvatarPreview').src;
+  userProfile.bio=(document.getElementById('editBioInput')?.value||'').trim().slice(0,160);
+  userProfile.bannerUrl=(document.getElementById('editBannerInput')?.value||'').trim();
+  saveUserProfile();closeModal('editProfileModal');openUserProfileModal();showToast("Profil özelleştirmen kaydedildi!","fa-user-check","green");
 }
 
 // ==================== ADD SCRIPT & GAME ====================
