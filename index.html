@@ -7694,13 +7694,13 @@ async function confirmCoinUnlock(){
 }
 function startTasksUnlock(){
   if(!currentUser){showToast("Görevlerle script açmak için önce giriş yapmalısın.","fa-right-to-bracket","blue");openAuthModal();return;}
-  closeModal('unlockChoiceModal');taskStepsDone=[false,false,false];
-  [1,2,3].forEach(n=>{const btn=document.getElementById(`btnTask${n}`);if(btn){btn.style.display='inline-flex';btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-shield-check"></i> Doğrula';btn.classList.remove('task-verified');}});
+  closeModal('unlockChoiceModal');taskStepsDone=[false,false];
+  [1,2].forEach(n=>{const btn=document.getElementById(`btnTask${n}`);if(btn){btn.style.display='inline-flex';btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-shield-check"></i> Doğrula';btn.classList.remove('task-verified');}});
   updateTaskProgressDisplay();openModal('tasksCountdownModal');
 }
 async function triggerTaskCountdown(stepNum){
   if(!currentUser||!supabaseClient){showToast("Önce giriş yapmalısın.","fa-right-to-bracket","blue");return;}
-  const type=stepNum===1?'discord':stepNum===2?'youtube':'tiktok',btn=document.getElementById(`btnTask${stepNum}`);
+  const type=stepNum===1?'discord':'youtube',btn=document.getElementById(`btnTask${stepNum}`);
   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Kontrol ediliyor…';}
   if(type==='discord'||type==='youtube'){
     const provider=type==='discord'?'discord':'google',hasIdentity=(currentUser.identities||[]).some(i=>i.provider===provider);
@@ -7708,14 +7708,14 @@ async function triggerTaskCountdown(stepNum){
   }
   let providerToken='';if(type==='youtube'){providerToken=sessionStorage.getItem('scriptDepoGoogleProviderToken')||'';if(!providerToken){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-brands fa-google"></i> Google\'ı Yenile';}showToast("YouTube izni bulunamadı. Google hesabını yeniden bağla.","fa-circle-info","blue");return;}}
   try{const {data}=await supabaseClient.functions.invoke('complete-task',{body:{taskType:type,providerToken}});
-    if(!data?.ok){const messages={discord_not_member:"Discord hesabın sunucuda üyelik olarak bulunamadı.",discord_not_connected:"Discord hesabını bağlaman gerekiyor.",youtube_not_subscribed:"YouTube kanalına abone olduğun doğrulanamadı.",youtube_oauth_required:"YouTube OAuth izni gerekiyor.",youtube_forbidden:"YouTube erişimi reddedildi. Google izinlerini kontrol et.",tiktok_manual:"TikTok görevi manuel olarak onaylandı."};showToast(messages[data?.error]||"Görev doğrulanamadı. Gereksinimi tamamlayıp tekrar dene.","fa-triangle-exclamation","red");if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-rotate-right"></i> Tekrar Dene';}return;}
+    if(!data?.ok){const messages={discord_not_member:"Discord hesabın sunucuda üyelik olarak bulunamadı.",discord_not_connected:"Discord hesabını bağlaman gerekiyor.",youtube_not_subscribed:"YouTube kanalına abone olduğun doğrulanamadı.",youtube_oauth_required:"YouTube OAuth izni gerekiyor.",youtube_forbidden:"YouTube erişimi reddedildi. Google izinlerini kontrol et."};showToast(messages[data?.error]||"Görev doğrulanamadı. Gereksinimi tamamlayıp tekrar dene.","fa-triangle-exclamation","red");if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-rotate-right"></i> Tekrar Dene';}return;}
     taskStepsDone[stepNum-1]=true;if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-circle-check"></i> Doğrulandı';btn.classList.add('task-verified');}updateTaskProgressDisplay();
   }catch(e){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-rotate-right"></i> Tekrar Dene';}showToast("Görev sunucusuna bağlanılamadı.","fa-triangle-exclamation","red");}
 }
 async function updateTaskProgressDisplay(){
   const completed=taskStepsDone.filter(Boolean).length,text=document.getElementById('taskCompletionProgressText'),bar=document.getElementById('taskCompletionProgressBar');
-  if(text)text.textContent=`İlerleme: ${completed} / 3 Doğrulandı`;if(bar)bar.style.width=`${Math.round((completed/3)*100)}%`;
-  if(completed===3&&selectedScriptForUnlock&&currentUser&&supabaseClient){
+  if(text)text.textContent=`İlerleme: ${completed} / 2 Doğrulandı`;if(bar)bar.style.width=`${Math.round((completed/2)*100)}%`;
+  if(completed===2&&selectedScriptForUnlock&&currentUser&&supabaseClient){
     const s=selectedScriptForUnlock,{data}=await supabaseClient.functions.invoke('script-access',{body:{action:'unlock_tasks',scriptId:s.id}});
     if(!data?.ok){showToast(data?.error==='tasks_incomplete'?"Sunucu bazı görevleri hâlâ tamamlanmış görmüyor.":"Görev kilidi sunucuda doğrulanamadı.","fa-triangle-exclamation","red");return;}
     s.code=data.code||s.code;if(!userProfile.purchasedScripts)userProfile.purchasedScripts=[];if(!userProfile.purchasedScripts.includes(s.id))userProfile.purchasedScripts.push(s.id);saveUserProfile();closeModal('tasksCountdownModal');await openScriptCodeModal(s);renderMainGrid();showToast("Tebrikler! Görevler doğrulandı, script açıldı.","fa-gift","green");
