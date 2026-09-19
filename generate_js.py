@@ -5871,7 +5871,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Wave", "Solara", "Codex", "Hydrogen"],
     workingVotes: 342,
     patchedVotes: 4,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/acsu123/HOHO_HUB/main/Loading_NEW.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -5895,7 +5895,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Solara", "Wave", "Hydrogen", "Codex"],
     workingVotes: 290,
     patchedVotes: 3,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/realredz/BloxFruits/main/Source.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -5919,7 +5919,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Wave", "Hydrogen", "Codex"],
     workingVotes: 215,
     patchedVotes: 5,
-    code: "loadstring(game:HttpGet('https://api.luarmor.net/files/v3/loaders/3b2169cf53bc6104dabe8e19562e5cc2.lua'))()",
+    code: "",
     isPremium: true,
     coinPrice: 0,
     image: "https://i.postimg.cc/jScztNGG/no-Filter.jpg",
@@ -5944,7 +5944,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Solara", "Delta", "Wave", "Codex", "Hydrogen", "Vega X"],
     workingVotes: 410,
     patchedVotes: 3,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/Ethanoj1/EclipseHub/master/Script'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -5968,7 +5968,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Solara", "Delta", "Wave", "Hydrogen"],
     workingVotes: 185,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/Roman34296589/SnapSanixHUB/refs/heads/main/SnapSanixHUB.lua'))()",
+    code: "",
     isPremium: true,
     coinPrice: 0,
     image: "https://i.postimg.cc/rFhbs0Xg/images.jpg",
@@ -5991,7 +5991,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Wave", "Solara", "Codex"],
     workingVotes: 145,
     patchedVotes: 4,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/RegularVynixu/Vynixius/main/Loader.lua'))()",
+    code: "",
     isPremium: true,
     coinPrice: 50,
     image: "https://i.postimg.cc/rFhbs0Xg/images.jpg",
@@ -6016,7 +6016,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Solara", "Wave", "Codex", "Hydrogen"],
     workingVotes: 310,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/realredz/BladeBall/main/Source.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6040,7 +6040,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Wave", "Solara"],
     workingVotes: 160,
     patchedVotes: 3,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/Synergy-System/NovaHub/main/BladeBall.lua'))()",
+    code: "",
     isPremium: true,
     coinPrice: 0,
     image: "https://i.postimg.cc/gkDwZpNw/no-Filter-(1).webp",
@@ -6065,7 +6065,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Solara", "Delta", "Wave", "Hydrogen", "Codex"],
     workingVotes: 280,
     patchedVotes: 4,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/Lerma101/Swagmode-Da-Hood/main/Main.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6089,7 +6089,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Solara", "Delta", "Wave"],
     workingVotes: 130,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/RayX-Development/RayX/main/DaHood.lua'))()",
+    code: "",
     isPremium: true,
     coinPrice: 0,
     image: "https://i.postimg.cc/s28GgJwX/no-Filter.webp",
@@ -6114,7 +6114,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Wave", "Solara", "Codex", "Hydrogen"],
     workingVotes: 240,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/ZapHub-Roblox/ZapHub/main/PS99.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6140,7 +6140,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Solara", "Delta", "Wave", "Codex"],
     workingVotes: 195,
     patchedVotes: 3,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/EclipseRivals/Rivals/main/Loader.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6166,7 +6166,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Solara", "Wave", "Hydrogen", "Codex", "Vega X"],
     workingVotes: 260,
     patchedVotes: 3,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/IceM4n/IceHub/main/Brookhaven.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6192,7 +6192,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Wave", "Solara", "Codex", "Hydrogen"],
     workingVotes: 210,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/SpeedHubX/Fisch/main/Loader.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6218,7 +6218,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Solara", "Wave", "Hydrogen"],
     workingVotes: 175,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/OmgScripts/Doors/main/OmgHub.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6244,7 +6244,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Solara", "Delta", "Wave", "Codex"],
     workingVotes: 180,
     patchedVotes: 3,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/QuotasHub/Arsenal/main/Loader.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6270,7 +6270,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Solara", "Wave", "Codex"],
     workingVotes: 140,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/ZenithHub/KingLegacy/main/Loader.lua'))()",
+    code: "",
     isPremium: true,
     coinPrice: 0,
     image: "https://i.postimg.cc/jScztNGG/no-Filter.jpg",
@@ -6295,7 +6295,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Solara", "Wave"],
     workingVotes: 165,
     patchedVotes: 4,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/7GrandDadPGN/VapeV4ForRoblox/main/New经.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6321,7 +6321,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     executors: ["Delta", "Solara", "Wave", "Codex"],
     workingVotes: 135,
     patchedVotes: 2,
-    code: "loadstring(game:HttpGet('https://raw.githubusercontent.com/SlapMaster/SlapBattles/main/Script.lua'))()",
+    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -7700,24 +7700,36 @@ function handleGetScript(scriptId) {
   openModal('unlockChoiceModal');
 }
 
-function confirmCoinUnlock() {
-  if (!selectedScriptForUnlock) return;
-  const price = selectedScriptForUnlock.coinPrice || 30;
-
-  if (userProfile.coins < price) {
-    showToast(`Yetersiz bakiye! Bu script için ${price} coin gerekiyor.`, "fa-triangle-exclamation", "red");
-    return;
-  }
-
-  if (deductCoins(price, selectedScriptForUnlock.name)) {
+async function confirmCoinUnlock() {
+  if (!selectedScriptForUnlock || !currentUser) return;
+  const s = selectedScriptForUnlock;
+  const price = s.coinPrice || 30;
+  const btn = document.getElementById('confirmCoinUnlockBtn');
+  if (btn) btn.disabled = true;
+  try {
+    const { data, error } = await supabaseClient.functions.invoke('script-access', {
+      body: { action: 'unlock_coin', scriptId: s.id }
+    });
+    if (error || !data || !data.ok) {
+      if (data && data.error === 'insufficient_coins') {
+        showToast(`Yetersiz bakiye! Bu script için ${price} coin gerekiyor.`, "fa-triangle-exclamation", "red");
+      } else {
+        showToast("Script açma işlemi başarısız oldu.", "fa-triangle-exclamation", "red");
+      }
+      return;
+    }
+    userProfile.coins = Number(data.coins ?? Math.max(0, (userProfile.coins || 0) - price));
     if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
-    userProfile.purchasedScripts.push(selectedScriptForUnlock.id);
+    if (!userProfile.purchasedScripts.includes(s.id)) userProfile.purchasedScripts.push(s.id);
     saveUserProfile();
-
+    const code = data.code;
+    s.code = code;
     closeModal('unlockChoiceModal');
-    openScriptCodeModal(selectedScriptForUnlock);
+    await openScriptCodeModal(s);
     renderMainGrid();
     showToast("Script kalıcı olarak açıldı!", "fa-lock-open", "green");
+  } finally {
+    if (btn) btn.disabled = false;
   }
 }
 
@@ -7773,16 +7785,58 @@ function updateTaskProgressDisplay() {
   }
 
   if (completed === 3 && selectedScriptForUnlock) {
-    if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
-    userProfile.purchasedScripts.push(selectedScriptForUnlock.id);
-    saveUserProfile();
+    const s = selectedScriptForUnlock;
+    if (!currentUser || !supabaseClient) {
+      showToast("Görev kilidini açmak için giriş yapmalısın.", "fa-right-to-bracket", "blue");
+      return;
+    }
+    (async () => {
+      const { data, error } = await supabaseClient.functions.invoke('script-access', {
+        body: { action: 'unlock_tasks', scriptId: s.id }
+      });
+      if (error || !data || !data.ok) {
+        showToast("Görev kilidi sunucuda doğrulanamadı.", "fa-triangle-exclamation", "red");
+        return;
+      }
+      s.code = data.code || s.code;
+      if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
+      if (!userProfile.purchasedScripts.includes(s.id)) userProfile.purchasedScripts.push(s.id);
+      saveUserProfile();
+      setTimeout(async () => {
+        closeModal('tasksCountdownModal');
+        await openScriptCodeModal(s);
+        renderMainGrid();
+        showToast("Tebrikler! Görevler tamamlandı, script açıldı.", "fa-gift", "green");
+      }, 300);
+    })();
+  }
+}
 
-    setTimeout(() => {
-      closeModal('tasksCountdownModal');
-      openScriptCodeModal(selectedScriptForUnlock);
-      renderMainGrid();
-      showToast("Tebrikler! Görevler tamamlandı, script açıldı.", "fa-gift", "green");
-    }, 800);
+async function fetchProtectedScriptCode(scriptObj, action = 'get') {
+  if (!scriptObj) return null;
+  if (scriptObj.code) return scriptObj.code;
+  if (!supabaseClient) {
+    showToast("Güvenli script sistemi hazır değil.", "fa-triangle-exclamation", "red");
+    return null;
+  }
+  try {
+    const { data, error } = await supabaseClient.functions.invoke('script-access', {
+      body: { action, scriptId: scriptObj.id }
+    });
+    if (error || !data || !data.ok || !data.code) {
+      const msg = data && data.error === 'auth_required'
+        ? "Bu scripti açmak için giriş yapmalısın."
+        : data && data.error === 'locked'
+          ? "Bu script kilitli. Önce coin ödeyin veya görevleri tamamlayın."
+          : "Script kodu alınamadı. Lütfen tekrar deneyin.";
+      showToast(msg, "fa-lock", "red");
+      return null;
+    }
+    scriptObj.code = data.code;
+    return data.code;
+  } catch (err) {
+    showToast("Script sunucusuna bağlanılamadı.", "fa-triangle-exclamation", "red");
+    return null;
   }
 }
 
@@ -7929,19 +7983,21 @@ function voteScriptStatus(scriptId, isWorking) {
   );
 }
 
-function openScriptCodeModal(scriptObj) {
+async function openScriptCodeModal(scriptObj) {
   if (!scriptObj) return;
-  const canAccess = (currentUser && scriptObj.userId === currentUser.uid)
-    || isUserAdmin(currentUser)
-    || (userProfile.purchasedScripts || []).includes(scriptObj.id)
-    || (scriptObj.coinPrice || 0) === 0;
-  if (!canAccess) {
+  const isOwner = currentUser && scriptObj.userId === currentUser.uid;
+  const isAdmin = isUserAdmin(currentUser);
+  const isPurchased = (userProfile.purchasedScripts || []).includes(scriptObj.id);
+  const isFree = (scriptObj.coinPrice || 0) === 0;
+  if (!isOwner && !isAdmin && !isPurchased && !isFree) {
     handleGetScript(scriptObj.id);
     return;
   }
+  const code = await fetchProtectedScriptCode(scriptObj, 'get');
+  if (!code) return;
   selectedScriptForUnlock = scriptObj;
   document.getElementById('codeModalTitle').textContent = scriptObj.name;
-  document.getElementById('scriptCodeContent').innerHTML = highlightLuaCode(scriptObj.code || "");
+  document.getElementById('scriptCodeContent').innerHTML = highlightLuaCode(code);
   updateCodeModalVoting(scriptObj);
   openModal('scriptCodeModal');
 }
@@ -8009,13 +8065,13 @@ function copyCurrentScriptCode() {
   copyScriptCode(selectedScriptForUnlock);
 }
 
-function downloadScriptLuaFile() {
+async function downloadScriptLuaFile() {
   if (!selectedScriptForUnlock) return;
   const s = selectedScriptForUnlock;
-  const canAccess = (currentUser && s.userId === currentUser.uid) || isUserAdmin(currentUser) || (userProfile.purchasedScripts || []).includes(s.id) || (s.coinPrice || 0) === 0;
-  if (!canAccess) { showToast("Bu script kilitli. Önce scripti açmalısın.", "fa-lock", "red"); handleGetScript(s.id); return; }
+  const code = await fetchProtectedScriptCode(s, 'get');
+  if (!code) return;
   const filename = (s.name || 'script').replace(/[^a-zA-Z0-9_-]/g, '_') + '.lua';
-  const blob = new Blob([s.code || ''], { type: 'text/plain;charset=utf-8' });
+  const blob = new Blob([code], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
@@ -8028,797 +8084,35 @@ function downloadScriptLuaFile() {
   showToast(`${filename} başarıyla indirildi!`, "fa-download", "green");
 }
 
-function openRawCode() {
+async function openRawCode() {
   if (!selectedScriptForUnlock) return;
   const s = selectedScriptForUnlock;
-  const canAccess = (currentUser && s.userId === currentUser.uid) || isUserAdmin(currentUser) || (userProfile.purchasedScripts || []).includes(s.id) || (s.coinPrice || 0) === 0;
-  if (!canAccess) { showToast("Bu script kilitli. Önce scripti açmalısın.", "fa-lock", "red"); handleGetScript(s.id); return; }
-  const raw = s.code || "";
+  const raw = await fetchProtectedScriptCode(s, 'get');
+  if (!raw) return;
   const rawBlob = new Blob([raw], { type: 'text/plain;charset=utf-8' });
   const rawUrl = URL.createObjectURL(rawBlob);
   window.open(rawUrl, '_blank');
 }
 
-function quickCopyScript(scriptId, event) {
+async function quickCopyScript(scriptId, event) {
   if (event) event.stopPropagation();
   const s = scriptsData.find(item => item.id === scriptId);
   if (!s) return;
-
   const isOwner = currentUser && s.userId === currentUser.uid;
   const isAdmin = isUserAdmin(currentUser);
   const isPurchased = (userProfile.purchasedScripts || []).includes(s.id);
   const isFree = (s.coinPrice || 0) === 0;
-
   if (!isOwner && !isAdmin && !isPurchased && !isFree) {
     handleGetScript(scriptId);
     return;
   }
-
-  const raw = s.code || '';
+  const raw = await fetchProtectedScriptCode(s, 'get');
+  if (!raw) return;
   navigator.clipboard.writeText(raw).then(() => {
     playCopySound();
     recordTaskProgress('view');
     showToast(`"${s.name}" scripti panoya kopyalandı!`, "fa-copy", "green");
-
-    if (event && event.currentTarget) {
-      const btn = event.currentTarget;
-      const originalHtml = btn.innerHTML;
-      btn.innerHTML = '<i class="fa-solid fa-check" style="color: #10b981;"></i> <span style="color: #10b981; font-weight: 800;">Kopyalandı!</span>';
-      setTimeout(() => {
-        btn.innerHTML = originalHtml;
-      }, 2200);
-    }
-  }).catch(() => {
-    openScriptCodeModal(s);
-  });
-}
-
-function toggleCardComments(scriptId, event) {
-  if (event) event.stopPropagation();
-  const box = document.getElementById(`commentsBox_${scriptId}`);
-  const chevron = document.getElementById(`commentChevron_${scriptId}`);
-  if (!box) return;
-
-  const isExpanded = box.classList.contains('expanded');
-  if (isExpanded) {
-    box.classList.remove('expanded');
-    if (chevron) chevron.style.transform = 'rotate(0deg)';
-  } else {
-    box.classList.add('expanded');
-    if (chevron) chevron.style.transform = 'rotate(180deg)';
-  }
-}
-
-
-// ==================== PROMO CODES SYSTEM ====================
-function openPromoCodeModal() {
-  const input = document.getElementById('promoCodeInput');
-  if (input) input.value = '';
-  const msg = document.getElementById('promoResultMsg');
-  if (msg) msg.style.display = 'none';
-  openModal('promoCodeModal');
-}
-
-function submitPromoCode() {
-  const input = document.getElementById('promoCodeInput');
-  const code = (input.value || '').trim().toUpperCase();
-  const msgEl = document.getElementById('promoResultMsg');
-
-  if (!code) {
-    showToast("Lütfen bir promosyon kodu girin.", "fa-circle-xmark", "red");
-    playErrorSound();
-    return;
-  }
-
-  if (!userProfile.usedPromoCodes) userProfile.usedPromoCodes = [];
-  if (userProfile.usedPromoCodes.includes(code)) {
-    msgEl.style.display = 'block';
-    msgEl.style.color = '#ef4444';
-    msgEl.textContent = 'Bu kupon kodunu daha önce kullandınız!';
-    playErrorSound();
-    return;
-  }
-
-  const promo = PROMO_CODES[code];
-  if (!promo) {
-    msgEl.style.display = 'block';
-    msgEl.style.color = '#ef4444';
-    msgEl.textContent = 'Geçersiz veya süresi dolmuş kod.';
-    playErrorSound();
-    return;
-  }
-
-  userProfile.usedPromoCodes.push(code);
-  addCoins(promo.coins, `Kupon: ${code}`);
-  playSuccessSound();
-
-  msgEl.style.display = 'block';
-  msgEl.style.color = 'var(--green)';
-  msgEl.textContent = `Tebrikler! ${promo.desc} uygulandı: +${promo.coins} Coin!`;
-  input.value = '';
-
-  setTimeout(() => {
-    closeModal('promoCodeModal');
-  }, 1800);
-}
-
-// ==================== MOBILE NAVIGATION ====================
-function switchMobileNav(tab) {
-  document.querySelectorAll('.mobile-nav-item').forEach(el => el.classList.remove('active'));
-  const activeEl = document.getElementById(`mobNav_${tab}`);
-  if (activeEl) activeEl.classList.add('active');
-
-  if (tab === 'home') {
-    selectCategory('all');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } else if (tab === 'games') {
-    selectCategory('games');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  } else if (tab === 'tasks') {
-    const banner = document.getElementById('dailyTasksSection');
-    if (banner) {
-      banner.classList.add('visible');
-      banner.scrollIntoView({ behavior: 'smooth' });
-    }
-  } else if (tab === 'promo') {
-    openPromoCodeModal();
-  } else if (tab === 'profile') {
-    handleAuthOrProfileClick();
-  }
-}
-
-// ==================== STORE & COSMETICS ====================
-function openCoinStoreModal(tab = 'scripts') {
-  document.getElementById('storeBalanceDisplay').textContent = `${userProfile.coins} coin`;
-  switchStoreTab(tab);
-  openModal('coinStoreModal');
-}
-
-function switchStoreTab(tab) {
-  ['scripts', 'cosmetics', 'inventory'].forEach(t => {
-    const btn = document.getElementById(`storeTab${t.charAt(0).toUpperCase() + t.slice(1)}Btn`);
-    const content = document.getElementById(`store${t.charAt(0).toUpperCase() + t.slice(1)}Tab`);
-    if (btn) btn.classList.toggle('active', t === tab);
-    if (content) content.style.display = t === tab ? 'block' : 'none';
-  });
-
-  if (tab === 'scripts') renderStorePremiumScripts();
-  if (tab === 'cosmetics') renderStoreCosmetics();
-  if (tab === 'inventory') renderStoreInventory();
-}
-
-function renderStorePremiumScripts() {
-  const grid = document.getElementById('storePremiumScriptsGrid');
-  if (!grid) return;
-
-  let html = '';
-  INITIAL_PREMIUM_SCRIPTS.forEach(p => {
-    const isBought = (userProfile.purchasedScripts || []).includes(p.id);
-    html += `
-      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;">
-        <h5 style="font-size: 15px; font-weight: 700;">${p.name}</h5>
-        <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.3;">${p.desc}</p>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
-          <span style="font-weight: 800; color: var(--gold); font-size: 14px;"><i class="fa-solid fa-coins"></i> ${p.coinPrice}</span>
-          ${isBought 
-            ? `<button class="btn btn-outline btn-sm" onclick="closeModal('coinStoreModal'); openScriptCodeModal(scriptsData.find(x => x.id === '${p.id}'))">Kullan</button>`
-            : `<button class="btn btn-primary btn-sm" onclick="buyStoreItem('script', '${p.id}', ${p.coinPrice})">Satın Al</button>`
-          }
-        </div>
-      </div>
-    `;
-  });
-  grid.innerHTML = html;
-}
-
-function renderStoreCosmetics() {
-  const grid = document.getElementById('storeCosmeticsGrid');
-  if (!grid) return;
-
-  let html = '';
-  COSMETICS_LIST.forEach(c => {
-    const isOwned = (userProfile.inventory || []).includes(c.id);
-    const isActive = (userProfile.activeCosmetics || []).includes(c.id);
-
-    let actionBtn = '';
-    if (isOwned) {
-      actionBtn = `
-        <button class="btn btn-outline btn-sm" onclick="toggleCosmeticActive('${c.id}')" style="border-color: ${isActive ? 'var(--green)' : 'var(--border-color)'}; color: ${isActive ? 'var(--green)' : 'var(--text-primary)'};">
-          ${isActive ? '<i class="fa-solid fa-check"></i> Aktif' : 'Aktifleştir'}
-        </button>
-      `;
-    } else {
-      actionBtn = `
-        <button class="btn btn-primary btn-sm" onclick="buyStoreItem('cosmetic', '${c.id}', ${c.price})">
-          Satın Al
-        </button>
-      `;
-    }
-
-    html += `
-      <div style="background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 18px; padding: 14px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;">
-        <div>
-          <h5 style="font-size: 15px; font-weight: 700;" class="${c.type === 'name' ? c.class : ''}">${c.name}</h5>
-          <p style="font-size: 12px; color: var(--text-secondary); line-height: 1.3; margin-top: 4px;">${c.desc}</p>
-        </div>
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px;">
-          <span style="font-weight: 800; color: var(--gold); font-size: 14px;"><i class="fa-solid fa-coins"></i> ${c.price}</span>
-          ${actionBtn}
-        </div>
-      </div>
-    `;
-  });
-  grid.innerHTML = html;
-}
-
-function renderStoreInventory() {
-  const container = document.getElementById('storeInventoryContent');
-  if (!container) return;
-
-  const purchased = (userProfile.purchasedScripts || []).map(id => scriptsData.find(s => s.id === id)).filter(Boolean);
-  const ownedCosmetics = (userProfile.inventory || []).map(id => COSMETICS_LIST.find(c => c.id === id)).filter(Boolean);
-
-  let html = `
-    <div>
-      <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-scroll"></i> Sahip Olduğun Scriptler (${purchased.length})</h4>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;">
-  `;
-
-  if (purchased.length === 0) {
-    html += `<p style="font-size: 13px; color: var(--text-muted);">Henüz bir script satın almadınız.</p>`;
-  } else {
-    purchased.forEach(p => {
-      html += `
-        <div style="background: var(--bg-card); padding: 12px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 13px; font-weight: 700;">${p.name}</span>
-          <button class="btn btn-outline btn-sm" onclick="closeModal('coinStoreModal'); openScriptCodeModal(scriptsData.find(x => x.id === '${p.id}'))">Kullan</button>
-        </div>
-      `;
-    });
-  }
-
-  html += `
-      </div>
-    </div>
-    <div style="margin-top: 14px;">
-      <h4 style="font-size: 16px; font-weight: 700; margin-bottom: 10px;"><i class="fa-solid fa-wand-magic-sparkles"></i> Sahip Olduğun Kozmetikler (${ownedCosmetics.length})</h4>
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px;">
-  `;
-
-  if (ownedCosmetics.length === 0) {
-    html += `<p style="font-size: 13px; color: var(--text-muted);">Henüz bir kozmetik eşya açmadınız.</p>`;
-  } else {
-    ownedCosmetics.forEach(c => {
-      const isActive = (userProfile.activeCosmetics || []).includes(c.id);
-      html += `
-        <div style="background: var(--bg-card); padding: 12px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 13px; font-weight: 700;">${c.name}</span>
-          <button class="btn btn-outline btn-sm" onclick="toggleCosmeticActive('${c.id}')" style="border-color: ${isActive ? 'var(--green)' : 'var(--border-color)'}; color: ${isActive ? 'var(--green)' : 'var(--text-primary)'};">
-            ${isActive ? 'Devre Dışı' : 'Aktifleştir'}
-          </button>
-        </div>
-      `;
-    });
-  }
-
-  html += `
-      </div>
-    </div>
-  `;
-
-  container.innerHTML = html;
-}
-
-function buyStoreItem(type, itemId, price) {
-  if (userProfile.coins < price) {
-    showToast("Yetersiz bakiye! Görevleri tamamlayarak coin kazanabilirsiniz.", "fa-triangle-exclamation", "red");
-    return;
-  }
-
-  if (type === 'script') {
-    if (deductCoins(price, "Premium Script")) {
-      if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
-      userProfile.purchasedScripts.push(itemId);
-      saveUserProfile();
-      showToast("Script koleksiyonunuza eklendi!", "fa-circle-check", "green");
-      renderStorePremiumScripts();
-      renderMainGrid();
-    }
-  } else if (type === 'cosmetic') {
-    if (deductCoins(price, "Kozmetik")) {
-      if (!userProfile.inventory) userProfile.inventory = [];
-      userProfile.inventory.push(itemId);
-      saveUserProfile();
-      showToast("Kozmetik eşya açıldı!", "fa-sparkles", "green");
-      renderStoreCosmetics();
-      updateUIUserInfo();
-    }
-  }
-}
-
-function toggleCosmeticActive(cosmeticId) {
-  if (!userProfile.activeCosmetics) userProfile.activeCosmetics = [];
-  const index = userProfile.activeCosmetics.indexOf(cosmeticId);
-  if (index > -1) {
-    userProfile.activeCosmetics.splice(index, 1);
-    showToast("Kozmetik devre dışı bırakıldı.", "fa-circle-minus");
-  } else {
-    userProfile.activeCosmetics.push(cosmeticId);
-    showToast("Kozmetik aktifleştirildi!", "fa-wand-magic-sparkles", "green");
-  }
-  saveUserProfile();
-  renderStoreCosmetics();
-  renderStoreInventory();
-  updateUIUserInfo();
-}
-
-// ==================== AUTHENTICATION ====================
-function handleAuthOrProfileClick() {
-  if (currentUser) {
-    openUserProfileModal();
-  } else {
-    openModal('authModal');
-  }
-}
-
-function switchAuthTab(tab) {
-  const isSignIn = tab === 'signin';
-  document.getElementById('tabSignInBtn').classList.toggle('active', isSignIn);
-  document.getElementById('tabSignUpBtn').classList.toggle('active', !isSignIn);
-  document.getElementById('signInFormWrap').style.display = isSignIn ? 'block' : 'none';
-  document.getElementById('signUpFormWrap').style.display = !isSignIn ? 'block' : 'none';
-}
-
-function calculatePasswordStrength(pwd) {
-  let score = 0;
-  if (!pwd) score = 0;
-  else {
-    if (pwd.length >= 6) score += 25;
-    if (pwd.length >= 10) score += 25;
-    if (/[A-Z]/.test(pwd)) score += 25;
-    if (/[0-9]/.test(pwd)) score += 25;
-  }
-
-  const bars = [document.getElementById('pwdBar1'), document.getElementById('pwdBar2'), document.getElementById('pwdBar3'), document.getElementById('pwdBar4')];
-  bars.forEach(b => { b.className = 'meter-bar'; });
-
-  if (score >= 25) bars[0].className = 'meter-bar ' + (score < 50 ? 'active-red' : score < 75 ? 'active-yellow' : 'active-green');
-  if (score >= 50) bars[1].className = 'meter-bar ' + (score < 75 ? 'active-yellow' : 'active-green');
-  if (score >= 75) bars[2].className = 'meter-bar active-green';
-  if (score >= 100) bars[3].className = 'meter-bar active-green';
-}
-
-function generateRandomSignUpAvatar() {
-  const seed = "Hero_" + Math.floor(Math.random() * 99999);
-  const url = `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
-  document.getElementById('signUpAvatarPreview').src = url;
-}
-
-async function handleSignInSubmit(e) {
-  e.preventDefault();
-  const email=document.getElementById('signInEmail').value.trim(), password=document.getElementById('signInPassword').value, errBox=document.getElementById('signInError');
-  errBox.style.display='none';
-  if(!supabaseClient){errBox.textContent='Giriş sistemi hazır değil. Sayfayı yenileyin.';errBox.style.display='block';return;}
-  const {error}=await supabaseClient.auth.signInWithPassword({email,password});
-  if(error){errBox.textContent=error.message||'Giriş başarısız oldu.';errBox.style.display='block';return;}
-  closeModal('authModal'); showToast('Başarıyla giriş yapıldı!','fa-right-to-bracket','green');
-}
-async function handleSignUpSubmit(e) {
-  e.preventDefault();
-  const username=document.getElementById('signUpUsername').value.trim(), email=document.getElementById('signUpEmail').value.trim(), password=document.getElementById('signUpPassword').value, avatarUrl=document.getElementById('signUpAvatarPreview').src, errBox=document.getElementById('signUpError');
-  errBox.style.display='none';
-  if(!supabaseClient){errBox.textContent='Kayıt sistemi hazır değil. Sayfayı yenileyin.';errBox.style.display='block';return;}
-  const {data,error}=await supabaseClient.auth.signUp({email,password,options:{data:{display_name:username,avatar_url:avatarUrl}}});
-  if(error){errBox.textContent=error.message||'Kayıt işlemi başarısız.';errBox.style.display='block';return;}
-  if(data.user&&data.session){await ensureSupabaseProfile(data.user,true);closeModal('authModal');showToast('Kayıt tamamlandı! +50 Hoşgeldin Coin!','fa-sparkles','gold');}
-  else {closeModal('authModal');showToast('Kayıt oluşturuldu. E-posta doğrulaması gerekiyorsa gelen kutunu kontrol et.','fa-envelope','green');}
-}
-async function handleGoogleAuth() {
-  if(!supabaseClient){showToast('Supabase giriş sistemi hazır değil.','fa-triangle-exclamation','red');return;}
-  const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}});
-  if(error) showToast('Google girişi başarısız: '+error.message,'fa-triangle-exclamation','red');
-}
-
-
-async function handleDiscordAuth() {
-  if (!supabaseClient) {
-    showToast("Supabase giriş sistemi hazır değil.", "fa-triangle-exclamation", "red");
-    return;
-  }
-  const { error } = await supabaseClient.auth.signInWithOAuth({
-    provider: 'discord',
-    options: { redirectTo: window.location.origin + window.location.pathname }
-  });
-  if (error) showToast("Discord girişi başarısız: " + error.message, "fa-triangle-exclamation", "red");
-}
-
-function handleGuestDemoLogin() {
-  simulateLocalLogin("DemoPro", "demo@scripthub.roblox");
-}
-
-function simulateLocalLogin(name, email, photo) {
-  currentUser = {
-    uid: "usr_" + Date.now(),
-    displayName: name,
-    email: email,
-    photoURL: photo || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(name)}`
-  };
-  userProfile.displayName = currentUser.displayName;
-  userProfile.email = currentUser.email;
-  userProfile.photoURL = currentUser.photoURL;
-
-  closeModal('authModal');
-  showToast(`Hoş geldin, ${name}!`, "fa-user-check", "green");
-  saveUserProfile();
-  updateUIUserInfo();
-  renderDailyTasks();
-  checkHeroCollapsedState();
-  renderMainGrid();
-}
-
-async function handleSignOut() {
-  if(supabaseClient) await supabaseClient.auth.signOut();
-  currentUser=null; closeModal('userProfileModal'); showToast('Çıkış yapıldı.','fa-right-from-bracket'); updateUIUserInfo(); renderDailyTasks(); checkHeroCollapsedState(); renderMainGrid();
-}
-
-function updateUIUserInfo() {
-  const authBtnText = document.getElementById('authProfileBtnText');
-  const coinDisplay = document.getElementById('headerCoinCount');
-  const adminBtn = document.getElementById('adminBtn');
-
-  if (coinDisplay) coinDisplay.textContent = userProfile.coins || 0;
-
-  if (currentUser) {
-    if (authBtnText) {
-      let activeClass = '';
-      if ((userProfile.activeCosmetics || []).includes('c_purple_name')) activeClass = 'name-purple';
-      if ((userProfile.activeCosmetics || []).includes('c_gold_name')) activeClass = 'name-gold';
-
-      authBtnText.className = activeClass;
-      authBtnText.textContent = userProfile.displayName || "Profil";
-    }
-
-    // Admin button visibility check
-    const drawerAdminBtn = document.getElementById('drawerAdminBtn');
-    if (drawerAdminBtn) drawerAdminBtn.style.display = isUserAdmin(currentUser) ? 'flex' : 'none';
-    if (adminBtn) {
-      if (isUserAdmin(currentUser)) {
-        adminBtn.style.display = 'inline-flex';
-      } else {
-        adminBtn.style.display = 'none';
-      }
-    }
-  } else {
-    if (authBtnText) {
-      authBtnText.className = '';
-      authBtnText.textContent = I18N[currentLang].signIn;
-    }
-    if (adminBtn) adminBtn.style.display = 'none';
-  }
-}
-
-// ==================== USER PROFILE MODAL ====================
-function getProfileLevelInfo() {
-  const xp = Math.max(0, userProfile.totalCoinsEarned || userProfile.coins || 0);
-  const level = Math.max(1, Math.floor(xp / 100) + 1);
-  return { level, current: xp % 100, xp };
-}
-
-function openUserProfileModal() {
-  document.getElementById('profileAvatarImg').src = userProfile.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=Roblox`;
-  document.getElementById('profileDisplayName').textContent = userProfile.displayName || 'Oyuncu';
-  document.getElementById('profileEmail').textContent = userProfile.email || "Giriş yapılmamış";
-  const levelInfo = getProfileLevelInfo();
-  const levelBadge = document.getElementById('profileLevelBadge');
-  const levelText = document.getElementById('profileLevelProgressText');
-  const levelBar = document.getElementById('profileLevelProgressBar');
-  if (levelBadge) levelBadge.textContent = `LVL ${levelInfo.level}`;
-  if (levelText) levelText.textContent = `${levelInfo.current} / 100 XP`;
-  if (levelBar) levelBar.style.width = `${levelInfo.current}%`;
-  const profileAdminBadge = document.getElementById('profileAdminBadge');
-  if (profileAdminBadge) {
-    profileAdminBadge.style.display = isUserAdmin(currentUser) ? 'inline-flex' : 'none';
-  }
-
-  // Check cosmetics on profile avatar
-  const avatarImg = document.getElementById('profileAvatarImg');
-  avatarImg.className = '';
-  if ((userProfile.activeCosmetics || []).includes('c_gold_frame')) avatarImg.classList.add('avatar-frame-gold');
-  if ((userProfile.activeCosmetics || []).includes('c_rainbow_frame')) avatarImg.classList.add('avatar-frame-rainbow');
-
-  const myScriptsCount = scriptsData.filter(s => currentUser && s.userId === currentUser.uid).length;
-  const myGamesCount = gamesData.filter(g => currentUser && g.userId === currentUser.uid).length;
-  const myUnlockedCount = (userProfile.purchasedScripts || []).length;
-  const myFavsCount = (userProfile.favorites || []).length;
-
-  document.getElementById('statUserScripts').textContent = myScriptsCount;
-  document.getElementById('statUserGames').textContent = myGamesCount;
-  document.getElementById('statUserCoins').textContent = userProfile.coins;
-  document.getElementById('statUserUnlocked').textContent = myUnlockedCount;
-  document.getElementById('statUserFavs').textContent = myFavsCount;
-  document.getElementById('statUserTotalCoins').textContent = userProfile.totalCoinsEarned || userProfile.coins;
-
-  openModal('userProfileModal');
-}
-
-function openEditProfileModal() {
-  closeModal('userProfileModal');
-  document.getElementById('editAvatarPreview').src = userProfile.photoURL;
-  document.getElementById('editUsernameInput').value = userProfile.displayName;
-  document.getElementById('editEmailInput').value = userProfile.email || "Misafir Oturumu";
-  document.getElementById('editAvatarUrlInput').value = userProfile.photoURL.startsWith('http') ? userProfile.photoURL : '';
-  openModal('editProfileModal');
-}
-
-function generateRandomEditAvatar() {
-  const seed = "Hero_" + Math.floor(Math.random() * 99999);
-  const url = `https://api.dicebear.com/7.x/bottts/svg?seed=${seed}`;
-  document.getElementById('editAvatarPreview').src = url;
-}
-
-function handleAvatarFileSelect(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(evt) {
-    document.getElementById('editAvatarPreview').src = evt.target.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function previewEditAvatarUrl(url) {
-  if (url && url.startsWith('http')) {
-    document.getElementById('editAvatarPreview').src = url;
-  }
-}
-
-function saveUserProfileChanges() {
-  const newName = document.getElementById('editUsernameInput').value.trim();
-  const newAvatar = document.getElementById('editAvatarPreview').src;
-
-  if (newName.length < 3) {
-    showToast("Kullanıcı adı en az 3 karakter olmalıdır.", "fa-circle-xmark", "red");
-    return;
-  }
-
-  userProfile.displayName = newName;
-  userProfile.photoURL = newAvatar;
-  saveUserProfile();
-
-  closeModal('editProfileModal');
-  openUserProfileModal();
-  showToast("Profil bilgileri güncellendi!", "fa-user-check", "green");
-}
-
-// ==================== ADD SCRIPT & GAME ====================
-let editingScriptId = null;
-
-function resetScriptForm() {
-  editingScriptId = null;
-  const form = document.querySelector('#addScriptModal form');
-  if (form) form.reset();
-  const preview = document.getElementById('addScriptImagePreview');
-  if (preview) { preview.style.display = 'none'; preview.src = ''; }
-  const title = document.getElementById('addScriptModalTitle');
-  if (title) title.textContent = 'Script Ekle';
-  const submitText = document.getElementById('addScriptSubmitText');
-  if (submitText) submitText.textContent = 'Herkese Açık Ekle! (+25 Coin)';
-}
-
-function handleScriptGalleryImage(event) {
-  const file = event.target.files && event.target.files[0];
-  if (!file || !file.type.startsWith('image/')) return;
-  if (file.size > 6 * 1024 * 1024) { showToast("Resim 6 MB'dan küçük olmalı.", "fa-image", "red"); event.target.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = () => {
-    const img = new Image();
-    img.onload = () => {
-      const scale = Math.min(1, 1000 / img.width, 700 / img.height);
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.max(1, Math.round(img.width * scale));
-      canvas.height = Math.max(1, Math.round(img.height * scale));
-      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
-      const dataUrl = canvas.toDataURL('image/jpeg',0.82);
-      document.getElementById('addScriptImage').value = dataUrl;
-      previewAddScriptImage(dataUrl);
-    };
-    img.src = reader.result;
-  };
-  reader.readAsDataURL(file);
-}
-
-function openAdminEditScript(scriptId) {
-  if (!isUserAdmin(currentUser)) return;
-  const s = scriptsData.find(x => x.id === scriptId);
-  if (!s) return;
-  editingScriptId = scriptId;
-  document.getElementById('addScriptName').value = s.name || '';
-  document.getElementById('addScriptCategory').value = s.category || 'other';
-  document.getElementById('addScriptDesc').value = s.desc || '';
-  document.getElementById('addScriptFeatures').value = (s.features || []).join(', ');
-  document.getElementById('addScriptCode').value = s.code || '';
-  document.getElementById('addScriptImage').value = s.image || '';
-  document.getElementById('addScriptPrice').value = Number(s.coinPrice) || 0;
-  previewAddScriptImage(s.image || '');
-  document.getElementById('addScriptModalTitle').textContent = 'Script Düzenle';
-  document.getElementById('addScriptSubmitText').textContent = 'Değişiklikleri Kaydet';
-  closeModal('adminModal');
-  openModal('addScriptModal');
-}
-
-function openAddScriptModal() {
-  if (!currentUser) {
-    showToast("Script eklemek için lütfen giriş yapın.", "fa-lock");
-    openModal('authModal');
-    return;
-  }
-  resetScriptForm();
-  openModal('addScriptModal');
-}
-
-function previewAddScriptImage(url) {
-  const preview = document.getElementById('addScriptImagePreview');
-  if (url && url.startsWith('http')) {
-    preview.src = url;
-    preview.style.display = 'block';
-  } else {
-    preview.style.display = 'none';
-  }
-}
-
-function handleNewScriptSubmit(e) {
-  e.preventDefault();
-  const name = document.getElementById('addScriptName').value.trim();
-  const category = document.getElementById('addScriptCategory').value;
-  const desc = document.getElementById('addScriptDesc').value.trim();
-  const featuresRaw = document.getElementById('addScriptFeatures').value;
-  const code = document.getElementById('addScriptCode').value.trim();
-  const image = document.getElementById('addScriptImage').value.trim() || CATEGORY_IMAGES[category] || DEFAULT_SCRIPT_IMAGE;
-  const price = parseInt(document.getElementById('addScriptPrice').value, 10) || 30;
-
-  const features = featuresRaw ? featuresRaw.split(',').map(s => s.trim()).filter(Boolean) : ["Aimbot", "ESP"];
-
-  if (editingScriptId) {
-    if (!isUserAdmin(currentUser)) return;
-    const existing = scriptsData.find(s => s.id === editingScriptId);
-    if (!existing) return;
-    Object.assign(existing, { name, category, desc, features, code, image, coinPrice: Math.max(0, Math.min(9999, price)), updatedAt: Date.now() });
-    localStorage.setItem('scriptHubCustomScripts', JSON.stringify(scriptsData.filter(s => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id))));
-    if (db) { try { db.collection('scripts').doc(existing.id).set(existing,{merge:true}).catch(()=>{}); } catch(e){} }
-    closeModal('addScriptModal'); resetScriptForm(); renderMainGrid(); openAdminModal();
-    showToast("Script güncellendi!", "fa-check", "green");
-    return;
-  }
-
-  const newScript = {
-    id: "sc_" + Date.now(),
-    name: name,
-    category: category,
-    desc: desc,
-    features: features,
-    code: code,
-    image: image,
-    coinPrice: price,
-    userId: currentUser ? currentUser.uid : "anon",
-    userName: currentUser ? userProfile.displayName : "Topluluk",
-    userEmail: currentUser ? currentUser.email : "",
-    isCommunity: true,
-    isPremium: false,
-    commentCount: 0,
-    downloads: 0,
-    views: 1,
-    rating: 5.0,
-    ratingCount: 1,
-    status: "active",
-    version: "v1.0.0",
-    createdAt: Date.now(),
-    comments: []
-  };
-
-  scriptsData.unshift(newScript);
-
-  // Local storage save for custom scripts
-  const customScripts = scriptsData.filter(s => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id));
-  localStorage.setItem('scriptHubCustomScripts', JSON.stringify(customScripts));
-
-  // Firestore sync if connected
-  if (db) {
-    try {
-      db.collection('scripts').doc(newScript.id).set({
-        ...newScript,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }).catch(err => console.log("Firestore script add error:", err));
-    } catch (err) {}
-  }
-
-  addCoins(25, "Script Ekleme");
-  recordTaskProgress('script');
-  closeModal('addScriptModal');
-  renderMainGrid();
-  showToast("Script başarıyla eklendi! (+25 Coin)", "fa-rocket", "green");
-}
-
-function openAddGameModal() {
-  if (!currentUser) {
-    showToast("Oyun eklemek için lütfen giriş yapın.", "fa-lock");
-    openModal('authModal');
-    return;
-  }
-  openModal('addGameModal');
-}
-
-function previewAddGameImage(url) {
-  const preview = document.getElementById('addGameImagePreview');
-  if (url && url.startsWith('http')) {
-    preview.src = url;
-    preview.style.display = 'block';
-  } else {
-    preview.style.display = 'none';
-  }
-}
-
-function handleNewGameSubmit(e) {
-  e.preventDefault();
-  const name = document.getElementById('addGameName').value.trim();
-  const link = document.getElementById('addGameLink').value.trim();
-  const image = document.getElementById('addGameImage').value.trim() || DEFAULT_SCRIPT_IMAGE;
-  const desc = document.getElementById('addGameDesc').value.trim();
-
-  const newGame = {
-    id: "gm_" + Date.now(),
-    name: name,
-    link: link,
-    image: image,
-    desc: desc,
-    userId: currentUser ? currentUser.uid : "anon",
-    userName: currentUser ? userProfile.displayName : "Topluluk",
-    createdAt: Date.now()
-  };
-
-  gamesData.push(newGame);
-
-  const customGames = gamesData.filter(g => !INITIAL_GAMES.some(ig => ig.id === g.id));
-  localStorage.setItem('scriptHubCustomGames', JSON.stringify(customGames));
-
-  if (db) {
-    try {
-      db.collection('games').doc(newGame.id).set({
-        ...newGame,
-        createdAt: firebase.firestore.FieldValue.serverTimestamp()
-      }).catch(err => {});
-    } catch (e) {}
-  }
-
-  addCoins(20, "Oyun Ekleme");
-  recordTaskProgress('game');
-  closeModal('addGameModal');
-  renderCategories();
-  if (activeCategory === 'games') renderMainGrid();
-  showToast("Oyun başarıyla eklendi! (+20 Coin)", "fa-gamepad", "green");
-}
-
-function deleteScript(scriptId) {
-  const s = scriptsData.find(item => item.id === scriptId);
-  const isOwner = currentUser && s && s.userId === currentUser.uid;
-  const isAdmin = isUserAdmin(currentUser);
-  if (!isOwner && !isAdmin) {
-    showToast("Bu scripti silme yetkiniz yok!", "fa-ban", "red");
-    return;
-  }
-  if (!confirm("Bu scripti silmek istediğinizden emin misiniz?")) return;
-
-  scriptsData = scriptsData.filter(s => s.id !== scriptId);
-  const customScripts = scriptsData.filter(s => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id));
-  localStorage.setItem('scriptHubCustomScripts', JSON.stringify(customScripts));
-
-  if (db) {
-    try {
-      db.collection('scripts').doc(scriptId).delete().catch(() => {});
-    } catch (e) {}
-  }
-
-  renderMainGrid();
-  showToast("Script silindi.", "fa-trash", "red");
+  }).catch(() => showToast("Kopyalama izni verilmedi.", "fa-circle-xmark", "red"));
 }
 
 // ==================== ADMIN PANEL ====================
