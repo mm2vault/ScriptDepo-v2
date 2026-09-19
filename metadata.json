@@ -1,0 +1,6 @@
+{
+  "name": "ScriptHub",
+  "description": "Roblox script ve oyun paylaşım platformu, coin ve görev sistemi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
