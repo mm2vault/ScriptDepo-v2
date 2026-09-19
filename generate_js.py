@@ -6609,8 +6609,15 @@ function syncFromFirestore() {
       });
       if (remoteScripts.length > 0) {
         // combine with initial premium scripts
-        const nonDuplicateRemote = remoteScripts.filter(rs => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === rs.id));
-        scriptsData = [...INITIAL_PREMIUM_SCRIPTS, ...nonDuplicateRemote];
+        const deleted = new Set(getDeletedScriptIds());
+        const remoteMap = new Map(remoteScripts.map(rs => [rs.id, rs]));
+        const merged = INITIAL_PREMIUM_SCRIPTS
+          .filter(s => !deleted.has(s.id))
+          .map(s => remoteMap.has(s.id) ? { ...s, ...remoteMap.get(s.id) } : s);
+        const extras = remoteScripts
+          .filter(rs => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === rs.id))
+          .filter(rs => !deleted.has(rs.id));
+        scriptsData = [...merged, ...extras].map(s => s.coinPrice > 0 ? { ...s, code: '' } : s);
         renderMainGrid();
       }
     }, err => {
@@ -8114,6 +8121,197 @@ async function quickCopyScript(scriptId, event) {
     showToast(`"${s.name}" scripti panoya kopyalandı!`, "fa-copy", "green");
   }).catch(() => showToast("Kopyalama izni verilmedi.", "fa-circle-xmark", "red"));
 }
+
+
+// ==================== SCRIPT/GAME MANAGEMENT ====================
+let editingScriptId = null;
+
+function getDeletedScriptIds() {
+  try { return JSON.parse(localStorage.getItem('scriptHubDeletedIds') || '[]'); } catch (e) { return []; }
+}
+function setDeletedScriptIds(ids) {
+  localStorage.setItem('scriptHubDeletedIds', JSON.stringify([...new Set(ids)]));
+}
+
+function resetScriptForm() {
+  editingScriptId = null;
+  const ids = ['addScriptName','addScriptDesc','addScriptFeatures','addScriptCode','addScriptImage'];
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const cat = document.getElementById('addScriptCategory'); if (cat) cat.value = 'mm2';
+  const price = document.getElementById('addScriptPrice'); if (price) price.value = '30';
+  const file = document.getElementById('addScriptImageFile'); if (file) file.value = '';
+  const title = document.getElementById('addScriptModalTitle'); if (title) title.textContent = 'Script Ekle';
+  const submit = document.getElementById('addScriptSubmitText'); if (submit) submit.textContent = 'Herkese Açık Ekle! (+25 Coin)';
+  previewAddScriptImage('');
+}
+
+function openAddScriptModal() {
+  if (!currentUser) { showToast("Script eklemek için giriş yapmalısın.", "fa-right-to-bracket", "blue"); openAuthModal(); return; }
+  if (isUserAdmin(currentUser)) resetScriptForm();
+  openModal('addScriptModal');
+}
+
+function previewAddScriptImage(url) {
+  const img = document.getElementById('addScriptImagePreview');
+  if (!img) return;
+  if (url) { img.src = url; img.style.display = 'block'; }
+  else { img.removeAttribute('src'); img.style.display = 'none'; }
+}
+
+function handleScriptGalleryImage(event) {
+  const file = event && event.target && event.target.files ? event.target.files[0] : null;
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { showToast("Lütfen bir görsel seçin.", "fa-image", "red"); return; }
+  if (file.size > 6 * 1024 * 1024) { showToast("Görsel en fazla 6 MB olabilir.", "fa-triangle-exclamation", "red"); return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 1000, maxH = 700;
+      const scale = Math.min(1, maxW / img.width, maxH / img.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.82);
+      const input = document.getElementById('addScriptImage');
+      if (input) input.value = dataUrl;
+      previewAddScriptImage(dataUrl);
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+async function openAdminEditScript(scriptId) {
+  if (!isUserAdmin(currentUser)) return;
+  const s = scriptsData.find(x => x.id === scriptId);
+  if (!s) { showToast("Script bulunamadı.", "fa-circle-xmark", "red"); return; }
+  editingScriptId = scriptId;
+  closeModal('adminModal');
+  document.getElementById('addScriptName').value = s.name || '';
+  document.getElementById('addScriptCategory').value = s.category || 'other';
+  document.getElementById('addScriptDesc').value = s.desc || '';
+  document.getElementById('addScriptFeatures').value = (s.features || []).join(', ');
+  document.getElementById('addScriptPrice').value = s.coinPrice || 0;
+  document.getElementById('addScriptImage').value = s.image || '';
+  previewAddScriptImage(s.image || '');
+  const code = await fetchProtectedScriptCode(s, 'get');
+  if (code) document.getElementById('addScriptCode').value = code;
+  else document.getElementById('addScriptCode').value = '';
+  document.getElementById('addScriptModalTitle').textContent = 'Script Düzenle';
+  document.getElementById('addScriptSubmitText').textContent = 'Değişiklikleri Kaydet';
+  openModal('addScriptModal');
+}
+
+async function handleNewScriptSubmit(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  if (!currentUser) { showToast("Önce giriş yapmalısın.", "fa-right-to-bracket", "blue"); return; }
+  const name = document.getElementById('addScriptName').value.trim();
+  const category = document.getElementById('addScriptCategory').value;
+  const desc = document.getElementById('addScriptDesc').value.trim();
+  const features = document.getElementById('addScriptFeatures').value.split(',').map(x => x.trim()).filter(Boolean);
+  const code = document.getElementById('addScriptCode').value.trim();
+  const image = document.getElementById('addScriptImage').value.trim();
+  const coinPrice = Math.max(0, Math.min(9999, Number(document.getElementById('addScriptPrice').value || 0)));
+  if (!name || !desc || !code) { showToast("Zorunlu alanları doldurmalısın.", "fa-circle-exclamation", "red"); return; }
+
+  const adminEdit = editingScriptId && isUserAdmin(currentUser);
+  if (editingScriptId && !adminEdit) { showToast("Bu düzenleme için admin yetkisi gerekiyor.", "fa-shield-halved", "red"); return; }
+
+  const id = editingScriptId || ('custom_' + Date.now() + '_' + Math.random().toString(36).slice(2,7));
+  const safeCodeForFirestore = coinPrice > 0 ? '' : code;
+  const scriptObj = {
+    id, name, category, desc, features, executors: [],
+    coinPrice, image: image || 'https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png',
+    code: safeCodeForFirestore, userId: adminEdit ? (scriptsData.find(x => x.id === id)?.userId || currentUser.uid) : currentUser.uid,
+    userName: currentUser.displayName || currentUser.email || 'Kullanıcı',
+    isPremium: coinPrice > 0, isKeyless: true, workingVotes: 0, patchedVotes: 0,
+    downloads: 0, views: 0, copies: 0, status: 'active', version: 'v1.0', createdAt: Date.now()
+  };
+
+  if (db) {
+    try {
+      await db.collection('scripts').doc(id).set(scriptObj, { merge: true });
+    } catch (err) {
+      showToast("Script veritabanına kaydedilemedi.", "fa-circle-xmark", "red");
+      return;
+    }
+  }
+
+  if (coinPrice > 0 && supabaseClient) {
+    const { data, error } = await supabaseClient.functions.invoke('script-access', {
+      body: { action: 'save_code', scriptId: id, code, coinPrice }
+    });
+    if (error || !data || !data.ok) {
+      showToast("Güvenli kod kaydı başarısız oldu.", "fa-circle-xmark", "red");
+      return;
+    }
+  }
+
+  const idx = scriptsData.findIndex(x => x.id === id);
+  if (idx >= 0) scriptsData[idx] = { ...scriptsData[idx], ...scriptObj, code: coinPrice > 0 ? '' : code };
+  else scriptsData.unshift(scriptObj);
+  setDeletedScriptIds(getDeletedScriptIds().filter(x => x !== id));
+  closeModal('addScriptModal');
+  resetScriptForm();
+  renderMainGrid();
+  if (isUserAdmin(currentUser)) openAdminModal();
+  showToast(adminEdit ? "Script güncellendi!" : "Script başarıyla eklendi!", "fa-circle-check", "green");
+}
+
+function openAddGameModal() {
+  if (!currentUser) { showToast("Oyun eklemek için giriş yapmalısın.", "fa-right-to-bracket", "blue"); openAuthModal(); return; }
+  const ids = ['addGameName','addGameLink','addGameImage','addGameDesc'];
+  ids.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  previewAddGameImage('');
+  openModal('addGameModal');
+}
+
+function previewAddGameImage(url) {
+  const img = document.getElementById('addGameImagePreview');
+  if (!img) return;
+  if (url) { img.src = url; img.style.display = 'block'; }
+  else { img.removeAttribute('src'); img.style.display = 'none'; }
+}
+
+async function handleNewGameSubmit(e) {
+  if (e && e.preventDefault) e.preventDefault();
+  if (!currentUser) return;
+  const name = document.getElementById('addGameName').value.trim();
+  const link = document.getElementById('addGameLink').value.trim();
+  const image = document.getElementById('addGameImage').value.trim();
+  const desc = document.getElementById('addGameDesc').value.trim();
+  if (!name || !link) { showToast("Oyun adı ve Roblox linki gerekli.", "fa-circle-exclamation", "red"); return; }
+  const game = { id:'game_' + Date.now(), name, link, image, desc, userId:currentUser.uid, userName:currentUser.displayName || currentUser.email || 'Kullanıcı', createdAt:Date.now() };
+  if (db) {
+    try { await db.collection('games').doc(game.id).set(game); } catch (err) { showToast("Oyun kaydedilemedi.", "fa-circle-xmark", "red"); return; }
+  }
+  gamesData.unshift(game);
+  closeModal('addGameModal');
+  renderMainGrid();
+  showToast("Oyun başarıyla eklendi!", "fa-circle-check", "green");
+}
+
+async function deleteScript(scriptId) {
+  const s = scriptsData.find(x => x.id === scriptId);
+  if (!s) return;
+  const allowed = isUserAdmin(currentUser) || (currentUser && s.userId === currentUser.uid);
+  if (!allowed) { showToast("Bu scripti silme yetkin yok.", "fa-shield-halved", "red"); return; }
+  if (!confirm(`"${s.name}" scripti silinsin mi?`)) return;
+  if (db && !String(scriptId).startsWith('bf_') && !String(scriptId).startsWith('mm2_') && !String(scriptId).startsWith('bb_') && !String(scriptId).startsWith('dh_') && !String(scriptId).startsWith('ps99_') && !String(scriptId).startsWith('rivals_') && !String(scriptId).startsWith('bh_') && !String(scriptId).startsWith('fisch_') && !String(scriptId).startsWith('doors_') && !String(scriptId).startsWith('arsenal_') && !String(scriptId).startsWith('kl_') && !String(scriptId).startsWith('bedwars_') && !String(scriptId).startsWith('sb_')) {
+    try { await db.collection('scripts').doc(scriptId).delete(); } catch (e) {}
+  } else if (db && isUserAdmin(currentUser)) {
+    try { await db.collection('scripts').doc(scriptId).delete(); } catch (e) {}
+  }
+  setDeletedScriptIds([...getDeletedScriptIds(), scriptId]);
+  scriptsData = scriptsData.filter(x => x.id !== scriptId);
+  renderMainGrid();
+  showToast("Script silindi.", "fa-trash", "green");
+}
+
+// =============================================================
 
 // ==================== ADMIN PANEL ====================
 function openAdminModal() {
