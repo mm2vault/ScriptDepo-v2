@@ -6534,6 +6534,15 @@ async function ensureSupabaseProfile(user, isNewUser=false) {
 }
 
 // ==================== LOAD LOCAL / REMOTE STATE ====================
+function normalizeUnverifiedScriptStats(list){
+  (list||[]).forEach(s=>{
+    if(s.userId==='system'){
+      s.views=0;s.copies=0;s.downloads=0;s.workingVotes=0;s.patchedVotes=0;
+      if(!s.ratingCount){s.rating=null;s.ratingCount=0;}
+    }
+  });
+  return list;
+}
 function loadSavedData() {
   // Load local user profile backup if exists
   const savedProfile = localStorage.getItem('scriptHubUserProfile');
@@ -6562,7 +6571,7 @@ function loadSavedData() {
     } catch (e) {}
   }
 
-  scriptsData = [...premiumPool, ...customScripts];
+  scriptsData = normalizeUnverifiedScriptStats([...premiumPool, ...customScripts]);
 
   // Games
   const savedGames = localStorage.getItem('scriptHubCustomGames');
@@ -6642,7 +6651,7 @@ function syncFromFirestore() {
       if (remoteScripts.length > 0) {
         // combine with initial premium scripts
         const nonDuplicateRemote = remoteScripts.filter(rs => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === rs.id));
-        scriptsData = [...INITIAL_PREMIUM_SCRIPTS, ...nonDuplicateRemote];
+        scriptsData = normalizeUnverifiedScriptStats([...INITIAL_PREMIUM_SCRIPTS, ...nonDuplicateRemote]);
         renderMainGrid();
       }
     }, err => {
@@ -7565,7 +7574,7 @@ function renderMainGrid() {
               <span class="rating-badge" onclick="rateScriptPrompt('${s.id}')" title="Puan Ver (+2 Coin)">
                 <i class="fa-solid fa-star" style="color: var(--gold);"></i> ${ratingScore}
               </span>
-              <span class="views-badge" title="Görüntülenme">
+              <span class="views-badge" title="Gerçek kayıtlı görüntülenme" data-script-metric-views="${s.id}">
                 <i class="fa-solid fa-eye"></i> ${viewsCount > 1000 ? (viewsCount/1000).toFixed(1)+'k' : viewsCount}
               </span>
             </div>
