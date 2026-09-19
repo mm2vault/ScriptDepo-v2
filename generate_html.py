@@ -140,7 +140,7 @@ def get_html():
     </div>
   </header>
 
-  <!-- RBLXSCRIPTS.NET STYLE TOP NAVIGATION BAR -->
+  <!-- SCRIPTDEPO TOP NAVIGATION BAR -->
   <div class="rblx-top-nav-wrap">
     <div class="rblx-top-nav-inner">
       <div class="rblx-nav-links">
@@ -176,7 +176,7 @@ def get_html():
       </div>
       <div class="rblx-live-status-pill desktop-only">
         <span class="status-pulse-dot" style="background: #10b981;"></span>
-        <span>120+ Doğrulanmış Script • %99.8 Çalışıyor</span>
+        <span>120+ İçerik • Topluluk tarafından test ediliyor</span>
       </div>
     </div>
   </div>
@@ -188,7 +188,7 @@ def get_html():
       <div class="hero-top-row">
         <div class="hero-tag">
           <i class="fa-solid fa-bolt" style="color: var(--gold);"></i>
-          <span>ROBLOX SCRIPTHUB 2026 EDITION</span>
+          <span>SCRIPTDEPO 2026 EDITION</span>
         </div>
         <button class="hero-collapse-btn" onclick="toggleHeroIntro()" id="btnToggleHero" title="Paneli Gizle/Göster">
           <i class="fa-solid fa-chevron-up" id="heroToggleIcon"></i>
@@ -200,7 +200,7 @@ def get_html():
         <div class="hero-text-wrap">
           <h2 class="hero-title">Roblox Script & Oyun Dünyasının En Güvenli Merkezi</h2>
           <p class="hero-subtitle">
-            Delta, Wave, Solara, Hydrogen ve tüm executorlar ile %100 uyumlu, virüssüz ve test edilmiş MM2, Blox Fruits, Da Hood ve 90+ Roblox oyunu scripti. Görevleri tamamlayarak veya kupon girerek bedava Coin kazan, script kodunu anında executor programına yapıştır!
+            Roblox topluluğu için düzenli olarak güncellenen MM2, Blox Fruits, Da Hood ve 90+ Roblox oyunu scripti. Görevleri tamamlayarak veya kupon girerek bedava Coin kazan, script detaylarını hızlıca incele!
           </p>
         </div>
 
