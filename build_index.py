@@ -14,6 +14,10 @@ html_content = f"""<!DOCTYPE html>
   <meta property="og:title" content="ScriptDepo - Roblox Script & Oyun Platformu" />
   <meta property="og:description" content="Roblox oyuncularının script paylaştığı, coin kazandığı ve oyun keşfettiği modern platform." />
   <meta property="og:image" content="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#7c3aed" />
   <link rel="manifest" href="/manifest.json" />
