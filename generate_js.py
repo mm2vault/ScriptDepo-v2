@@ -2949,6 +2949,20 @@ async function handleGoogleAuth() {
   if (error) showToast("Google girişi başarısız: " + error.message, "fa-triangle-exclamation", "red");
 }
 
+
+
+async function handleDiscordAuth() {
+  if (!supabaseClient) {
+    showToast("Supabase giriş sistemi hazır değil.", "fa-triangle-exclamation", "red");
+    return;
+  }
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: 'discord',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if (error) showToast("Discord girişi başarısız: " + error.message, "fa-triangle-exclamation", "red");
+}
+
 function handleGuestDemoLogin() {
   simulateLocalLogin("DemoPro", "demo@scripthub.roblox");
 }
@@ -3545,26 +3559,20 @@ window.addEventListener('DOMContentLoaded', () => {
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       if (session && session.user) {
         await ensureSupabaseProfile(session.user);
-      } else {
+      } else if (event === 'SIGNED_OUT') {
         currentUser = null;
-        userProfile = {
-          ...userProfile,
-          coins: 50,
-          totalCoinsEarned: 0,
-          purchasedScripts: [],
-          inventory: [],
-          activeCosmetics: [],
-          favorites: [],
-          usedPromoCodes: [],
-          dailyTasks: {},
-          dailyTaskStats: {}
-        };
         updateUIUserInfo();
         renderDailyTasks();
         checkHeroCollapsedState();
         renderMainGrid();
       }
     });
+
+  // Restore persisted Supabase session after reloads and mobile/desktop mode changes.
+  if (supabaseClient) {
+    supabaseClient.auth.getSession().then(({ data }) => {
+      if (data && data.session && data.session.user) ensureSupabaseProfile(data.session.user);
+    }).catch(() => {});
   }
 
   syncFromFirestore();
@@ -3652,6 +3660,7 @@ window.generateRandomSignUpAvatar = generateRandomSignUpAvatar;
 window.handleSignInSubmit = handleSignInSubmit;
 window.handleSignUpSubmit = handleSignUpSubmit;
 window.handleGoogleAuth = handleGoogleAuth;
+window.handleDiscordAuth = handleDiscordAuth;
 window.handleGuestDemoLogin = handleGuestDemoLogin;
 window.handleSignOut = handleSignOut;
 window.openUserProfileModal = openUserProfileModal;
