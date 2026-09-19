@@ -7381,19 +7381,35 @@ function renderMainGrid() {
       execsHtml += `<span class="badge-executor">${ex}</span>`;
     });
 
-    // Action buttons (RBLXScripts 1-Click Fast Copy & Inspect)
-    actionsHtml = `
-      <div class="card-action-btns">
-        <button class="btn btn-primary btn-copy-loadstring" onclick="copyScriptCode('${s.id}', event)" title="1-Tıkla Loadstring Kopyala">
-          <i class="fa-solid fa-copy"></i>
-          <span>Kodu Kopyala</span>
-        </button>
-        <button class="btn btn-outline btn-view-code" onclick="openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}'))" title="Kodu İncele & İndir">
-          <i class="fa-solid fa-code"></i>
-          <span>İncele</span>
-        </button>
-      </div>
-    `;
+    // Action buttons: locked scripts never expose direct copy/inspect actions.
+    let actionsHtml = '';
+    if (isUnlocked) {
+      actionsHtml = `
+        <div class="card-action-btns">
+          <button class="btn btn-primary btn-copy-loadstring" onclick="copyScriptCode('${s.id}', event)" title="1-Tıkla Loadstring Kopyala">
+            <i class="fa-solid fa-copy"></i>
+            <span>Kodu Kopyala</span>
+          </button>
+          <button class="btn btn-outline btn-view-code" onclick="openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}'))" title="Kodu İncele & İndir">
+            <i class="fa-solid fa-code"></i>
+            <span>İncele</span>
+          </button>
+        </div>
+      `;
+    } else {
+      actionsHtml = `
+        <div class="card-action-btns">
+          <button class="btn btn-primary" onclick="handleGetScript('${s.id}')" title="Coin veya görevlerle scripti aç">
+            <i class="fa-solid fa-lock"></i>
+            <span>Scripti Aç</span>
+          </button>
+          <button class="btn btn-outline" onclick="handleGetScript('${s.id}')" title="Açma seçeneklerini göster">
+            <i class="fa-solid fa-unlock-keyhole"></i>
+            <span>Seçenekler</span>
+          </button>
+        </div>
+      `;
+    }
     // Owner or admin action buttons
     let adminOrOwnerActions = '';
     if (isOwner || (isUserAdmin(currentUser))) {
@@ -7658,6 +7674,12 @@ function handleGetScript(scriptId) {
   const s = scriptsData.find(item => item.id === scriptId);
   if (!s) return;
 
+  if (!currentUser && (s.coinPrice || 0) > 0) {
+    showToast("Scripti açmak için önce giriş yapmalısın.", "fa-right-to-bracket", "blue");
+    openAuthModal();
+    return;
+  }
+
   selectedScriptForUnlock = s;
   recordTaskProgress('view');
 
@@ -7700,6 +7722,11 @@ function confirmCoinUnlock() {
 }
 
 function startTasksUnlock() {
+  if (!currentUser) {
+    showToast("Görevlerle script açmak için önce giriş yapmalısın.", "fa-right-to-bracket", "blue");
+    openAuthModal();
+    return;
+  }
   closeModal('unlockChoiceModal');
   taskStepsDone = [false, false, false];
   updateTaskProgressDisplay();
@@ -7903,6 +7930,15 @@ function voteScriptStatus(scriptId, isWorking) {
 }
 
 function openScriptCodeModal(scriptObj) {
+  if (!scriptObj) return;
+  const canAccess = (currentUser && scriptObj.userId === currentUser.uid)
+    || isUserAdmin(currentUser)
+    || (userProfile.purchasedScripts || []).includes(scriptObj.id)
+    || (scriptObj.coinPrice || 0) === 0;
+  if (!canAccess) {
+    handleGetScript(scriptObj.id);
+    return;
+  }
   selectedScriptForUnlock = scriptObj;
   document.getElementById('codeModalTitle').textContent = scriptObj.name;
   document.getElementById('scriptCodeContent').innerHTML = highlightLuaCode(scriptObj.code || "");
@@ -7923,6 +7959,16 @@ function copyScriptCode(scriptIdOrObj, e) {
 
   if (!s) {
     showToast("Script bulunamadı!", "fa-circle-xmark", "red");
+    return;
+  }
+
+  const canAccess = (currentUser && s.userId === currentUser.uid)
+    || isUserAdmin(currentUser)
+    || (userProfile.purchasedScripts || []).includes(s.id)
+    || (s.coinPrice || 0) === 0;
+  if (!canAccess) {
+    showToast("Bu script kilitli. Önce coin ödeyin veya görevleri tamamlayın.", "fa-lock", "red");
+    handleGetScript(s.id);
     return;
   }
 
