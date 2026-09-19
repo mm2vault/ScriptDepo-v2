@@ -4041,7 +4041,6 @@ header {
 .task-progress-top{display:flex;justify-content:space-between;gap:10px;font-size:12px;font-weight:800;margin-bottom:9px}.task-progress-top span:last-child{color:var(--green)}
 .task-progress-track{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}.task-progress-fill{height:100%;border-radius:inherit;background:linear-gradient(90deg,var(--accent),#38bdf8);transition:width .35s ease}
 .task-security-note{display:flex;align-items:center;gap:8px;margin-top:12px;padding:11px 13px;border-radius:12px;background:rgba(16,185,129,.07);color:var(--text-secondary);font-size:11px}.task-security-note i{color:var(--green)}
-.script-detail-note{border-radius:14px!important}
 @media(max-width:640px){.task-step-modern{align-items:flex-start;flex-direction:column}.task-step-modern>div:last-child{width:100%}.task-step-modern button{width:100%;justify-content:center}.task-step-main{width:100%}.task-step-main small{line-height:1.35}}
 
 """
