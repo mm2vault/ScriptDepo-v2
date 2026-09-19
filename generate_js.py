@@ -942,6 +942,7 @@ let taskStepsDone = [false, false, false];
 // Firebase References
 let db = null;
 let auth = null;
+let supabaseClient = null;
 
 // ==================== INIT FIREBASE ====================
 function initFirebase() {
@@ -956,21 +957,74 @@ function initFirebase() {
   };
 
   try {
-    if (typeof firebase !== 'undefined' && !firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
+    if (typeof firebase !== 'undefined' && !firebase.apps.length) firebase.initializeApp(firebaseConfig);
     if (typeof firebase !== 'undefined') {
-      auth = firebase.auth();
       db = firebase.firestore();
-      try {
-        // Enable offline persistence for instant local-first experience
-        db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
-      } catch (e) {}
-
+      try { db.enablePersistence({ synchronizeTabs: true }).catch(() => {}); } catch (e) {}
     }
   } catch (err) {
-    console.warn("Firebase initialize notice:", err);
+    console.warn("Firebase data services notice:", err);
   }
+}
+
+function initSupabase() {
+  try {
+    if (!window.supabase || supabaseClient) return;
+    supabaseClient = window.supabase.createClient(
+      'https://jjwqdvjtcorzpvxlfnog.supabase.co',
+      'sb_publishable_J4NQfjyOIj_sMUA53iSnVA_inPdNLZ7',
+      { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+    );
+  } catch (err) {
+    console.warn("Supabase initialize notice:", err);
+  }
+}
+
+async function ensureSupabaseProfile(user, isNewUser = false) {
+  if (!supabaseClient || !user) return;
+  currentUser = {
+    uid: user.id,
+    email: user.email || '',
+    displayName: user.user_metadata?.display_name || user.user_metadata?.full_name || (user.email || '').split('@')[0],
+    photoURL: user.user_metadata?.avatar_url || user.user_metadata?.picture || `https://api.dicebear.com/7.x/bottts/svg?seed=${encodeURIComponent(user.id)}`
+  };
+
+  const { data, error } = await supabaseClient.from('profiles').select('*').eq('id', user.id).maybeSingle();
+  if (error) {
+    console.log("Supabase profile load notice:", error.message);
+    updateUIUserInfo();
+    return;
+  }
+
+  if (data) {
+    userProfile = {
+      ...userProfile,
+      ...data.app_data,
+      displayName: data.display_name || currentUser.displayName,
+      email: data.email || currentUser.email,
+      photoURL: data.app_data?.photoURL || currentUser.photoURL
+    };
+  } else {
+    userProfile = {
+      ...userProfile,
+      coins: 50,
+      totalCoinsEarned: 50,
+      displayName: currentUser.displayName,
+      email: currentUser.email,
+      photoURL: currentUser.photoURL,
+      usedPromoCodes: [],
+      favorites: [],
+      activeCosmetics: [],
+      purchasedScripts: [],
+      inventory: []
+    };
+    await saveUserProfile();
+  }
+
+  updateUIUserInfo();
+  renderDailyTasks();
+  checkHeroCollapsedState();
+  renderMainGrid();
 }
 
 // ==================== LOAD LOCAL / REMOTE STATE ====================
@@ -1053,25 +1107,27 @@ function saveUserProfile() {
   localStorage.setItem('scriptHubUserProfile', JSON.stringify(userProfile));
   updateUIUserInfo();
 
-  // Sync to Firestore if authenticated
-  if (currentUser && db) {
-    try {
-      db.collection('users').doc(currentUser.uid).set({
-        coins: userProfile.coins,
-        totalCoinsEarned: userProfile.totalCoinsEarned || userProfile.coins,
+  if (currentUser && supabaseClient) {
+    supabaseClient.from('profiles').upsert({
+      id: currentUser.uid,
+      email: userProfile.email || currentUser.email || '',
+      display_name: userProfile.displayName || '',
+      app_data: {
+        coins: userProfile.coins || 0,
+        totalCoinsEarned: userProfile.totalCoinsEarned || 0,
         purchasedScripts: userProfile.purchasedScripts || [],
         inventory: userProfile.inventory || [],
         dailyTasks: userProfile.dailyTasks || {},
-        displayName: userProfile.displayName,
-        email: userProfile.email,
-        photoURL: userProfile.photoURL,
+        dailyTaskStats: userProfile.dailyTaskStats || {},
         usedPromoCodes: userProfile.usedPromoCodes || [],
         favorites: userProfile.favorites || [],
         activeCosmetics: userProfile.activeCosmetics || [],
-        totalCoinsEarned: userProfile.totalCoinsEarned || 0,
-        lastSeen: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true }).catch(err => console.log("Firestore user sync notice:", err.message));
-    } catch (err) {}
+        photoURL: userProfile.photoURL || ''
+      },
+      updated_at: new Date().toISOString()
+    }, { onConflict: 'id' }).then(({ error }) => {
+      if (error) console.log("Supabase profile sync notice:", error.message);
+    });
   }
 }
 
@@ -2821,85 +2877,76 @@ function generateRandomSignUpAvatar() {
   document.getElementById('signUpAvatarPreview').src = url;
 }
 
-function handleSignInSubmit(e) {
+async function handleSignInSubmit(e) {
   e.preventDefault();
-  const email = document.getElementById('signInEmail').value;
+  const email = document.getElementById('signInEmail').value.trim();
   const password = document.getElementById('signInPassword').value;
   const errBox = document.getElementById('signInError');
   errBox.style.display = 'none';
 
-  if (auth) {
-    auth.signInWithEmailAndPassword(email, password).then(res => {
-      closeModal('authModal');
-      showToast("Başarıyla giriş yapıldı!", "fa-right-to-bracket", "green");
-    }).catch(err => {
-      errBox.textContent = err.message || "Giriş başarısız oldu.";
-      errBox.style.display = 'block';
-    });
-  } else {
-    // Fallback demo login
-    simulateLocalLogin(email.split('@')[0], email);
+  if (!supabaseClient) {
+    errBox.textContent = "Giriş sistemi hazır değil. Sayfayı yenileyin.";
+    errBox.style.display = 'block';
+    return;
   }
+
+  const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+  if (error) {
+    errBox.textContent = error.message || "Giriş başarısız oldu.";
+    errBox.style.display = 'block';
+    return;
+  }
+  closeModal('authModal');
+  showToast("Başarıyla giriş yapıldı!", "fa-right-to-bracket", "green");
 }
 
-function handleSignUpSubmit(e) {
+async function handleSignUpSubmit(e) {
   e.preventDefault();
-  const username = document.getElementById('signUpUsername').value;
-  const email = document.getElementById('signUpEmail').value;
+  const username = document.getElementById('signUpUsername').value.trim();
+  const email = document.getElementById('signUpEmail').value.trim();
   const password = document.getElementById('signUpPassword').value;
   const avatarUrl = document.getElementById('signUpAvatarPreview').src;
   const errBox = document.getElementById('signUpError');
   errBox.style.display = 'none';
 
-  if (auth) {
-    auth.createUserWithEmailAndPassword(email, password).then(res => {
-      const user = res.user;
-      return user.updateProfile({
-        displayName: username,
-        photoURL: avatarUrl
-      }).then(() => {
-        closeModal('authModal');
-        showToast("Kayıt tamamlandı! +50 Hoşgeldin Coin!", "fa-sparkles", "gold");
-      });
-    }).catch(err => {
-      errBox.textContent = err.message || "Kayıt işlemi başarısız.";
-      errBox.style.display = 'block';
-    });
-  } else {
-    simulateLocalLogin(username, email, avatarUrl);
-  }
-}
-
-function handleDiscordAuth() {
-  if (!auth) {
-    showToast("Discord girişi için Firebase bağlantısı gerekli.", "fa-brands fa-discord", "red");
+  if (!supabaseClient) {
+    errBox.textContent = "Kayıt sistemi hazır değil. Sayfayı yenileyin.";
+    errBox.style.display = 'block';
     return;
   }
-  try {
-    const provider = new firebase.auth.OAuthProvider('oidc.discord');
-    auth.signInWithPopup(provider).then(() => {
-      closeModal('authModal');
-      showToast("Discord ile giriş başarılı!", "fa-brands fa-discord", "green");
-    }).catch(err => {
-      showToast("Discord girişi başarısız: " + (err.message || "sağlayıcı yapılandırılmamış."), "fa-triangle-exclamation", "red");
-    });
-  } catch (err) {
-    showToast("Discord girişi yapılandırılmamış. Firebase Auth ayarlarını kontrol edin.", "fa-triangle-exclamation", "red");
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email,
+    password,
+    options: { data: { display_name: username, avatar_url: avatarUrl } }
+  });
+
+  if (error) {
+    errBox.textContent = error.message || "Kayıt işlemi başarısız.";
+    errBox.style.display = 'block';
+    return;
+  }
+
+  if (data.user && data.session) {
+    await ensureSupabaseProfile(data.user, true);
+    closeModal('authModal');
+    showToast("Kayıt tamamlandı! +50 Hoşgeldin Coin!", "fa-sparkles", "gold");
+  } else {
+    closeModal('authModal');
+    showToast("Kayıt oluşturuldu. E-posta doğrulaması gerekiyorsa gelen kutunu kontrol et.", "fa-envelope", "green");
   }
 }
 
-function handleGoogleAuth() {
-  if (auth) {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider).then(() => {
-      closeModal('authModal');
-      showToast("Google ile giriş başarılı!", "fa-brands fa-google", "green");
-    }).catch(err => {
-      showToast("Google girişi iptal edildi veya başarısız: " + err.message, "fa-triangle-exclamation", "red");
-    });
-  } else {
-    simulateLocalLogin("GoogleUser", "user@gmail.com");
+async function handleGoogleAuth() {
+  if (!supabaseClient) {
+    showToast("Supabase giriş sistemi hazır değil.", "fa-triangle-exclamation", "red");
+    return;
   }
+  const { error } = await supabaseClient.auth.signInWithOAuth({
+    provider: 'google',
+    options: { redirectTo: window.location.origin + window.location.pathname }
+  });
+  if (error) showToast("Google girişi başarısız: " + error.message, "fa-triangle-exclamation", "red");
 }
 
 function handleGuestDemoLogin() {
@@ -2926,26 +2973,15 @@ function simulateLocalLogin(name, email, photo) {
   renderMainGrid();
 }
 
-function handleSignOut() {
-  if (auth) {
-    auth.signOut().then(() => {
-      currentUser = null;
-      closeModal('userProfileModal');
-      showToast("Çıkış yapıldı.", "fa-right-from-bracket");
-      updateUIUserInfo();
-      renderDailyTasks();
+async function handleSignOut() {
+  if (supabaseClient) await supabaseClient.auth.signOut();
+  currentUser = null;
+  closeModal('userProfileModal');
+  showToast("Çıkış yapıldı.", "fa-right-from-bracket");
+  updateUIUserInfo();
+  renderDailyTasks();
   checkHeroCollapsedState();
-      renderMainGrid();
-    });
-  } else {
-    currentUser = null;
-    closeModal('userProfileModal');
-    showToast("Çıkış yapıldı.", "fa-right-from-bracket");
-    updateUIUserInfo();
-    renderDailyTasks();
-  checkHeroCollapsedState();
-    renderMainGrid();
-  }
+  renderMainGrid();
 }
 
 function updateUIUserInfo() {
@@ -3493,6 +3529,7 @@ if ('serviceWorker' in navigator) {
 window.addEventListener('DOMContentLoaded', () => {
   switchTheme(currentTheme);
   initFirebase();
+  initSupabase();
   loadSavedData();
   applyTranslations();
   renderCategories();
@@ -3503,15 +3540,16 @@ window.addEventListener('DOMContentLoaded', () => {
   updateUIUserInfo();
   checkCookieConsent();
 
-  // Listen to Auth State Changed once
-  if (auth) {
-    auth.onAuthStateChanged(user => {
-      if (user) {
-        currentUser = user;
-        // Firestore is the source of truth for account-owned progress.
+  // Supabase Auth is the source of truth for login + account progress.
+  if (supabaseClient) {
+    supabaseClient.auth.onAuthStateChange(async (event, session) => {
+      if (session && session.user) {
+        await ensureSupabaseProfile(session.user);
+      } else {
+        currentUser = null;
         userProfile = {
           ...userProfile,
-          coins: 0,
+          coins: 50,
           totalCoinsEarned: 0,
           purchasedScripts: [],
           inventory: [],
@@ -3521,41 +3559,9 @@ window.addEventListener('DOMContentLoaded', () => {
           dailyTasks: {},
           dailyTaskStats: {}
         };
-        userProfile.displayName = user.displayName || (user.email || '').split('@')[0];
-        userProfile.email = user.email;
-        userProfile.photoURL = user.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.uid}`;
-        
-        // Sync user doc from Firestore
-        if (db) {
-          db.collection('users').doc(user.uid).get().then(doc => {
-            if (doc.exists) {
-              const data = doc.data();
-              userProfile = { ...userProfile, ...data };
-              saveUserProfile();
-            } else {
-              saveUserProfile();
-            }
-            updateUIUserInfo();
-            renderDailyTasks();
-  checkHeroCollapsedState();
-            renderMainGrid();
-          }).catch(() => {
-            updateUIUserInfo();
-            renderDailyTasks();
-  checkHeroCollapsedState();
-            renderMainGrid();
-          });
-        } else {
-          updateUIUserInfo();
-          renderDailyTasks();
-  checkHeroCollapsedState();
-          renderMainGrid();
-        }
-      } else {
-        currentUser = null;
         updateUIUserInfo();
         renderDailyTasks();
-  checkHeroCollapsedState();
+        checkHeroCollapsedState();
         renderMainGrid();
       }
     });
@@ -3646,7 +3652,6 @@ window.generateRandomSignUpAvatar = generateRandomSignUpAvatar;
 window.handleSignInSubmit = handleSignInSubmit;
 window.handleSignUpSubmit = handleSignUpSubmit;
 window.handleGoogleAuth = handleGoogleAuth;
-window.handleDiscordAuth = handleDiscordAuth;
 window.handleGuestDemoLogin = handleGuestDemoLogin;
 window.handleSignOut = handleSignOut;
 window.openUserProfileModal = openUserProfileModal;
