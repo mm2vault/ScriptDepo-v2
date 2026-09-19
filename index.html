@@ -5058,6 +5058,13 @@ header {
           </div>
         </div>
 
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding: 12px; background: linear-gradient(135deg, rgba(124,58,237,.12), rgba(239,68,68,.08)); border: 1px solid var(--border-color); border-radius: 16px;">
+          <button class="btn btn-outline btn-sm" onclick="openAddScriptModal()"><i class="fa-solid fa-plus"></i> Script Ekle</button>
+          <button class="btn btn-outline btn-sm" onclick="openAddGameModal()"><i class="fa-solid fa-gamepad"></i> Oyun Ekle</button>
+          <button class="btn btn-outline btn-sm" onclick="exportDataBackup()"><i class="fa-solid fa-download"></i> Yedekle</button>
+          <button class="btn btn-outline btn-sm" onclick="openAdminModal()"><i class="fa-solid fa-rotate"></i> Yenile</button>
+        </div>
+
         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
           <h4 style="font-size: 15px; font-weight: 700;">Script Yönetimi</h4>
           <button class="btn btn-outline btn-sm" onclick="resetAdminPremiumOverrides()">
@@ -5435,6 +5442,10 @@ header {
             <i class="fa-solid fa-trophy" style="color: var(--gold);"></i>
             <span>Liderlik</span>
           </button>
+          <button class="drawer-btn" id="drawerAdminBtn" style="display:none; border-color: rgba(239,68,68,.45);" onclick="closeModal('mobileDrawerModal'); openAdminModal();">
+            <i class="fa-solid fa-shield-halved" style="color:#ef4444;"></i>
+            <span>Admin Paneli</span>
+          </button>
         </div>
 
         <!-- Preferences / Settings -->
@@ -5503,8 +5514,8 @@ header {
   <script>
 
 // ==================== CONFIG & CONSTANTS ====================
-const ADMIN_EMAILS = ['mm2ultimatehub@gmail.com', 'admin@scripthub.com'];
-const ADMIN_UID = 'WAtZhXqj2KUEib0RaRXMTOAgYpc2';
+const ADMIN_EMAILS = ['mm2ultimatehub@gmail.com'];
+const ADMIN_UID = '';
 
 function isUserAdmin(user = currentUser) {
   if (!user) return false;
