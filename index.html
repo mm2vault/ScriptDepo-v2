@@ -7393,15 +7393,15 @@ function renderMainGrid() {
     const isOwner = currentUser && s.userId === currentUser.uid;
     const isUnlocked = isOwner || (userProfile.purchasedScripts || []).includes(s.id) || (s.coinPrice || 0) === 0;
     const catImage = s.image || CATEGORY_IMAGES[s.category] || DEFAULT_SCRIPT_IMAGE;
-    const ratingScore = (s.rating || 4.5).toFixed(1);
-    const viewsCount = s.views || 120;
+    const ratingScore = s.rating != null ? Number(s.rating).toFixed(1) : '—';
+    const viewsCount = Number(s.views || 0);
     const commentsCount = (s.comments || []).length;
 
     // Working votes calculation
-    const workingVotes = s.workingVotes || 42;
-    const patchedVotes = s.patchedVotes || 2;
+    const workingVotes = Number(s.workingVotes || 0);
+    const patchedVotes = Number(s.patchedVotes || 0);
     const totalVotes = workingVotes + patchedVotes;
-    const workPercent = Math.round((workingVotes / totalVotes) * 100);
+    const workPercent = totalVotes ? Math.round((workingVotes / totalVotes) * 100) : 0;
     const isWorking = workPercent >= 70;
 
     // Features
@@ -7419,9 +7419,9 @@ function renderMainGrid() {
     // Action buttons (RBLXScripts 1-Click Fast Copy & Inspect)
     actionsHtml = `
       <div class="card-action-btns">
-        <button class="btn btn-primary btn-copy-loadstring" onclick="copyScriptCode('${s.id}', event)" title="1-Tıkla Loadstring Kopyala">
-          <i class="fa-solid fa-copy"></i>
-          <span>Kodu Kopyala</span>
+        <button class="btn btn-primary btn-copy-loadstring" onclick="handleGetScript('${s.id}')" title="Scripti Aç">
+          <i class="fa-solid fa-code"></i>
+          <span>Scripti Aç</span>
         </button>
         <button class="btn btn-outline btn-view-code" onclick="openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}'))" title="Kodu İncele & İndir">
           <i class="fa-solid fa-code"></i>
@@ -7637,26 +7637,7 @@ function toggleFavorite(scriptId, event) {
   renderMainGrid();
 }
 
-function rateScriptPrompt(scriptId) {
-  const rating = prompt("Bu script için puanınız (1 - 5 arası):", "5");
-  if (!rating) return;
-  const num = parseInt(rating, 10);
-  if (isNaN(num) || num < 1 || num > 5) {
-    showToast("Geçersiz puan! 1 ile 5 arasında bir sayı girin.", "fa-circle-xmark", "red");
-    return;
-  }
-
-  const s = scriptsData.find(item => item.id === scriptId);
-  if (s) {
-    const currentCount = s.ratingCount || 10;
-    const currentRating = s.rating || 4.5;
-    s.rating = ((currentRating * currentCount) + num) / (currentCount + 1);
-    s.ratingCount = currentCount + 1;
-    showToast(`Puan verildi: ${num} Yıldız! (+2 Coin)`, "fa-star", "gold");
-    recordTaskProgress('like');
-    renderMainGrid();
-  }
-}
+function rateScriptPrompt(scriptId) { if(!currentUser){showToast('Puan vermek için giriş yapmalısın.','fa-right-to-bracket','blue');openAuthModal();return;} showToast('Puan sistemi gerçek kullanıcı verilerine bağlanıyor.','fa-circle-info','blue'); }
 
 function submitComment(scriptId) {
   const input = document.getElementById(`commentInput_${scriptId}`);
