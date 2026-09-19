@@ -966,9 +966,7 @@ function initFirebase() {
         // Enable offline persistence for instant local-first experience
         db.enablePersistence({ synchronizeTabs: true }).catch(() => {});
       } catch (e) {}
-      try {
-        firebase.analytics();
-      } catch (e) {}
+
     }
   } catch (err) {
     console.warn("Firebase initialize notice:", err);
