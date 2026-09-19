@@ -8972,6 +8972,7 @@ window.addEventListener('DOMContentLoaded', () => {
         renderMainGrid();
       }
     });
+  }
 
   // Restore persisted Supabase session after reloads and mobile/desktop mode changes.
   if (supabaseClient) {
