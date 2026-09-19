@@ -1,6 +1,6 @@
 {
-  "name": "ScriptHub",
-  "short_name": "ScriptHub",
+  "name": "ScriptDepo",
+  "short_name": "ScriptDepo",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#070816",
@@ -16,5 +16,6 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ]
+  ],
+  "description": "Roblox script ve oyun platformu"
 }
