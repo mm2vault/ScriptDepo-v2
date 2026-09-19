@@ -4051,7 +4051,13 @@ header {
 }
 
 
-  </style>
+  
+.profile-stat-mini{background:var(--bg-card);padding:13px 8px;border-radius:16px;text-align:center;border:1px solid var(--border-color);transition:transform .2s,border-color .2s;}
+.profile-stat-mini:hover{transform:translateY(-2px);border-color:var(--border-hover);}
+.profile-stat-mini i{display:block;margin-bottom:5px;font-size:13px;}
+.profile-stat-mini div{font-size:18px;font-weight:900;}
+.profile-stat-mini span{font-size:10px;color:var(--text-muted);}
+</style>
 </head>
 <body>
 
@@ -4120,7 +4126,7 @@ header {
       </button>
 
       <!-- Desktop Only Items -->
-      <a href="https://discord.gg/Bpn6bYFHsm" target="_blank" rel="noopener noreferrer" class="btn btn-social-discord btn-sm desktop-only" title="Discord Sunucumuza Katıl">
+      <a href="https://discord.gg/AjPgcjhmSR" target="_blank" rel="noopener noreferrer" class="btn btn-social-discord btn-sm desktop-only" title="Discord Sunucumuza Katıl">
         <i class="fa-brands fa-discord"></i>
         <span class="social-btn-text">Discord</span>
       </a>
@@ -4313,7 +4319,7 @@ header {
             <i class="fa-solid fa-gift"></i>
             <span>Ücretsiz Kupon Kodu Kullan (+100 🪙)</span>
           </button>
-          <a href="https://discord.gg/Bpn6bYFHsm" target="_blank" rel="noopener noreferrer" class="btn btn-social-discord">
+          <a href="https://discord.gg/AjPgcjhmSR" target="_blank" rel="noopener noreferrer" class="btn btn-social-discord">
             <i class="fa-brands fa-discord"></i>
             <span>Discord Yardım & Topluluk</span>
           </a>
@@ -4666,7 +4672,7 @@ header {
             <i class="fa-brands fa-discord" style="font-size: 26px; color: #5865F2;"></i>
             <div>
               <h5 style="font-size: 14px; font-weight: 700;">1. Discord Sunucusuna Katıl</h5>
-              <a href="https://discord.gg/Bpn6bYFHsm" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #5865F2; text-decoration: underline;">discord.gg/Bpn6bYFHsm</a>
+              <a href="https://discord.gg/AjPgcjhmSR" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #5865F2; text-decoration: underline;">discord.gg/AjPgcjhmSR</a>
             </div>
           </div>
           <div>
@@ -5493,7 +5499,7 @@ header {
         <!-- Social Community Links -->
         <div class="drawer-section-title">Topluluk & Sosyal Medya</div>
         <div class="drawer-socials">
-          <a href="https://discord.gg/Bpn6bYFHsm" target="_blank" rel="noopener noreferrer" class="btn btn-social-discord">
+          <a href="https://discord.gg/AjPgcjhmSR" target="_blank" rel="noopener noreferrer" class="btn btn-social-discord">
             <i class="fa-brands fa-discord"></i>
             <span>Discord Sunucumuza Katıl</span>
           </a>
@@ -5527,7 +5533,7 @@ const MM2_IMAGE = 'https://i.postimg.cc/rFhbs0Xg/images.jpg';
 
 // Official Social Community Accounts
 const SOCIAL_LINKS = {
-  discord: 'https://discord.gg/Bpn6bYFHsm',
+  discord: 'https://discord.gg/AjPgcjhmSR',
   youtube: 'https://youtube.com/@mm2_ultimatehub',
   tiktok: 'https://www.tiktok.com/@mm2_ultimatehub'
 };
@@ -7437,7 +7443,7 @@ function renderMainGrid() {
     html += `
       <div class="script-card" id="scriptCard_${s.id}">
         <!-- Top Image Banner -->
-        <div class="script-card-img-wrap" onclick="isUnlocked ? openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}')) : handleGetScript('${s.id}')">
+        <div class="script-card-img-wrap" onclick="handleGetScript('${s.id}')">
           <img src="${catImage}" class="script-card-img" alt="${s.name}" loading="lazy" decoding="async" onerror="this.onerror=null;this.src='${DEFAULT_SCRIPT_IMAGE}'" />
           <div class="script-card-img-overlay"></div>
 
@@ -7487,7 +7493,7 @@ function renderMainGrid() {
         <!-- Body Content -->
         <div class="script-card-body">
           <div class="card-title-row">
-            <h4 class="card-title" title="${s.name}" onclick="isUnlocked ? openScriptCodeModal(scriptsData.find(i=>i.id==='${s.id}')) : handleGetScript('${s.id}')">${s.name}</h4>
+            <h4 class="card-title" title="${s.name}" onclick="handleGetScript('${s.id}')">${s.name}</h4>
           </div>
           
           <p class="card-desc">${s.desc || 'Bu script için henüz detaylı bir açıklama eklenmedi.'}</p>
@@ -8441,10 +8447,23 @@ function updateUIUserInfo() {
 }
 
 // ==================== USER PROFILE MODAL ====================
+function getProfileLevelInfo() {
+  const xp = Math.max(0, userProfile.totalCoinsEarned || userProfile.coins || 0);
+  const level = Math.max(1, Math.floor(xp / 100) + 1);
+  return { level, current: xp % 100, xp };
+}
+
 function openUserProfileModal() {
   document.getElementById('profileAvatarImg').src = userProfile.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=Roblox`;
-  document.getElementById('profileDisplayName').textContent = userProfile.displayName;
+  document.getElementById('profileDisplayName').textContent = userProfile.displayName || 'Oyuncu';
   document.getElementById('profileEmail').textContent = userProfile.email || "Giriş yapılmamış";
+  const levelInfo = getProfileLevelInfo();
+  const levelBadge = document.getElementById('profileLevelBadge');
+  const levelText = document.getElementById('profileLevelProgressText');
+  const levelBar = document.getElementById('profileLevelProgressBar');
+  if (levelBadge) levelBadge.textContent = `LVL ${levelInfo.level}`;
+  if (levelText) levelText.textContent = `${levelInfo.current} / 100 XP`;
+  if (levelBar) levelBar.style.width = `${levelInfo.current}%`;
   const profileAdminBadge = document.getElementById('profileAdminBadge');
   if (profileAdminBadge) {
     profileAdminBadge.style.display = isUserAdmin(currentUser) ? 'inline-flex' : 'none';
