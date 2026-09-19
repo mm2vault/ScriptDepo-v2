@@ -8444,8 +8444,9 @@ function simulateLocalLogin(name, email, photo) {
 }
 
 async function handleSignOut() {
-  if(supabaseClient) await supabaseClient.auth.signOut();
-  currentUser=null; closeModal('userProfileModal'); showToast('Çıkış yapıldı.','fa-right-from-bracket'); updateUIUserInfo(); renderDailyTasks(); checkHeroCollapsedState(); renderMainGrid();
+  sessionStorage.removeItem('scriptDepoGoogleProviderToken');
+  if(supabaseClient) await supabaseClient.auth.signOut({scope:'local'});
+  currentUser=null; closeModal('userProfileModal'); showToast('Çıkış yapıldı.','fa-right-to-bracket'); updateUIUserInfo(); renderDailyTasks(); checkHeroCollapsedState(); renderMainGrid();
 }
 
 function updateUIUserInfo() {
