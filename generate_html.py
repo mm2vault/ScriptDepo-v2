@@ -548,6 +548,10 @@ def get_html():
           <i class="fa-brands fa-google"></i> <span>Google ile Devam Et</span>
         </button>
 
+        <button class="btn btn-outline" style="width: 100%; border-color: rgba(88, 101, 242, 0.55); color: #7289da;" onclick="handleDiscordAuth()">
+          <i class="fa-brands fa-discord"></i> <span>Discord ile Devam Et</span>
+        </button>
+
         <button class="btn btn-outline" style="width: 100%; border-color: rgba(251, 191, 36, 0.4); color: var(--gold);" onclick="handleGuestDemoLogin()">
           <i class="fa-solid fa-bolt"></i> <span>Misafir / Demo Olarak Giriş Yap</span>
         </button>
