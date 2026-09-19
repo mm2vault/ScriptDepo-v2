@@ -6484,6 +6484,7 @@ let taskStepsDone = [false, false, false];
 // Firebase References
 let db = null;
 let auth = null;
+const SCRIPTDEPO_SITE_URL = 'https://mm2vault.github.io/ScriptDepo-v2/';
 let supabaseClient = null;
 
 // ==================== INIT FIREBASE ====================
@@ -6505,6 +6506,30 @@ function initFirebase() {
     }
   } catch (err) { console.warn("Firebase data services notice:", err); }
 }
+function showAuthCallbackError() {
+  try {
+    const hash = window.location.hash || '';
+    const query = window.location.search || '';
+    const raw = hash.startsWith('#') ? hash.slice(1) : query;
+    const params = new URLSearchParams(raw);
+    const code = params.get('error_code') || params.get('error');
+    const description = params.get('error_description');
+    if (!code && !description) return;
+    const clean = decodeURIComponent((description || '').replace(/\+/g, ' '));
+    const box = document.getElementById('signInError');
+    if (box) {
+      box.textContent = `Giriş hatası (${code || 'AUTH'}): ${clean || 'Kimlik doğrulama tamamlanamadı.'}`;
+      box.style.display = 'block';
+      openModal('authModal');
+    } else {
+      console.warn('Supabase Auth callback error:', code, clean);
+    }
+    history.replaceState({}, document.title, SCRIPTDEPO_SITE_URL);
+  } catch (e) {
+    console.warn('Auth callback parse error:', e);
+  }
+}
+
 function initSupabase() {
   try {
     if (!window.supabase || supabaseClient) return;
@@ -7709,7 +7734,7 @@ async function triggerTaskCountdown(stepNum){
   if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Kontrol ediliyor…';}
   if(type==='discord'||type==='youtube'){
     const provider=type==='discord'?'discord':'google',hasIdentity=(currentUser.identities||[]).some(i=>i.provider===provider);
-    if(!hasIdentity){try{const options={redirectTo:window.location.origin+window.location.pathname};if(type==='youtube'){options.scopes='https://www.googleapis.com/auth/youtube.readonly';options.queryParams={access_type:'offline',prompt:'consent'};}const {error}=await supabaseClient.auth.linkIdentity({provider,options});if(error)throw error;}catch(e){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-link"></i> Hesabı Bağla';}showToast("Hesap bağlama başarısız: "+(e?.message||"Bilinmeyen hata"),"fa-triangle-exclamation","red");}return;}
+    if(!hasIdentity){try{const options={redirectTo:SCRIPTDEPO_SITE_URL};if(type==='youtube'){options.scopes='https://www.googleapis.com/auth/youtube.readonly';options.queryParams={access_type:'offline',prompt:'consent'};}const {error}=await supabaseClient.auth.linkIdentity({provider,options});if(error)throw error;}catch(e){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-link"></i> Hesabı Bağla';}showToast("Hesap bağlama başarısız: "+(e?.message||"Bilinmeyen hata"),"fa-triangle-exclamation","red");}return;}
   }
   let providerToken='';if(type==='youtube'){providerToken=sessionStorage.getItem('scriptDepoGoogleProviderToken')||'';if(!providerToken){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-brands fa-google"></i> Google\'ı Yenile';}showToast("YouTube izni bulunamadı. Google hesabını yeniden bağla.","fa-circle-info","blue");return;}}
   try{const {data}=await supabaseClient.functions.invoke('complete-task',{body:{taskType:type,providerToken}});
@@ -8293,7 +8318,7 @@ async function handleSignUpSubmit(e) {
 }
 async function handleGoogleAuth() {
   if(!supabaseClient){showToast('Supabase giriş sistemi hazır değil.','fa-triangle-exclamation','red');return;}
-  const options={redirectTo:window.location.origin+window.location.pathname,scopes:'https://www.googleapis.com/auth/youtube.readonly',queryParams:{access_type:'offline',prompt:'consent'}};
+  const options={redirectTo:SCRIPTDEPO_SITE_URL,scopes:'https://www.googleapis.com/auth/youtube.readonly',queryParams:{access_type:'offline',prompt:'consent'}};
   const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options});
   if(error) showToast('Google girişi başarısız: '+error.message,'fa-triangle-exclamation','red');
 }
