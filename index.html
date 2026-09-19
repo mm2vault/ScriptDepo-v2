@@ -8308,7 +8308,7 @@ async function handleDiscordAuth() {
   }
   const { error } = await supabaseClient.auth.signInWithOAuth({
     provider: 'discord',
-    options: { redirectTo: window.location.origin + window.location.pathname }
+    options: { redirectTo: SCRIPTDEPO_SITE_URL }
   });
   if (error) showToast("Discord girişi başarısız: " + error.message, "fa-triangle-exclamation", "red");
 }
@@ -8982,6 +8982,7 @@ window.addEventListener('DOMContentLoaded', () => {
   renderNotifications();
   updateUIUserInfo();
   checkCookieConsent();
+  showAuthCallbackError();
 
   if (supabaseClient) {
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
