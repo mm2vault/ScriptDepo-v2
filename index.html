@@ -4710,7 +4710,7 @@ header {
   <div class="modal-overlay" id="tasksCountdownModal"><div class="modal-container task-verification-modal">
     <div class="modal-header"><div><div class="script-detail-kicker"><i class="fa-solid fa-shield-halved"></i> GÜVENLİ DOĞRULAMA</div><h3 class="modal-title"><i class="fa-solid fa-list-check"></i> Görevleri Doğrula</h3></div><button class="modal-close-btn" onclick="closeModal('tasksCountdownModal')"><i class="fa-solid fa-xmark"></i></button></div>
     <div class="modal-body">
-      <div class="task-verification-intro"><strong>Her görevi gerçekten tamamladığını sunucu kontrol eder.</strong><span>Artık sahte 25 saniyelik sayaç yok.</span></div>
+      <div class="task-verification-intro"><strong>Her görevi gerçekten tamamladığını sunucu kontrol eder.</strong><span>Sayaç yok; gerçek sunucu doğrulaması var.</span></div>
       <div class="task-step task-step-modern"><div class="task-step-main"><div class="task-step-icon discord-icon"><i class="fa-brands fa-discord"></i></div><div><h5>1. Discord sunucusuna katıl</h5><a href="https://discord.gg/JJmEGx9mN3" target="_blank" rel="noopener noreferrer">discord.gg/JJmEGx9mN3</a><small>Discord hesabın sunucuda üyelik olarak kontrol edilir.</small></div></div><div><button class="btn btn-outline btn-sm" id="btnTask1" onclick="triggerTaskCountdown(1)"><i class="fa-solid fa-shield-check"></i> Doğrula</button></div></div>
       <div class="task-step task-step-modern"><div class="task-step-main"><div class="task-step-icon youtube-icon"><i class="fa-brands fa-youtube"></i></div><div><h5>2. YouTube kanalına abone ol</h5><a href="https://youtube.com/@mm2_ultimatehub" target="_blank" rel="noopener noreferrer">@mm2_ultimatehub</a><small>Google/YouTube izni ile abonelik sunucuda doğrulanır.</small></div></div><div><button class="btn btn-outline btn-sm" id="btnTask2" onclick="triggerTaskCountdown(2)"><i class="fa-solid fa-shield-check"></i> Doğrula</button></div></div>
       <div class="task-step task-step-modern"><div class="task-step-main"><div class="task-step-icon tiktok-icon"><i class="fa-brands fa-tiktok"></i></div><div><h5>3. TikTok hesabını takip et</h5><a href="https://www.tiktok.com/@mm2_ultimatehub" target="_blank" rel="noopener noreferrer">@mm2_ultimatehub</a><small>TikTok API erişimi olmadığı için bu adım manuel onaylanır.</small></div></div><div><button class="btn btn-outline btn-sm" id="btnTask3" onclick="triggerTaskCountdown(3)"><i class="fa-solid fa-shield-check"></i> Doğrula</button></div></div>
@@ -7727,171 +7727,59 @@ function submitComment(scriptId) {
 function handleGetScript(scriptId) {
   const s = scriptsData.find(item => item.id === scriptId);
   if (!s) return;
-
-  if (!currentUser && (s.coinPrice || 0) > 0) {
-    showToast("Scripti açmak için önce giriş yapmalısın.", "fa-right-to-bracket", "blue");
-    openAuthModal();
-    return;
-  }
-
-  selectedScriptForUnlock = s;
-  recordTaskProgress('view');
-
-  const isOwner = currentUser && s.userId === currentUser.uid;
-  const isAdmin = isUserAdmin(currentUser);
-  const isPurchased = (userProfile.purchasedScripts || []).includes(s.id);
-  const isFree = (s.coinPrice || 0) === 0;
-
-  // Direct open if condition met
-  if (isOwner || isAdmin || isPurchased || isFree) {
-    openScriptCodeModal(s);
-    return;
-  }
-
-  // Show 2-option unlock modal
-  document.getElementById('unlockScriptName').textContent = s.name;
-  document.getElementById('unlockCoinPriceLabel').textContent = `${s.coinPrice || 30} coin`;
-  openModal('unlockChoiceModal');
+  selectedScriptForUnlock = s; recordTaskProgress('view');
+  const isOwner=currentUser&&s.userId===currentUser.uid, isAdmin=isUserAdmin(currentUser), isFree=getScriptCoinPrice(s)===0;
+  if(isOwner||isAdmin||isFree){openScriptCodeModal(s);return;}
+  if(!currentUser){showToast("Scripti açmak için önce giriş yapmalısın.","fa-right-to-bracket","blue");openAuthModal();return;}
+  (async()=>{const {data}=await supabaseClient.functions.invoke('script-access',{body:{action:'get',scriptId:s.id}});
+    if(data?.ok&&data.code){s.code=data.code;if(!userProfile.purchasedScripts)userProfile.purchasedScripts=[];if(!userProfile.purchasedScripts.includes(s.id))userProfile.purchasedScripts.push(s.id);saveUserProfile();await openScriptCodeModal(s);return;}
+    document.getElementById('unlockScriptName').textContent=s.name;document.getElementById('unlockCoinPriceLabel').textContent=`${getScriptCoinPrice(s)} coin`;openModal('unlockChoiceModal');
+  })();
 }
-
-async function confirmCoinUnlock() {
-  if (!selectedScriptForUnlock || !currentUser) return;
-  const s = selectedScriptForUnlock;
-  const price = s.coinPrice || 30;
-  const btn = document.getElementById('confirmCoinUnlockBtn');
-  if (btn) btn.disabled = true;
-  try {
-    const { data, error } = await supabaseClient.functions.invoke('script-access', {
-      body: { action: 'unlock_coin', scriptId: s.id }
-    });
-    if (error || !data || !data.ok) {
-      if (data && data.error === 'insufficient_coins') {
-        showToast(`Yetersiz bakiye! Bu script için ${price} coin gerekiyor.`, "fa-triangle-exclamation", "red");
-      } else {
-        showToast("Script açma işlemi başarısız oldu.", "fa-triangle-exclamation", "red");
-      }
-      return;
-    }
-    userProfile.coins = Number(data.coins ?? Math.max(0, (userProfile.coins || 0) - price));
-    if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
-    if (!userProfile.purchasedScripts.includes(s.id)) userProfile.purchasedScripts.push(s.id);
-    saveUserProfile();
-    const code = data.code;
-    s.code = code;
-    closeModal('unlockChoiceModal');
-    await openScriptCodeModal(s);
-    renderMainGrid();
-    showToast("Script kalıcı olarak açıldı!", "fa-lock-open", "green");
-  } finally {
-    if (btn) btn.disabled = false;
+async function confirmCoinUnlock(){
+  if(!selectedScriptForUnlock||!currentUser||!supabaseClient)return;
+  const s=selectedScriptForUnlock,price=getScriptCoinPrice(s),btn=document.getElementById('confirmCoinUnlockBtn');if(btn)btn.disabled=true;
+  try{const {data}=await supabaseClient.functions.invoke('script-access',{body:{action:'unlock_coin',scriptId:s.id}});
+    if(!data?.ok){showToast(data?.error==='insufficient_coins'?`Yetersiz bakiye! Bu script için ${price} coin gerekiyor.`:"Script açma işlemi başarısız oldu.","fa-triangle-exclamation","red");return;}
+    userProfile.coins=Number(data.coins??Math.max(0,(userProfile.coins||0)-price));if(!userProfile.purchasedScripts)userProfile.purchasedScripts=[];if(!userProfile.purchasedScripts.includes(s.id))userProfile.purchasedScripts.push(s.id);saveUserProfile();
+    s.code=data.code||s.code;closeModal('unlockChoiceModal');await openScriptCodeModal(s);renderMainGrid();showToast("Script kalıcı olarak açıldı!","fa-lock-open","green");
+  }finally{if(btn)btn.disabled=false;}
+}
+function startTasksUnlock(){
+  if(!currentUser){showToast("Görevlerle script açmak için önce giriş yapmalısın.","fa-right-to-bracket","blue");openAuthModal();return;}
+  closeModal('unlockChoiceModal');taskStepsDone=[false,false,false];
+  [1,2,3].forEach(n=>{const btn=document.getElementById(`btnTask${n}`);if(btn){btn.style.display='inline-flex';btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-shield-check"></i> Doğrula';btn.classList.remove('task-verified');}});
+  updateTaskProgressDisplay();openModal('tasksCountdownModal');
+}
+async function triggerTaskCountdown(stepNum){
+  if(!currentUser||!supabaseClient){showToast("Önce giriş yapmalısın.","fa-right-to-bracket","blue");return;}
+  const type=stepNum===1?'discord':stepNum===2?'youtube':'tiktok',btn=document.getElementById(`btnTask${stepNum}`);
+  if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> Kontrol ediliyor…';}
+  if(type==='discord'||type==='youtube'){
+    const provider=type==='discord'?'discord':'google',hasIdentity=(currentUser.identities||[]).some(i=>i.provider===provider);
+    if(!hasIdentity){try{const options={redirectTo:window.location.origin+window.location.pathname};if(type==='youtube'){options.scopes='https://www.googleapis.com/auth/youtube.readonly';options.queryParams={access_type:'offline',prompt:'consent'};}const {error}=await supabaseClient.auth.linkIdentity({provider,options});if(error)throw error;}catch(e){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-link"></i> Hesabı Bağla';}showToast("Hesap bağlama başarısız: "+(e?.message||"Bilinmeyen hata"),"fa-triangle-exclamation","red");}return;}
+  }
+  let providerToken='';if(type==='youtube'){providerToken=sessionStorage.getItem('scriptDepoGoogleProviderToken')||'';if(!providerToken){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-brands fa-google"></i> Google\'ı Yenile';}showToast("YouTube izni bulunamadı. Google hesabını yeniden bağla.","fa-circle-info","blue");return;}}
+  try{const {data}=await supabaseClient.functions.invoke('complete-task',{body:{taskType:type,providerToken}});
+    if(!data?.ok){const messages={discord_not_member:"Discord hesabın sunucuda üyelik olarak bulunamadı.",discord_not_connected:"Discord hesabını bağlaman gerekiyor.",youtube_not_subscribed:"YouTube kanalına abone olduğun doğrulanamadı.",youtube_oauth_required:"YouTube OAuth izni gerekiyor.",youtube_forbidden:"YouTube erişimi reddedildi. Google izinlerini kontrol et.",tiktok_manual:"TikTok görevi manuel olarak onaylandı."};showToast(messages[data?.error]||"Görev doğrulanamadı. Gereksinimi tamamlayıp tekrar dene.","fa-triangle-exclamation","red");if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-rotate-right"></i> Tekrar Dene';}return;}
+    taskStepsDone[stepNum-1]=true;if(btn){btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-circle-check"></i> Doğrulandı';btn.classList.add('task-verified');}updateTaskProgressDisplay();
+  }catch(e){if(btn){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-rotate-right"></i> Tekrar Dene';}showToast("Görev sunucusuna bağlanılamadı.","fa-triangle-exclamation","red");}
+}
+async function updateTaskProgressDisplay(){
+  const completed=taskStepsDone.filter(Boolean).length,text=document.getElementById('taskCompletionProgressText'),bar=document.getElementById('taskCompletionProgressBar');
+  if(text)text.textContent=`İlerleme: ${completed} / 3 Doğrulandı`;if(bar)bar.style.width=`${Math.round((completed/3)*100)}%`;
+  if(completed===3&&selectedScriptForUnlock&&currentUser&&supabaseClient){
+    const s=selectedScriptForUnlock,{data}=await supabaseClient.functions.invoke('script-access',{body:{action:'unlock_tasks',scriptId:s.id}});
+    if(!data?.ok){showToast(data?.error==='tasks_incomplete'?"Sunucu bazı görevleri hâlâ tamamlanmış görmüyor.":"Görev kilidi sunucuda doğrulanamadı.","fa-triangle-exclamation","red");return;}
+    s.code=data.code||s.code;if(!userProfile.purchasedScripts)userProfile.purchasedScripts=[];if(!userProfile.purchasedScripts.includes(s.id))userProfile.purchasedScripts.push(s.id);saveUserProfile();closeModal('tasksCountdownModal');await openScriptCodeModal(s);renderMainGrid();showToast("Tebrikler! Görevler doğrulandı, script açıldı.","fa-gift","green");
   }
 }
-
-function startTasksUnlock() {
-  if (!currentUser) {
-    showToast("Görevlerle script açmak için önce giriş yapmalısın.", "fa-right-to-bracket", "blue");
-    openAuthModal();
-    return;
-  }
-  closeModal('unlockChoiceModal');
-  taskStepsDone = [false, false, false];
-  updateTaskProgressDisplay();
-  openModal('tasksCountdownModal');
-}
-
-function triggerTaskCountdown(stepNum) {
-  const btn = document.getElementById(`btnTask${stepNum}`);
-  const timer = document.getElementById(`timerTask${stepNum}`);
-  if (!btn || !timer) return;
-
-  btn.style.display = 'none';
-  timer.style.display = 'inline-block';
-
-  let seconds = 25;
-  timer.textContent = `${seconds}s`;
-
-  // Open verified social media links
-  let targetUrl = SOCIAL_LINKS.discord;
-  if (stepNum === 2) targetUrl = SOCIAL_LINKS.youtube;
-  if (stepNum === 3) targetUrl = SOCIAL_LINKS.tiktok;
-
-  try {
-    window.open(targetUrl, '_blank');
-  } catch (e) {}
-
-  const interval = setInterval(() => {
-    seconds--;
-    timer.textContent = `${seconds}s`;
-    if (seconds <= 0) {
-      clearInterval(interval);
-      timer.innerHTML = `<i class="fa-solid fa-check" style="color: var(--green);"></i>`;
-      taskStepsDone[stepNum - 1] = true;
-      updateTaskProgressDisplay();
-    }
-  }, 1000);
-}
-
-function updateTaskProgressDisplay() {
-  const completed = taskStepsDone.filter(Boolean).length;
-  const progressText = document.getElementById('taskCompletionProgressText');
-  if (progressText) {
-    progressText.textContent = `İlerleme: ${completed} / 3 Tamamlandı`;
-  }
-
-  if (completed === 3 && selectedScriptForUnlock) {
-    const s = selectedScriptForUnlock;
-    if (!currentUser || !supabaseClient) {
-      showToast("Görev kilidini açmak için giriş yapmalısın.", "fa-right-to-bracket", "blue");
-      return;
-    }
-    (async () => {
-      const { data, error } = await supabaseClient.functions.invoke('script-access', {
-        body: { action: 'unlock_tasks', scriptId: s.id }
-      });
-      if (error || !data || !data.ok) {
-        showToast("Görev kilidi sunucuda doğrulanamadı.", "fa-triangle-exclamation", "red");
-        return;
-      }
-      s.code = data.code || s.code;
-      if (!userProfile.purchasedScripts) userProfile.purchasedScripts = [];
-      if (!userProfile.purchasedScripts.includes(s.id)) userProfile.purchasedScripts.push(s.id);
-      saveUserProfile();
-      setTimeout(async () => {
-        closeModal('tasksCountdownModal');
-        await openScriptCodeModal(s);
-        renderMainGrid();
-        showToast("Tebrikler! Görevler tamamlandı, script açıldı.", "fa-gift", "green");
-      }, 300);
-    })();
-  }
-}
-
-async function fetchProtectedScriptCode(scriptObj, action = 'get') {
-  if (!scriptObj) return null;
-  if (scriptObj.code) return scriptObj.code;
-  if (!supabaseClient) {
-    showToast("Güvenli script sistemi hazır değil.", "fa-triangle-exclamation", "red");
-    return null;
-  }
-  try {
-    const { data, error } = await supabaseClient.functions.invoke('script-access', {
-      body: { action, scriptId: scriptObj.id }
-    });
-    if (error || !data || !data.ok || !data.code) {
-      const msg = data && data.error === 'auth_required'
-        ? "Bu scripti açmak için giriş yapmalısın."
-        : data && data.error === 'locked'
-          ? "Bu script kilitli. Önce coin ödeyin veya görevleri tamamlayın."
-          : "Script kodu alınamadı. Lütfen tekrar deneyin.";
-      showToast(msg, "fa-lock", "red");
-      return null;
-    }
-    scriptObj.code = data.code;
-    return data.code;
-  } catch (err) {
-    showToast("Script sunucusuna bağlanılamadı.", "fa-triangle-exclamation", "red");
-    return null;
-  }
+async function fetchProtectedScriptCode(scriptObj,action='get'){
+  if(!scriptObj||!supabaseClient)return null;
+  try{const {data}=await supabaseClient.functions.invoke('script-access',{body:{action,scriptId:scriptObj.id}});
+    if(!data?.ok||!data.code){const msg=data?.error==='auth_required'?"Bu scripti açmak için giriş yapmalısın.":data?.error==='locked'?"Bu script kilitli. Önce coin ile aç veya görevleri doğrula.":"Script kodu alınamadı. Lütfen tekrar deneyin.";showToast(msg,"fa-lock","red");return null;}
+    scriptObj.code=data.code;return data.code;
+  }catch(e){showToast("Script sunucusuna bağlanılamadı.","fa-triangle-exclamation","red");return null;}
 }
 
 // ==================== LUA SYNTAX HIGHLIGHTER ====================
@@ -8511,9 +8399,12 @@ async function handleSignUpSubmit(e) {
 }
 async function handleGoogleAuth() {
   if(!supabaseClient){showToast('Supabase giriş sistemi hazır değil.','fa-triangle-exclamation','red');return;}
-  const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options:{redirectTo:window.location.origin+window.location.pathname}});
+  const options={redirectTo:window.location.origin+window.location.pathname,scopes:'https://www.googleapis.com/auth/youtube.readonly',queryParams:{access_type:'offline',prompt:'consent'}};
+  const {error}=await supabaseClient.auth.signInWithOAuth({provider:'google',options});
   if(error) showToast('Google girişi başarısız: '+error.message,'fa-triangle-exclamation','red');
 }
+
+
 
 
 async function handleDiscordAuth() {
@@ -9186,6 +9077,8 @@ window.addEventListener('DOMContentLoaded', () => {
   if (supabaseClient) {
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
       if (session && session.user) {
+        currentUser = session.user;
+        if (session.provider_token) sessionStorage.setItem('scriptDepoGoogleProviderToken', session.provider_token);
         await ensureSupabaseProfile(session.user);
       } else if (event === 'SIGNED_OUT') {
         currentUser = null;
@@ -9200,7 +9093,11 @@ window.addEventListener('DOMContentLoaded', () => {
   // Restore persisted Supabase session after reloads and mobile/desktop mode changes.
   if (supabaseClient) {
     supabaseClient.auth.getSession().then(({ data }) => {
-      if (data && data.session && data.session.user) ensureSupabaseProfile(data.session.user);
+      if (data && data.session && data.session.user) {
+        currentUser = data.session.user;
+        if (data.session.provider_token) sessionStorage.setItem('scriptDepoGoogleProviderToken', data.session.provider_token);
+        ensureSupabaseProfile(data.session.user);
+      }
     }).catch(() => {});
   }
 
