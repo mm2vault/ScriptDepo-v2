@@ -4279,10 +4279,7 @@ header {
           <span>Nasıl Çalıştırılır?</span>
         </button>
       </div>
-      <div class="rblx-live-status-pill desktop-only">
-        <span class="status-pulse-dot" style="background: #10b981;"></span>
-        <span>120+ Doğrulanmış Script • %99.8 Çalışıyor</span>
-      </div>
+      <div class="rblx-live-status-pill desktop-only" id="liveSiteStats"><span class="status-pulse-dot" style="background:#10b981;"></span><span>Gerçek istatistikler yükleniyor…</span></div>
     </div>
   </div>
 
@@ -4305,7 +4302,7 @@ header {
         <div class="hero-text-wrap">
           <h2 class="hero-title">Roblox Script & Oyun Dünyasının En Güvenli Merkezi</h2>
           <p class="hero-subtitle">
-            Delta, Wave, Solara, Hydrogen ve tüm executorlar ile %100 uyumlu, virüssüz ve test edilmiş MM2, Blox Fruits, Da Hood ve 90+ Roblox oyunu scripti. Görevleri tamamlayarak veya kupon girerek bedava Coin kazan, script kodunu anında executor programına yapıştır!
+            Delta, Wave, Solara, Hydrogen ve tüm executorlar ile %100 uyumlu, virüssüz ve test edilmiş MM2, Blox Fruits, Da Hood ve Roblox oyunları için scriptler. Görevleri tamamlayarak veya kupon girerek bedava Coin kazan, script kodunu anında executor programına yapıştır!
           </p>
         </div>
 
@@ -4339,7 +4336,7 @@ header {
             </div>
             <div class="hero-card-info">
               <h4>3. Güvenlik & Oylama</h4>
-              <p>Her scriptin altında canlı topluluk oyu (%98 Çalışıyor). Oy vererek sen de +2 Coin kazan!</p>
+              <p>Topluluk oyları yalnızca gerçek kullanıcı etkileşimlerinden oluşur.</p>
               <span class="hero-card-link">Güvenlik Rehberi <i class="fa-solid fa-arrow-right"></i></span>
             </div>
           </div>
@@ -8952,8 +8949,17 @@ if ('serviceWorker' in navigator) {
   });
 }
 
+async function loadRealSiteStats(){
+  const el=document.getElementById('liveSiteStats'); if(!el||!supabaseClient)return;
+  try{
+    const {data}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'site_stats'}});
+    if(data?.stats) el.querySelector('span:last-child').textContent=data.stats.registeredUsers+' kayıtlı kullanıcı • '+data.stats.approvedScripts+' onaylı script';
+  }catch(e){}
+}
+
 // ==================== BOOTSTRAP APP ====================
 window.addEventListener('DOMContentLoaded', () => {
+  loadRealSiteStats();
   switchTheme(currentTheme);
   initFirebase();
   initSupabase();
