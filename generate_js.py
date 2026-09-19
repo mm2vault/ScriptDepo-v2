@@ -1065,6 +1065,10 @@ function saveUserProfile() {
         displayName: userProfile.displayName,
         email: userProfile.email,
         photoURL: userProfile.photoURL,
+        usedPromoCodes: userProfile.usedPromoCodes || [],
+        favorites: userProfile.favorites || [],
+        activeCosmetics: userProfile.activeCosmetics || [],
+        totalCoinsEarned: userProfile.totalCoinsEarned || 0,
         lastSeen: firebase.firestore.FieldValue.serverTimestamp()
       }, { merge: true }).catch(err => console.log("Firestore user sync notice:", err.message));
     } catch (err) {}
@@ -2866,6 +2870,24 @@ function handleSignUpSubmit(e) {
   }
 }
 
+function handleDiscordAuth() {
+  if (!auth) {
+    showToast("Discord girişi için Firebase bağlantısı gerekli.", "fa-brands fa-discord", "red");
+    return;
+  }
+  try {
+    const provider = new firebase.auth.OAuthProvider('oidc.discord');
+    auth.signInWithPopup(provider).then(() => {
+      closeModal('authModal');
+      showToast("Discord ile giriş başarılı!", "fa-brands fa-discord", "green");
+    }).catch(err => {
+      showToast("Discord girişi başarısız: " + (err.message || "sağlayıcı yapılandırılmamış."), "fa-triangle-exclamation", "red");
+    });
+  } catch (err) {
+    showToast("Discord girişi yapılandırılmamış. Firebase Auth ayarlarını kontrol edin.", "fa-triangle-exclamation", "red");
+  }
+}
+
 function handleGoogleAuth() {
   if (auth) {
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -3486,7 +3508,20 @@ window.addEventListener('DOMContentLoaded', () => {
     auth.onAuthStateChanged(user => {
       if (user) {
         currentUser = user;
-        userProfile.displayName = user.displayName || user.email.split('@')[0];
+        // Firestore is the source of truth for account-owned progress.
+        userProfile = {
+          ...userProfile,
+          coins: 0,
+          totalCoinsEarned: 0,
+          purchasedScripts: [],
+          inventory: [],
+          activeCosmetics: [],
+          favorites: [],
+          usedPromoCodes: [],
+          dailyTasks: {},
+          dailyTaskStats: {}
+        };
+        userProfile.displayName = user.displayName || (user.email || '').split('@')[0];
         userProfile.email = user.email;
         userProfile.photoURL = user.photoURL || `https://api.dicebear.com/7.x/bottts/svg?seed=${user.uid}`;
         
@@ -3611,6 +3646,7 @@ window.generateRandomSignUpAvatar = generateRandomSignUpAvatar;
 window.handleSignInSubmit = handleSignInSubmit;
 window.handleSignUpSubmit = handleSignUpSubmit;
 window.handleGoogleAuth = handleGoogleAuth;
+window.handleDiscordAuth = handleDiscordAuth;
 window.handleGuestDemoLogin = handleGuestDemoLogin;
 window.handleSignOut = handleSignOut;
 window.openUserProfileModal = openUserProfileModal;
