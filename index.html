@@ -8,6 +8,10 @@
   <meta property="og:title" content="ScriptDepo - Roblox Script & Oyun Platformu" />
   <meta property="og:description" content="Roblox oyuncularının script paylaştığı, coin kazandığı ve oyun keşfettiği modern platform." />
   <meta property="og:image" content="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:image" content="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <link rel="icon" type="image/png" href="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
+  <link rel="apple-touch-icon" href="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" />
   <meta property="og:type" content="website" />
   <meta name="theme-color" content="#7c3aed" />
   <link rel="manifest" href="/manifest.json" />
@@ -4936,7 +4940,7 @@ header {
   <div class="modal-overlay" id="addScriptModal">
     <div class="modal-container modal-lg">
       <div class="modal-header">
-        <h3 class="modal-title"><i class="fa-solid fa-file-code"></i> Script Ekle</h3>
+        <h3 class="modal-title"><i class="fa-solid fa-file-code"></i> <span id="addScriptModalTitle">Script Ekle</span></h3>
         <button class="modal-close-btn" onclick="closeModal('addScriptModal')"><i class="fa-solid fa-xmark"></i></button>
       </div>
       <div class="modal-body">
@@ -4975,9 +4979,13 @@ header {
           </div>
 
           <div class="form-group">
-            <label>Resim URL (Opsiyonel)</label>
-            <input type="url" id="addScriptImage" class="form-input" placeholder="https://..." oninput="previewAddScriptImage(this.value)" />
-            <img id="addScriptImagePreview" style="max-height: 140px; border-radius: 12px; margin-top: 6px; display: none; object-fit: cover;" />
+            <label>Resim</label>
+            <input type="url" id="addScriptImage" class="form-input" placeholder="https://... (opsiyonel)" oninput="previewAddScriptImage(this.value)" />
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <label class="btn btn-outline btn-sm" style="cursor:pointer;"><i class="fa-solid fa-images"></i> Galeriden Seç<input type="file" id="addScriptImageFile" accept="image/*" onchange="handleScriptGalleryImage(event)" style="display:none;" /></label>
+              <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('addScriptImage').value='';document.getElementById('addScriptImageFile').value='';previewAddScriptImage('');"><i class="fa-solid fa-xmark"></i> Temizle</button>
+            </div>
+            <img id="addScriptImagePreview" style="max-height:180px;max-width:100%;border-radius:12px;margin-top:8px;display:none;object-fit:cover;" />
           </div>
 
           <div class="form-group">
@@ -4987,7 +4995,7 @@ header {
           </div>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 8px;">
-            <i class="fa-solid fa-rocket"></i> <span>Herkese Açık Ekle! (+25 Coin)</span>
+            <i class="fa-solid fa-rocket"></i> <span id="addScriptSubmitText">Herkese Açık Ekle! (+25 Coin)</span>
           </button>
         </form>
       </div>
@@ -8012,6 +8020,8 @@ function copyCurrentScriptCode() {
 function downloadScriptLuaFile() {
   if (!selectedScriptForUnlock) return;
   const s = selectedScriptForUnlock;
+  const canAccess = (currentUser && s.userId === currentUser.uid) || isUserAdmin(currentUser) || (userProfile.purchasedScripts || []).includes(s.id) || (s.coinPrice || 0) === 0;
+  if (!canAccess) { showToast("Bu script kilitli. Önce scripti açmalısın.", "fa-lock", "red"); handleGetScript(s.id); return; }
   const filename = (s.name || 'script').replace(/[^a-zA-Z0-9_-]/g, '_') + '.lua';
   const blob = new Blob([s.code || ''], { type: 'text/plain;charset=utf-8' });
   const url = URL.createObjectURL(blob);
@@ -8028,7 +8038,10 @@ function downloadScriptLuaFile() {
 
 function openRawCode() {
   if (!selectedScriptForUnlock) return;
-  const raw = selectedScriptForUnlock.code || "";
+  const s = selectedScriptForUnlock;
+  const canAccess = (currentUser && s.userId === currentUser.uid) || isUserAdmin(currentUser) || (userProfile.purchasedScripts || []).includes(s.id) || (s.coinPrice || 0) === 0;
+  if (!canAccess) { showToast("Bu script kilitli. Önce scripti açmalısın.", "fa-lock", "red"); handleGetScript(s.id); return; }
+  const raw = s.code || "";
   const rawBlob = new Blob([raw], { type: 'text/plain;charset=utf-8' });
   const rawUrl = URL.createObjectURL(rawBlob);
   window.open(rawUrl, '_blank');
@@ -8586,12 +8599,68 @@ function saveUserProfileChanges() {
 }
 
 // ==================== ADD SCRIPT & GAME ====================
+let editingScriptId = null;
+
+function resetScriptForm() {
+  editingScriptId = null;
+  const form = document.querySelector('#addScriptModal form');
+  if (form) form.reset();
+  const preview = document.getElementById('addScriptImagePreview');
+  if (preview) { preview.style.display = 'none'; preview.src = ''; }
+  const title = document.getElementById('addScriptModalTitle');
+  if (title) title.textContent = 'Script Ekle';
+  const submitText = document.getElementById('addScriptSubmitText');
+  if (submitText) submitText.textContent = 'Herkese Açık Ekle! (+25 Coin)';
+}
+
+function handleScriptGalleryImage(event) {
+  const file = event.target.files && event.target.files[0];
+  if (!file || !file.type.startsWith('image/')) return;
+  if (file.size > 6 * 1024 * 1024) { showToast("Resim 6 MB'dan küçük olmalı.", "fa-image", "red"); event.target.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const scale = Math.min(1, 1000 / img.width, 700 / img.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg',0.82);
+      document.getElementById('addScriptImage').value = dataUrl;
+      previewAddScriptImage(dataUrl);
+    };
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function openAdminEditScript(scriptId) {
+  if (!isUserAdmin(currentUser)) return;
+  const s = scriptsData.find(x => x.id === scriptId);
+  if (!s) return;
+  editingScriptId = scriptId;
+  document.getElementById('addScriptName').value = s.name || '';
+  document.getElementById('addScriptCategory').value = s.category || 'other';
+  document.getElementById('addScriptDesc').value = s.desc || '';
+  document.getElementById('addScriptFeatures').value = (s.features || []).join(', ');
+  document.getElementById('addScriptCode').value = s.code || '';
+  document.getElementById('addScriptImage').value = s.image || '';
+  document.getElementById('addScriptPrice').value = Number(s.coinPrice) || 0;
+  previewAddScriptImage(s.image || '');
+  document.getElementById('addScriptModalTitle').textContent = 'Script Düzenle';
+  document.getElementById('addScriptSubmitText').textContent = 'Değişiklikleri Kaydet';
+  closeModal('adminModal');
+  openModal('addScriptModal');
+}
+
 function openAddScriptModal() {
   if (!currentUser) {
     showToast("Script eklemek için lütfen giriş yapın.", "fa-lock");
     openModal('authModal');
     return;
   }
+  resetScriptForm();
   openModal('addScriptModal');
 }
 
@@ -8616,6 +8685,18 @@ function handleNewScriptSubmit(e) {
   const price = parseInt(document.getElementById('addScriptPrice').value, 10) || 30;
 
   const features = featuresRaw ? featuresRaw.split(',').map(s => s.trim()).filter(Boolean) : ["Aimbot", "ESP"];
+
+  if (editingScriptId) {
+    if (!isUserAdmin(currentUser)) return;
+    const existing = scriptsData.find(s => s.id === editingScriptId);
+    if (!existing) return;
+    Object.assign(existing, { name, category, desc, features, code, image, coinPrice: Math.max(0, Math.min(9999, price)), updatedAt: Date.now() });
+    localStorage.setItem('scriptHubCustomScripts', JSON.stringify(scriptsData.filter(s => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id))));
+    if (db) { try { db.collection('scripts').doc(existing.id).set(existing,{merge:true}).catch(()=>{}); } catch(e){} }
+    closeModal('addScriptModal'); resetScriptForm(); renderMainGrid(); openAdminModal();
+    showToast("Script güncellendi!", "fa-check", "green");
+    return;
+  }
 
   const newScript = {
     id: "sc_" + Date.now(),
@@ -8782,24 +8863,7 @@ function openAdminModal() {
   openModal('adminModal');
 }
 
-function adminEditScriptPrompt(scriptId) {
-  const s = scriptsData.find(x => x.id === scriptId);
-  if (!s) return;
-
-  const newName = prompt("Yeni Script Adı:", s.name);
-  if (!newName) return;
-  const newPrice = prompt("Yeni Coin Fiyatı:", s.coinPrice);
-  if (newPrice === null) return;
-
-  s.name = newName;
-  s.coinPrice = parseInt(newPrice, 10) || 0;
-
-  // Save admin override
-  localStorage.setItem('scriptHubAdminPremiumOverrides', JSON.stringify(scriptsData.filter(x => x.isPremium)));
-  openAdminModal();
-  renderMainGrid();
-  showToast("Script güncellendi!", "fa-check", "green");
-}
+function adminEditScriptPrompt(scriptId) { openAdminEditScript(scriptId); }
 
 function resetAdminPremiumOverrides() {
   localStorage.removeItem('scriptHubAdminPremiumOverrides');
