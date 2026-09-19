@@ -13,8 +13,8 @@ def get_html():
         <i class="fa-solid fa-bolt"></i>
       </div>
       <div class="header-titles">
-        <h1 id="appTitle"><span class="brand-accent">RBLX</span><span class="brand-white">SCRIPTS</span><span class="brand-net-pill">.NET</span></h1>
-        <span id="appSubtitle"><span class="live-dot"></span> 120+ Doğrulanmış Script &amp; Executor</span>
+        <h1 id="appTitle"><span class="brand-accent">SCRIPT</span><span class="brand-white">DEPO</span><span class="brand-net-pill">.NET</span></h1>
+        <span id="appSubtitle"><span class="live-dot"></span> 120+ Doğrulanmış Script &amp; Oyun</span>
       </div>
     </div>
 
