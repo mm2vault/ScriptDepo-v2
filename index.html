@@ -4713,63 +4713,10 @@ header {
       <div class="task-verification-intro"><strong>Her görevi gerçekten tamamladığını sunucu kontrol eder.</strong><span>Sayaç yok; gerçek sunucu doğrulaması var.</span></div>
       <div class="task-step task-step-modern"><div class="task-step-main"><div class="task-step-icon discord-icon"><i class="fa-brands fa-discord"></i></div><div><h5>1. Discord sunucusuna katıl</h5><a href="https://discord.gg/JJmEGx9mN3" target="_blank" rel="noopener noreferrer">discord.gg/JJmEGx9mN3</a><small>Discord hesabın sunucuda üyelik olarak kontrol edilir.</small></div></div><div><button class="btn btn-outline btn-sm" id="btnTask1" onclick="triggerTaskCountdown(1)"><i class="fa-solid fa-shield-check"></i> Doğrula</button></div></div>
       <div class="task-step task-step-modern"><div class="task-step-main"><div class="task-step-icon youtube-icon"><i class="fa-brands fa-youtube"></i></div><div><h5>2. YouTube kanalına abone ol</h5><a href="https://youtube.com/@mm2_ultimatehub" target="_blank" rel="noopener noreferrer">@mm2_ultimatehub</a><small>Google/YouTube izni ile abonelik sunucuda doğrulanır.</small></div></div><div><button class="btn btn-outline btn-sm" id="btnTask2" onclick="triggerTaskCountdown(2)"><i class="fa-solid fa-shield-check"></i> Doğrula</button></div></div>
-      <div class="task-step task-step-modern"><div class="task-step-main"><div class="task-step-icon tiktok-icon"><i class="fa-brands fa-tiktok"></i></div><div><h5>3. TikTok hesabını takip et</h5><a href="https://www.tiktok.com/@mm2_ultimatehub" target="_blank" rel="noopener noreferrer">@mm2_ultimatehub</a><small>TikTok API erişimi olmadığı için bu adım manuel onaylanır.</small></div></div><div><button class="btn btn-outline btn-sm" id="btnTask3" onclick="triggerTaskCountdown(3)"><i class="fa-solid fa-shield-check"></i> Doğrula</button></div></div>
       <div class="task-progress-box"><div class="task-progress-top"><span id="taskCompletionProgressText">İlerleme: 0 / 2 Doğrulandı</span><span>Ücretsiz erişim</span></div><div class="task-progress-track"><div id="taskCompletionProgressBar" class="task-progress-fill" style="width:0%"></div></div></div>
-      <div class="task-security-note"><i class="fa-solid fa-lock"></i><span>Script kodu, sunucu üç görevin de doğrulandığını gördükten sonra gönderilir.</span></div>
+      <div class="task-security-note"><i class="fa-solid fa-lock"></i><span>Script kodu, sunucu iki görevin de doğrulandığını gördükten sonra gönderilir.</span></div>
     </div>
   </div></div>
-
-  <!-- Task 1 Discord -->
-        <div class="task-step">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <i class="fa-brands fa-discord" style="font-size: 26px; color: #5865F2;"></i>
-            <div>
-              <h5 style="font-size: 14px; font-weight: 700;">1. Discord Sunucusuna Katıl</h5>
-              <a href="https://discord.gg/JJmEGx9mN3" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #5865F2; text-decoration: underline;">discord.gg/JJmEGx9mN3</a>
-            </div>
-          </div>
-          <div>
-            <button class="btn btn-outline btn-sm" id="btnTask1" onclick="triggerTaskCountdown(1)">Doğrula</button>
-            <span class="step-timer" id="timerTask1" style="display: none;">25s</span>
-          </div>
-        </div>
-
-        <!-- Task 2 YouTube -->
-        <div class="task-step">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <i class="fa-brands fa-youtube" style="font-size: 26px; color: #FF0000;"></i>
-            <div>
-              <h5 style="font-size: 14px; font-weight: 700;">2. YouTube Kanalımıza Göz At / Abone Ol</h5>
-              <a href="https://youtube.com/@mm2_ultimatehub" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #FF0000; text-decoration: underline;">@mm2_ultimatehub</a>
-            </div>
-          </div>
-          <div>
-            <button class="btn btn-outline btn-sm" id="btnTask2" onclick="triggerTaskCountdown(2)">Doğrula</button>
-            <span class="step-timer" id="timerTask2" style="display: none;">25s</span>
-          </div>
-        </div>
-
-        <!-- Task 3 TikTok -->
-        <div class="task-step">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <i class="fa-brands fa-tiktok" style="font-size: 26px; color: #00f2fe;"></i>
-            <div>
-              <h5 style="font-size: 14px; font-weight: 700;">3. TikTok Sayfamızı Takip Et</h5>
-              <a href="https://www.tiktok.com/@mm2_ultimatehub" target="_blank" rel="noopener noreferrer" style="font-size: 12px; color: #00f2fe; text-decoration: underline;">@mm2_ultimatehub</a>
-            </div>
-          </div>
-          <div>
-            <button class="btn btn-outline btn-sm" id="btnTask3" onclick="triggerTaskCountdown(3)">Doğrula</button>
-            <span class="step-timer" id="timerTask3" style="display: none;">25s</span>
-          </div>
-        </div>
-
-        <div style="background: rgba(255,255,255,0.03); padding: 12px; border-radius: 12px; text-align: center;">
-          <span style="font-size: 13px; font-weight: 700;" id="taskCompletionProgressText">İlerleme: 0 / 3 Tamamlandı</span>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- Script Code Modal -->
   <div class="modal-overlay" id="scriptCodeModal">
