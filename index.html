@@ -9495,7 +9495,7 @@ function isRenderableCosmetic(c){
   if(!c) return false;
   const mode=String(c.mode||'css').toLowerCase();
   const media=String(c.mediaUrl||c.gifUrl||'').trim();
-  if(mode==='video'||mode==='gif') return /^https?:\\/\\//i.test(media);
+  if(mode==='video'||mode==='gif') return /^https?:\/\//i.test(media);
   if(mode==='animated') return true;
   if(c.type==='name'||c.type==='badge') return true;
   if(c.type==='frame'||c.type==='effect'||c.type==='banner') return !!(c.class||c.color1||c.color2);
