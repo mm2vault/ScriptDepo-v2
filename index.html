@@ -4467,6 +4467,7 @@ footer{margin-left:248px!important}
 @media (min-width:769px) and (max-width:1100px){html.scriptdepo-admin #sdAdminNav{align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(239,68,68,.22),0 0 16px rgba(239,68,68,.08);}html.scriptdepo-admin #sdAdminNav i{color:#f87171!important;}html.scriptdepo-admin #adminBtn{width:42px;min-width:42px;padding:0;justify-content:center;}html.scriptdepo-admin #adminBtn span{display:none;}}
 
 /* Community contribution panel */
+.sd-community-choice-grid{display:grid;grid-template-columns:1fr;gap:10px}.sd-community-choice{width:100%;display:grid;grid-template-columns:48px minmax(0,1fr) 20px;align-items:center;gap:12px;text-align:left;padding:14px;border:1px solid var(--border-color);border-radius:16px;background:var(--bg-card);color:var(--text-primary);cursor:pointer;transition:.2s}.sd-community-choice:hover{border-color:var(--accent-light);background:rgba(124,58,237,.10);transform:translateY(-1px)}.sd-community-choice.sd-game-choice:hover{border-color:#34d399;background:rgba(16,185,129,.08)}.sd-choice-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:rgba(124,58,237,.16);color:var(--accent-light);font-size:18px}.sd-game-choice .sd-choice-icon{background:rgba(16,185,129,.14);color:#34d399}.sd-community-choice strong{display:block;font-size:14px;margin-bottom:3px}.sd-community-choice small{display:block;color:var(--text-muted);font-size:11px;line-height:1.4}.sd-community-choice>i{color:var(--text-muted)}
 .sd-community-box{margin:14px 12px 0;padding:14px;border:1px solid rgba(124,58,237,.28);border-radius:18px;background:linear-gradient(135deg,rgba(124,58,237,.13),rgba(6,182,212,.07));box-shadow:0 10px 30px rgba(0,0,0,.16)}
 .sd-community-box h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:5px}.sd-community-box p{font-size:11px;color:var(--text-muted);line-height:1.45;margin-bottom:10px}.sd-community-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.sd-community-actions button{min-width:0;padding:9px 7px;border-radius:12px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border-color);color:var(--text-primary);background:rgba(255,255,255,.04);transition:.2s}.sd-community-actions button:hover{border-color:var(--accent-light);transform:translateY(-1px);background:rgba(124,58,237,.12)}.sd-community-actions button i{margin-right:5px}.sd-community-actions .sd-game-add:hover{border-color:#34d399;background:rgba(16,185,129,.1)}
 @media(max-width:768px){.sd-community-box{margin:12px 0}.sd-community-actions button{padding:10px 6px}}
@@ -4484,6 +4485,7 @@ footer{margin-left:248px!important}
 <button onclick="handleAuthOrProfileClick();sdNav(this)"><i class="fa-solid fa-user"></i><span>Profil</span><b>›</b></button>
 <button onclick="openCoinStoreModal('inventory');sdNav(this)"><i class="fa-solid fa-box-open"></i><span>Envanter</span><b>›</b></button>
 <button onclick="openCoinStoreModal('inventory');sdNav(this)"><i class="fa-solid fa-shield-heart"></i><span>Koleksiyon</span><b>›</b></button>
+<button onclick="openCommunityAddModal();sdNav(this)"><i class="fa-solid fa-users"></i><span>Topluluğa Ekle</span><b>›</b></button>
 <button onclick="openGuideModal('howtouse');sdNav(this)"><i class="fa-solid fa-comments"></i><span>Yardım / Rehber</span><b>›</b></button>
 <button onclick="openGuideModal('executors');sdNav(this)"><i class="fa-solid fa-gear"></i><span>Ayarlar &amp; Executor</span><b>›</b></button>
 <button id="sdAdminNav" class="admin-only" aria-hidden="true" onclick="openAdminModal();sdNav(this)"><i class="fa-solid fa-shield-halved"></i><span>Admin Paneli</span><b>›</b></button>
@@ -5368,9 +5370,17 @@ footer{margin-left:248px!important}
           </div>
 
           <div class="form-group">
-            <label>Oyun Resmi URL (Opsiyonel)</label>
-            <input type="url" id="addGameImage" class="form-input" placeholder="https://..." oninput="previewAddGameImage(this.value)" />
-            <img id="addGameImagePreview" style="max-height: 140px; border-radius: 12px; margin-top: 6px; display: none; object-fit: cover;" />
+            <label>Oyun Resmi</label>
+            <input type="url" id="addGameImage" class="form-input" placeholder="https://... (opsiyonel)" oninput="previewAddGameImage(this.value)" />
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px;">
+              <label class="btn btn-outline btn-sm" style="cursor:pointer;">
+                <i class="fa-solid fa-images"></i> Galeriden Seç
+                <input type="file" id="addGameImageFile" accept="image/*" onchange="handleGameGalleryImage(event)" style="display:none;" />
+              </label>
+              <button type="button" class="btn btn-outline btn-sm" onclick="clearGameImage()"><i class="fa-solid fa-xmark"></i> Temizle</button>
+            </div>
+            <img id="addGameImagePreview" style="max-height:180px;max-width:100%;border-radius:12px;margin-top:8px;display:none;object-fit:cover;" />
+            <small style="display:block;margin-top:5px;color:var(--text-muted);">Telefon veya bilgisayardan doğrudan galeri/dosya seçebilirsin.</small>
           </div>
 
           <div class="form-group">
@@ -5382,6 +5392,33 @@ footer{margin-left:248px!important}
             <i class="fa-solid fa-gamepad"></i> <span>Oyunu Ekle! (+20 Coin)</span>
           </button>
         </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Community Add Modal -->
+  <div class="modal-overlay" id="communityAddModal">
+    <div class="modal-container" style="max-width:620px;">
+      <div class="modal-header">
+        <h3 class="modal-title"><i class="fa-solid fa-users" style="color:var(--accent-light);"></i> Topluluğa Ekle</h3>
+        <button class="modal-close-btn" type="button" onclick="closeModal('communityAddModal')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <p style="color:var(--text-secondary);font-size:13px;line-height:1.55;margin-bottom:16px;">
+          Giriş yapan herkes kendi Roblox scriptini veya oyununu toplulukta paylaşabilir.
+        </p>
+        <div class="sd-community-choice-grid">
+          <button type="button" class="sd-community-choice" onclick="openCommunityComposer('script')">
+            <span class="sd-choice-icon"><i class="fa-solid fa-code"></i></span>
+            <span><strong>Script Paylaş</strong><small>Lua kodu, açıklama, kategori ve görsel ekle.</small></span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+          <button type="button" class="sd-community-choice sd-game-choice" onclick="openCommunityComposer('game')">
+            <span class="sd-choice-icon"><i class="fa-solid fa-gamepad"></i></span>
+            <span><strong>Oyun Paylaş</strong><small>Roblox linki, açıklama ve galeriden oyun resmi ekle.</small></span>
+            <i class="fa-solid fa-chevron-right"></i>
+          </button>
+        </div>
       </div>
     </div>
   </div>
@@ -9154,12 +9191,83 @@ function openAddGameModal() {
 
 function previewAddGameImage(url) {
   const preview = document.getElementById('addGameImagePreview');
-  if (url && url.startsWith('http')) {
+  if (!preview) return;
+  if (url && (url.startsWith('http') || url.startsWith('data:image/'))) {
     preview.src = url;
     preview.style.display = 'block';
   } else {
+    preview.removeAttribute('src');
     preview.style.display = 'none';
   }
+}
+
+function clearGameImage() {
+  const input = document.getElementById('addGameImage');
+  const file = document.getElementById('addGameImageFile');
+  if (input) input.value = '';
+  if (file) file.value = '';
+  previewAddGameImage('');
+}
+
+function handleGameGalleryImage(event) {
+  const file = event && event.target && event.target.files ? event.target.files[0] : null;
+  if (!file) return;
+  if (!file.type.startsWith('image/')) {
+    showToast("Lütfen bir görsel seçin.", "fa-image", "red");
+    return;
+  }
+  if (file.size > 8 * 1024 * 1024) {
+    showToast("Görsel en fazla 8 MB olabilir.", "fa-triangle-exclamation", "red");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 1200, maxH = 800;
+      const scale = Math.min(1, maxW / img.width, maxH / img.height);
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.max(1, Math.round(img.width * scale));
+      canvas.height = Math.max(1, Math.round(img.height * scale));
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.78);
+      const input = document.getElementById('addGameImage');
+      if (input) input.value = dataUrl;
+      previewAddGameImage(dataUrl);
+      showToast("Oyun resmi galeriden eklendi.", "fa-image", "green");
+    };
+    img.onerror = () => showToast("Görsel okunamadı.", "fa-triangle-exclamation", "red");
+    img.src = reader.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function openCommunityAddModal() {
+  if (!currentUser) {
+    showToast("Paylaşım yapmak için önce giriş yapmalısın.", "fa-lock");
+    openModal('authModal');
+    return;
+  }
+  openModal('communityAddModal');
+}
+
+function openCommunityComposer(type) {
+  if (!currentUser) {
+    closeModal('communityAddModal');
+    openAuthModal();
+    return;
+  }
+  closeModal('communityAddModal');
+  if (type === 'game') openAddGameModal();
+  else openAddScriptModal();
+}
+
+function resetGameForm() {
+  const ids = ['addGameName','addGameLink','addGameImage','addGameDesc'];
+  ids.forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  const file=document.getElementById('addGameImageFile'); if(file) file.value='';
+  previewAddGameImage('');
 }
 
 function handleNewGameSubmit(e) {
@@ -9199,6 +9307,7 @@ function handleNewGameSubmit(e) {
   addCoins(20, "Oyun Ekleme");
   recordTaskProgress('game');
   closeModal('addGameModal');
+  resetGameForm();
   renderCategories();
   if (activeCategory === 'games') renderMainGrid();
   showToast("Oyun başarıyla eklendi! (+20 Coin)", "fa-gamepad", "green");
@@ -9680,6 +9789,10 @@ window.handleScriptGalleryImage = handleScriptGalleryImage;
 window.previewAddScriptImage = previewAddScriptImage;
 window.handleNewScriptSubmit = handleNewScriptSubmit;
 window.openAddGameModal = openAddGameModal;
+window.openCommunityAddModal = openCommunityAddModal;
+window.openCommunityComposer = openCommunityComposer;
+window.handleGameGalleryImage = handleGameGalleryImage;
+window.clearGameImage = clearGameImage;
 window.previewAddGameImage = previewAddGameImage;
 window.handleNewGameSubmit = handleNewGameSubmit;
 window.deleteScript = deleteScript;
