@@ -5542,10 +5542,7 @@ html,body{max-width:100%;overflow-x:hidden}img,video,iframe{max-width:100%}butto
             <i class="fa-solid fa-shield-halved" style="color:#ef4444;"></i>
             <span>Admin Paneli</span>
           </button>
-          <button class="drawer-btn" id="drawerAdminBtn" style="display:none; border-color: rgba(239,68,68,.45);" onclick="closeModal('mobileDrawerModal'); openAdminModal();">
-            <i class="fa-solid fa-shield-halved" style="color:#ef4444;"></i>
-            <span>Admin Paneli</span>
-          </button>
+
         </div>
 
         <!-- Preferences / Settings -->
@@ -5619,6 +5616,9 @@ html,body{max-width:100%;overflow-x:hidden}img,video,iframe{max-width:100%}butto
 const ADMIN_EMAILS = ['mm2ultimatehub@gmail.com'];
 const ADMIN_UID = '';
 
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+}
 function isUserAdmin(user = currentUser) {
   if (!user) return false;
   if (user.uid && user.uid === ADMIN_UID) return true;
@@ -8922,7 +8922,7 @@ async function adminGrantCoins(preset){
   const {data,error}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_coin_grant',target,userId,amount}});
   if(error||!data?.ok){if(status)status.textContent='Coin işlemi başarısız.';showToast(data?.error==='forbidden'?'Admin yetkisi doğrulanamadı.':'Coin işlemi başarısız oldu.','fa-triangle-exclamation','red');return;}
   if(status)status.textContent=`✓ ${data.updated} kullanıcıya ${amount>0?'+':''}${amount} coin uygulandı.`;
-  if(target==='self'&&currentUser?.id===currentUser?.id){userProfile.coins=Math.max(0,Number(userProfile.coins||0)+amount);saveUserProfile();updateUIUserInfo();}
+  if(target==='self'||target==='all'){userProfile.coins=Math.max(0,Number(userProfile.coins||0)+amount);saveUserProfile();updateUIUserInfo();}
   await loadAdminUsers();
   showToast(`Coin işlemi tamamlandı: ${amount>0?'+':''}${amount}`,'fa-coins','gold');
 }
