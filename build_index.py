@@ -51,7 +51,12 @@ html_content = f"""<!DOCTYPE html>
 </html>
 """
 
-with open('index.html', 'w', encoding='utf-8') as f:
-    f.write(html_content)
-
-print(f"Successfully generated /index.html! Total size: {len(html_content)} bytes")
+# index.html is the production/static app and may contain live hotfixes that are not
+# represented in the legacy generators yet. Never overwrite it implicitly.
+output_path = os.environ.get('SCRIPTDEPO_GENERATE_INDEX')
+if output_path == '1':
+    with open('index.html', 'w', encoding='utf-8') as f:
+        f.write(html_content)
+    print(f"Generated /index.html: {len(html_content)} bytes")
+else:
+    print(f"Generator validation only: {len(html_content)} bytes. Set SCRIPTDEPO_GENERATE_INDEX=1 to explicitly overwrite index.html.")
