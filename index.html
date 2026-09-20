@@ -5476,6 +5476,22 @@ footer{margin-left:248px!important}
           <button class="btn btn-outline btn-sm" onclick="openAdminModal()"><i class="fa-solid fa-rotate"></i> Yenile</button>
         </div>
 
+        <section class="admin-control-card" id="adminCosmeticManager">
+          <div class="admin-control-head"><div><h4><i class="fa-solid fa-wand-magic-sparkles" style="color:#c084fc;"></i> Kozmetik Oluşturucu</h4><p>Admin olarak sade, animasyonlu veya GIF/WebP çerçeve oluştur.</p></div><span class="admin-badge">ADMIN</span></div>
+          <div class="admin-coin-grid">
+            <div class="form-group"><label>Kozmetik adı</label><input id="adminCosmeticName" class="form-input" maxlength="40" placeholder="Örn. Neon Pulse"></div>
+            <div class="form-group"><label>Tür</label><select id="adminCosmeticType" class="form-select"><option value="frame">Çerçeve</option><option value="effect">Efekt</option><option value="name">İsim</option><option value="banner">Banner</option></select></div>
+            <div class="form-group"><label>Fiyat</label><input id="adminCosmeticPrice" class="form-input" type="number" min="0" max="9999" value="300"></div>
+            <div class="form-group"><label>Mod</label><select id="adminCosmeticMode" class="form-select"><option value="css">Sade / CSS</option><option value="animated">Animasyonlu / CSS</option><option value="gif">GIF / WebP URL</option></select></div>
+            <div class="form-group"><label>Renk 1</label><input id="adminCosmeticColor1" class="form-input" type="color" value="#8b5cf6" style="height:44px;padding:4px;"></div>
+            <div class="form-group"><label>Renk 2</label><input id="adminCosmeticColor2" class="form-input" type="color" value="#22d3ee" style="height:44px;padding:4px;"></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>GIF / WebP / PNG URL</label><input id="adminCosmeticUrl" class="form-input" type="url" placeholder="https://..."></div>
+            <div class="form-group" style="grid-column:1/-1;"><label>Açıklama</label><input id="adminCosmeticDesc" class="form-input" maxlength="140" placeholder="Kozmetik açıklaması"></div>
+          </div>
+          <div class="admin-coin-actions"><button class="btn btn-primary" type="button" onclick="adminCreateCosmetic()"><i class="fa-solid fa-plus"></i> Kozmetiği Ekle</button><button class="btn btn-outline" type="button" onclick="previewAdminCosmetic()"><i class="fa-solid fa-eye"></i> Önizleme</button></div>
+          <div id="adminCosmeticPreview" style="margin-top:12px;"></div><div id="adminCosmeticList" style="margin-top:12px;"></div>
+        </section>
+
         <section class="admin-control-card" id="adminCoinManager">
           <div class="admin-control-head">
             <div>
@@ -7120,6 +7136,7 @@ function saveUserProfile() {
 }
 
 function syncFromFirestore() {
+  syncCustomCosmetics();
   if (!db) return;
 
   // Listen to scripts collection
@@ -8689,7 +8706,7 @@ function renderStoreCosmetics() {
   if (!grid) return;
 
   let html = '';
-  COSMETICS_LIST.forEach(c => {
+  allCosmetics().forEach(c => {
     const isOwned = (userProfile.inventory || []).includes(c.id);
     const isActive = (userProfile.activeCosmetics || []).includes(c.id);
 
@@ -8736,7 +8753,7 @@ function renderStoreInventory() {
   if (!container) return;
 
   const purchased = (userProfile.purchasedScripts || []).map(id => scriptsData.find(s => s.id === id)).filter(Boolean);
-  const ownedCosmetics = (userProfile.inventory || []).map(id => COSMETICS_LIST.find(c => c.id === id)).filter(Boolean);
+  const ownedCosmetics = (userProfile.inventory || []).map(id => getCosmeticById(id)).filter(Boolean);
 
   let html = `
     <div>
@@ -8803,7 +8820,7 @@ async function buyStoreItem(type,itemId,price){
 function toggleCosmeticActive(cosmeticId) {
   if (!userProfile.activeCosmetics) userProfile.activeCosmetics = [];
   if (!userProfile.inventory) userProfile.inventory = [];
-  const cosmetic = COSMETICS_LIST.find(c => c.id === cosmeticId);
+  const cosmetic = getCosmeticById(cosmeticId);
   if (!cosmetic) return;
   if (!userProfile.inventory.includes(cosmeticId)) {
     showToast("Bu kozmetik henüz koleksiyonunda yok.", "fa-lock", "red");
@@ -8817,7 +8834,7 @@ function toggleCosmeticActive(cosmeticId) {
     // Aynı türden iki kozmetik aynı anda çakışmasın; yeni seçilen otomatik olarak eskisinin yerini alır.
     if (cosmetic.type) {
       userProfile.activeCosmetics = userProfile.activeCosmetics.filter(id => {
-        const other = COSMETICS_LIST.find(c => c.id === id);
+        const other = getCosmeticById(id);
         return !other || other.type !== cosmetic.type;
       });
     }
@@ -9399,6 +9416,49 @@ async function deleteScript(scriptId) {
 }
 
 // ==================== ADMIN PANEL ====================
+let customCosmetics = [];
+function getCosmeticById(id){ return allCosmetics().find(c=>c.id===id)||null; }
+function allCosmetics(){ return [...COSMETICS_LIST,...customCosmetics]; }
+function cosmeticCssClass(id){ return 'custom-cosmetic-'+String(id).replace(/[^a-zA-Z0-9_-]/g,''); }
+function applyCustomCosmeticStyles(){
+  let style=document.getElementById('customCosmeticStyles');
+  if(!style){style=document.createElement('style');style.id='customCosmeticStyles';document.head.appendChild(style);}
+  style.textContent=customCosmetics.filter(c=>c.type==='frame'&&c.mode!=='gif').map(c=>{
+    const cls=cosmeticCssClass(c.id), a=c.mode==='animated'?'animation:customCosmeticSpin 2.4s linear infinite;':'';
+    return '.'+cls+'{position:relative!important;border:3px solid transparent!important;background:linear-gradient(var(--bg-card),var(--bg-card)) padding-box,linear-gradient(135deg,'+(c.color1||'#8b5cf6')+','+(c.color2||'#22d3ee')+') border-box!important;box-shadow:0 0 14px '+(c.color1||'#8b5cf6')+'66,0 0 24px '+(c.color2||'#22d3ee')+'33!important;'+a+'}';
+  }).join('')+'@keyframes customCosmeticSpin{to{filter:hue-rotate(360deg)}}';
+}
+function renderAdminCosmetics(){
+  const el=document.getElementById('adminCosmeticList');if(!el)return;
+  el.innerHTML=customCosmetics.length?customCosmetics.map(c=>'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border:1px solid var(--border-color);border-radius:12px;margin-top:7px;background:var(--bg-card);"><div><b>'+escapeHtml(c.name)+'</b><small style="display:block;color:var(--text-muted);">'+escapeHtml(c.type)+' • '+c.price+' coin • '+escapeHtml(c.mode||'css')+'</small></div><button class="btn btn-outline btn-sm" style="color:#ef4444;" onclick="adminDeleteCosmetic(\''+c.id+'\')"><i class="fa-solid fa-trash"></i></button></div>').join(''):'<div style="color:var(--text-muted);font-size:12px;">Henüz admin kozmetiği eklenmedi.</div>';
+}
+function syncCustomCosmetics(){
+  if(!db){renderAdminCosmetics();applyCustomCosmeticStyles();return;}
+  db.collection('cosmetics').onSnapshot(snapshot=>{
+    customCosmetics=[];snapshot.forEach(doc=>customCosmetics.push({id:doc.id,...doc.data()}));
+    applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();
+  },err=>console.warn('Cosmetics sync notice:',err.message));
+}
+function previewAdminCosmetic(){
+  const box=document.getElementById('adminCosmeticPreview');if(!box)return;
+  const mode=document.getElementById('adminCosmeticMode')?.value||'css',c1=document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',c2=document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',url=document.getElementById('adminCosmeticUrl')?.value.trim(),avatar=userProfile.photoURL||'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
+  box.innerHTML=mode==='gif'&&url?'<div class="store-cosmetic-preview"><img class="store-avatar-base" src="'+avatar+'" alt=""><img class="store-frame-gif" src="'+url+'" alt=""></div>':'<div style="display:inline-flex;padding:7px;border-radius:50%;border:3px solid transparent;background:linear-gradient(var(--bg-card),var(--bg-card)) padding-box,linear-gradient(135deg,'+c1+','+c2+') border-box;'+(mode==='animated'?'animation:customCosmeticSpin 2.4s linear infinite;':'')+'"><img src="'+avatar+'" style="width:76px;height:76px;border-radius:50%;display:block;"></div>';
+}
+async function adminCreateCosmetic(){
+  if(!isUserAdmin(currentUser))return;
+  const name=document.getElementById('adminCosmeticName')?.value.trim(),type=document.getElementById('adminCosmeticType')?.value||'frame',mode=document.getElementById('adminCosmeticMode')?.value||'css',price=Math.max(0,Math.min(9999,Number(document.getElementById('adminCosmeticPrice')?.value||0))),color1=document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',color2=document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',url=document.getElementById('adminCosmeticUrl')?.value.trim()||'',desc=document.getElementById('adminCosmeticDesc')?.value.trim()||'';
+  if(!name){showToast('Kozmetik adı gerekli.','fa-circle-exclamation','red');return;}
+  if(mode==='gif'&&!url){showToast('GIF/WebP modu için URL gerekli.','fa-link','red');return;}
+  const id='admin_cosmetic_'+Date.now(),cosmetic={id,name,nameEn:name,price,type,mode,color1,color2,gifUrl:mode==='gif'?url:'',desc:desc||'Admin tarafından oluşturulan kozmetik.',class:cosmeticCssClass(id),createdAt:Date.now(),createdBy:currentUser.uid};
+  if(db){try{await db.collection('cosmetics').doc(id).set(cosmetic);}catch(e){showToast('Kozmetik kaydedilemedi.','fa-circle-xmark','red');return;}}
+  customCosmetics.unshift(cosmetic);applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();showToast('Kozmetik mağazaya eklendi!','fa-wand-magic-sparkles','green');
+}
+async function adminDeleteCosmetic(id){
+  if(!isUserAdmin(currentUser))return;
+  if(!confirm('Bu kozmetiği silmek istediğine emin misin?'))return;
+  if(db){try{await db.collection('cosmetics').doc(id).delete();}catch(e){showToast('Kozmetik silinemedi.','fa-circle-xmark','red');return;}}
+  customCosmetics=customCosmetics.filter(c=>c.id!==id);applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();showToast('Kozmetik silindi.','fa-trash','red');
+}
 function openAdminModal() {
   if (!isUserAdmin(currentUser)) {
     showToast("Yetkisiz erişim!", "fa-shield-halved", "red");
@@ -9409,6 +9469,7 @@ function openAdminModal() {
   set('adminStatGames',gamesData.length);
   set('adminStatComments',scriptsData.reduce((acc,s)=>acc+(s.comments||[]).length,0));
   set('adminStatReports',reportsData.length);
+  renderAdminCosmetics();
   const usersCount=document.getElementById('adminStatUsers'); if(usersCount)usersCount.textContent='…';
   const tbody=document.getElementById('adminScriptTableBody');
   if(tbody){
