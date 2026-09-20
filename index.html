@@ -1924,6 +1924,16 @@ header {
 .desktop-only {
   display: inline-flex !important;
 }
+.admin-only { display: none !important; }
+.admin-only.is-admin { display: inline-flex !important; }
+.sd-nav .admin-only { width: 100%; }
+@media (max-width: 1100px) and (min-width: 769px) {
+  .sd-nav .admin-only.is-admin { display: flex !important; }
+}
+@media (max-width: 768px) {
+  .admin-only.is-admin { display: inline-flex !important; }
+  .sd-nav .admin-only.is-admin { display: flex !important; }
+}
 .theme-picker.desktop-only {
   display: flex !important;
 }
@@ -4466,7 +4476,7 @@ footer{margin-left:248px!important}
 <button onclick="openCoinStoreModal('inventory');sdNav(this)"><i class="fa-solid fa-shield-heart"></i><span>Koleksiyon</span><b>›</b></button>
 <button onclick="openGuideModal('howtouse');sdNav(this)"><i class="fa-solid fa-comments"></i><span>Yardım / Rehber</span><b>›</b></button>
 <button onclick="openGuideModal('executors');sdNav(this)"><i class="fa-solid fa-gear"></i><span>Ayarlar &amp; Executor</span><b>›</b></button>
-<button id="sdAdminNav" style="display:none" onclick="openAdminModal();sdNav(this)"><i class="fa-solid fa-shield-halved"></i><span>Admin Paneli</span><b>›</b></button>
+<button id="sdAdminNav" class="admin-only" aria-hidden="true" onclick="openAdminModal();sdNav(this)"><i class="fa-solid fa-shield-halved"></i><span>Admin Paneli</span><b>›</b></button>
 </nav>
 <div class="sd-side-bottom"><div class="sd-side-coin" onclick="openCoinStoreModal('scripts')" style="cursor:pointer"><div><small>BAKİYE</small><b><i class="fa-solid fa-coins"></i> <span id="sdSideCoin">0</span> Coin</b></div><i class="fa-solid fa-plus"></i></div><button class="sd-buy-btn" onclick="openCoinStoreModal('scripts')"><i class="fa-solid fa-cart-shopping"></i> Coin Satın Al <i class="fa-solid fa-chevron-right"></i></button><div class="sd-help-box"><i class="fa-solid fa-rocket"></i><span>Daha fazla coin kazanmak için görevlerini tamamla!</span><i class="fa-solid fa-chevron-right"></i></div><div class="sd-side-footer">ScriptDepo • 2026</div></div>
 </aside>>
@@ -4604,7 +4614,7 @@ footer{margin-left:248px!important}
       </button>
 
       <!-- Admin Button (Hidden by default) -->
-      <button class="btn btn-outline desktop-only" id="adminBtn" style="display: none; border-color: #ef4444; color: #ef4444;" onclick="openAdminModal()">
+      <button class="btn btn-outline desktop-only admin-only" id="adminBtn" aria-hidden="true" style="border-color: #ef4444; color: #ef4444;" onclick="openAdminModal()">
         <i class="fa-solid fa-wrench"></i>
         <span>Admin</span>
       </button>
@@ -8843,10 +8853,23 @@ async function handleSignOut() {
   currentUser=null; closeModal('userProfileModal'); showToast('Çıkış yapıldı.','fa-right-to-bracket'); updateUIUserInfo(); renderDailyTasks(); checkHeroCollapsedState(); renderMainGrid();
 }
 
+function syncAdminVisibility() {
+  const admin = !!currentUser && isUserAdmin(currentUser);
+  const elements = [
+    document.getElementById('adminBtn'),
+    document.getElementById('sdAdminNav'),
+    document.getElementById('drawerAdminBtn')
+  ].filter(Boolean);
+
+  elements.forEach(el => {
+    el.classList.toggle('is-admin', admin);
+    el.setAttribute('aria-hidden', admin ? 'false' : 'true');
+  });
+}
+
 function updateUIUserInfo() {
   const authBtnText = document.getElementById('authProfileBtnText');
   const coinDisplay = document.getElementById('headerCoinCount');
-  const adminBtn = document.getElementById('adminBtn');
 
   if (coinDisplay) coinDisplay.textContent = userProfile.coins || 0;
 
@@ -8859,24 +8882,12 @@ function updateUIUserInfo() {
       authBtnText.className = activeClass;
       authBtnText.textContent = userProfile.displayName || "Profil";
     }
-
-    // Admin button visibility check
-    const drawerAdminBtn = document.getElementById('drawerAdminBtn');
-    if (drawerAdminBtn) drawerAdminBtn.style.display = isUserAdmin(currentUser) ? 'flex' : 'none';
-    if (adminBtn) {
-      if (isUserAdmin(currentUser)) {
-        adminBtn.style.display = 'inline-flex';
-      } else {
-        adminBtn.style.display = 'none';
-      }
-    }
-  } else {
-    if (authBtnText) {
-      authBtnText.className = '';
-      authBtnText.textContent = I18N[currentLang].signIn;
-    }
-    if (adminBtn) adminBtn.style.display = 'none';
+  } else if (authBtnText) {
+    authBtnText.className = '';
+    authBtnText.textContent = I18N[currentLang].signIn;
   }
+
+  syncAdminVisibility();
 }
 
 // ==================== USER PROFILE MODAL ====================
@@ -9799,6 +9810,6 @@ function openExecutorGuideModal(execId) {
   </div>
 </div>
 
-<script>function sdNav(btn){document.querySelectorAll('.sd-nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}function sdSyncCoin(){const a=document.getElementById('headerCoinCount'),b=document.getElementById('sdSideCoin');if(a&&b)b.textContent=a.textContent||'0'}window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{sdSyncCoin();const a=document.getElementById('headerCoinCount');if(a)new MutationObserver(sdSyncCoin).observe(a,{childList:true,subtree:true,characterData:true});const admin=document.getElementById('adminBtn'),nav=document.getElementById('sdAdminNav');if(admin&&nav){const sync=()=>nav.style.display=getComputedStyle(admin).display==='none'?'none':'flex';sync();new MutationObserver(sync).observe(admin,{attributes:true,attributeFilter:['style','class'])}},100));</script>
+<script>function sdNav(btn){document.querySelectorAll('.sd-nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}function sdSyncCoin(){const a=document.getElementById('headerCoinCount'),b=document.getElementById('sdSideCoin');if(a&&b)b.textContent=a.textContent||'0'}window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{sdSyncCoin();const a=document.getElementById('headerCoinCount');if(a)new MutationObserver(sdSyncCoin).observe(a,{childList:true,subtree:true,characterData:true});if(typeof syncAdminVisibility==='function')syncAdminVisibility()},100));</script>
 <script id="scriptdepo-reference-sync">window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{const avatar=document.getElementById('sdRailAvatar'),frameImg=document.getElementById('sdRailFrame'),name=document.getElementById('sdRailName'),email=document.getElementById('sdRailEmail'),coin=document.getElementById('sdRailCoins'),heroCoin=document.getElementById('sdHeroCoins'),scripts=document.getElementById('sdHeroScripts'),games=document.getElementById('sdHeroGames'),users=document.getElementById('sdHeroUsers'),rs=document.getElementById('sdRailScripts'),ri=document.getElementById('sdRailItems'),rc=document.getElementById('sdRailCosmetics');const sync=()=>{try{if(window.userProfile){if(avatar&&userProfile.photoURL)avatar.src=userProfile.photoURL;if(name)name.textContent=userProfile.displayName||'Kullanıcı';if(email)email.textContent=userProfile.email?'@'+String(userProfile.email).split('@')[0]:'@scriptdepo';const n=Number(userProfile.coins||0);if(coin)coin.textContent=n.toLocaleString('tr-TR');if(heroCoin)heroCoin.textContent=n.toLocaleString('tr-TR');if(document.getElementById('sdSideCoin'))document.getElementById('sdSideCoin').textContent=n.toLocaleString('tr-TR');const active=userProfile.activeCosmetics||[],fc=(typeof COSMETICS_LIST!=='undefined'?COSMETICS_LIST:[]).find(x=>active.includes(x.id)&&x.type==='frame'&&x.gifUrl);if(frameImg){if(fc){frameImg.src=fc.gifUrl;frameImg.style.display='block'}else{frameImg.removeAttribute('src');frameImg.style.display='none'}}if(ri)ri.textContent=(userProfile.purchasedScripts||[]).length;if(rc)rc.textContent=(userProfile.inventory||[]).filter(id=>String(id).startsWith('c_')).length}if(scripts&&typeof scriptsData!=='undefined')scripts.textContent=scriptsData.length;if(games&&typeof gamesData!=='undefined')games.textContent=gamesData.length;if(rs&&typeof scriptsData!=='undefined')rs.textContent=scriptsData.length;if(users&&typeof siteStats!=='undefined')users.textContent=siteStats?.users?Number(siteStats.users).toLocaleString('tr-TR'):'—'}catch(e){}};sync();setInterval(sync,1500)},350));</script></body>
 </html>
