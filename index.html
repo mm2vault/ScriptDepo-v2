@@ -7210,6 +7210,22 @@ function saveUserProfile() {
   }
 }
 
+function getDeletedScriptIds() {
+  try {
+    const raw = localStorage.getItem('scriptHubDeletedScriptIds');
+    const ids = raw ? JSON.parse(raw) : [];
+    return Array.isArray(ids) ? ids.filter(Boolean) : [];
+  } catch (_) { return []; }
+}
+
+function setDeletedScriptIds(ids) {
+  try {
+    localStorage.setItem('scriptHubDeletedScriptIds', JSON.stringify(
+      Array.isArray(ids) ? [...new Set(ids.filter(Boolean))] : []
+    ));
+  } catch (_) {}
+}
+
 function ensureScriptCatalogIntegrity() {
   if (Array.isArray(scriptsData) && scriptsData.length > 0) return true;
 
@@ -10056,15 +10072,25 @@ window.addEventListener('DOMContentLoaded', () => {
   initFirebase();
   initSupabase();
   loadSavedData();
-  applyTranslations();
-  renderCategories();
-  renderDailyTasks();
-  checkHeroCollapsedState();
-  renderMainGrid();
-  renderNotifications();
-  updateUIUserInfo();
-  checkCookieConsent();
-  showAuthCallbackError();
+
+  // Script kataloğunu diğer UI parçalarından bağımsız olarak ilk önce çiz.
+  // Kozmetik/profil/görev tarafındaki tek bir hata script listesini engellememeli.
+  try {
+    ensureScriptCatalogIntegrity();
+    renderMainGrid();
+  } catch (e) {
+    console.warn('Initial script render notice:', e);
+  }
+
+  try { applyTranslations(); } catch (e) { console.warn('Translations init notice:', e); }
+  try { renderCategories(); } catch (e) { console.warn('Categories init notice:', e); }
+  try { renderDailyTasks(); } catch (e) { console.warn('Daily tasks init notice:', e); }
+  try { checkHeroCollapsedState(); } catch (e) {}
+  try { renderMainGrid(); } catch (e) { console.warn('Script render retry notice:', e); }
+  try { renderNotifications(); } catch (e) {}
+  try { updateUIUserInfo(); } catch (e) {}
+  try { checkCookieConsent(); } catch (e) {}
+  try { showAuthCallbackError(); } catch (e) {}
 
   if (supabaseClient) {
     supabaseClient.auth.onAuthStateChange(async (event, session) => {
