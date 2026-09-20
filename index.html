@@ -9611,6 +9611,37 @@ async function uploadAdminCosmeticFile(file,id){
   return data.publicUrl;
 }
 
+function previewAdminCosmetic(cosmeticOverride){
+  const box=document.getElementById('adminCosmeticPreview'); if(!box)return;
+  const c=cosmeticOverride||{
+    id:editingCosmeticId||'preview',
+    name:document.getElementById('adminCosmeticName')?.value.trim()||'Yeni Kozmetik',
+    type:document.getElementById('adminCosmeticType')?.value||'frame',
+    mode:document.getElementById('adminCosmeticMode')?.value||'css',
+    color1:document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',
+    color2:document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',
+    mediaUrl:document.getElementById('adminCosmeticUrl')?.value.trim()||'',
+    gifUrl:document.getElementById('adminCosmeticUrl')?.value.trim()||'',
+    class:''
+  };
+  const avatar=userProfile?.photoURL||'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
+  const mediaUrl=c.mediaUrl||c.gifUrl||'';
+  let overlay='';
+  if(c.mode==='video'&&mediaUrl){
+    overlay='<video class="cosmetic-overlay" src="'+escapeHtml(mediaUrl)+'" muted loop autoplay playsinline></video>';
+  }else if(mediaUrl&&(c.mode==='gif'||c.mode==='animated')){
+    overlay='<img class="cosmetic-overlay" src="'+escapeHtml(mediaUrl)+'" alt="">';
+  }else if(c.type==='frame'){
+    overlay='<div class="cosmetic-overlay '+escapeHtml(c.class||cosmeticCssClass(c.id))+'" style="border-radius:50%;"></div>';
+  }else if(c.type==='name'){
+    overlay='<div style="position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:12px;color:'+escapeHtml(c.color1)+';text-shadow:0 0 10px '+escapeHtml(c.color2)+';">'+escapeHtml(c.name)+'</div>';
+  }else if(c.type==='banner'){
+    overlay='<div style="position:absolute;left:8%;right:8%;bottom:-10px;padding:5px 8px;border-radius:8px;text-align:center;font-size:10px;font-weight:800;background:linear-gradient(135deg,'+escapeHtml(c.color1)+','+escapeHtml(c.color2)+');color:#fff;">'+escapeHtml(c.name)+'</div>';
+  }else{
+    overlay='<div class="cosmetic-overlay" style="border-radius:50%;border:2px solid '+escapeHtml(c.color1)+';box-shadow:0 0 18px '+escapeHtml(c.color1)+',inset 0 0 18px '+escapeHtml(c.color2)+';"></div>';
+  }
+  box.innerHTML='<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Profil önizleme • '+escapeHtml(c.type||'kozmetik')+'</div><div class="preview-avatar-wrap"><img class="base-avatar" src="'+escapeHtml(avatar)+'" alt="">'+overlay+'</div></div><div class="preview-info"><b>'+escapeHtml(c.name)+'</b><div style="margin-top:6px;color:var(--text-secondary);font-size:12px;">'+escapeHtml(c.mode||'css')+' • '+Number(c.price||0)+' coin</div><div style="margin-top:5px;color:var(--text-muted);font-size:11px;">Bu görünüm profil ve mağaza önizlemesindeki hizalamaya göre gösterilir.</div></div></div>';
+}
 async function adminCreateCosmetic(){
   if(!isUserAdmin(currentUser))return;
   const name=document.getElementById('adminCosmeticName')?.value.trim(),type=document.getElementById('adminCosmeticType')?.value||'frame',mode=document.getElementById('adminCosmeticMode')?.value||'css',price=Math.max(0,Math.min(9999,Number(document.getElementById('adminCosmeticPrice')?.value||0))),color1=document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',color2=document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',url=document.getElementById('adminCosmeticUrl')?.value.trim()||'',file=document.getElementById('adminCosmeticFile')?.files?.[0],desc=document.getElementById('adminCosmeticDesc')?.value.trim()||'';
@@ -9650,8 +9681,9 @@ function adminEditCosmetic(id){
   set('adminCosmeticName',c.name);set('adminCosmeticType',c.type||'frame');set('adminCosmeticMode',c.mode||'css');set('adminCosmeticPrice',c.price||0);set('adminCosmeticColor1',c.color1||'#8b5cf6');set('adminCosmeticColor2',c.color2||'#22d3ee');set('adminCosmeticUrl',c.mediaUrl||c.gifUrl||'');set('adminCosmeticDesc',c.desc||'');
   const btn=document.querySelector('#adminCosmeticList')?.closest('section')?.querySelector('.admin-coin-actions .btn-primary');
   if(btn)btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet';
+  previewAdminCosmetic(c);
   const box=document.getElementById('adminCosmeticPreview');
-  if(box)box.innerHTML='<div class="admin-cosmetic-processing"><i class="fa-solid fa-pen"></i> '+escapeHtml(c.name)+' düzenleniyor. Yeni dosya seçersen mevcut medya yenilenir.</div>';
+  if(box){const note=document.createElement('div');note.className='admin-cosmetic-processing';note.style.marginTop='8px';note.innerHTML='<i class="fa-solid fa-pen"></i> '+escapeHtml(c.name)+' düzenleniyor. Alanları değiştirip <b>Önizleme</b> butonuna basabilirsin.';box.appendChild(note);}
   document.getElementById('adminCosmeticName')?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
