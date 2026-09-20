@@ -4480,7 +4480,17 @@ footer{margin-left:248px!important}
 @keyframes sdEclipse{0%,100%{transform:scale(.98) rotate(-8deg);opacity:.72}50%{transform:scale(1.04) rotate(8deg);opacity:1}}
 @keyframes sdCyber{0%,100%{opacity:.65;filter:brightness(.9)}50%{opacity:1;filter:brightness(1.45)}}
 @keyframes sdStarAura{0%,100%{filter:drop-shadow(0 0 3px rgba(255,255,255,.35))}50%{filter:drop-shadow(0 0 12px rgba(168,85,247,.85)) drop-shadow(0 0 5px rgba(34,211,238,.7))}}
-@media(prefers-reduced-motion:reduce){.avatar-frame-pulse,.avatar-frame-eclipse,.avatar-frame-cyber,.profile-effect-starlight{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.avatar-frame-pulse,.avatar-frame-eclipse,.avatar-frame-cyber,.profile-effect-starlight,.avatar-frame-prism,.avatar-frame-venom,.avatar-frame-storm,.profile-effect-hologram,.profile-effect-comet{animation:none!important}}
+.avatar-frame-prism{position:absolute;inset:-8px;border-radius:50%;pointer-events:none;z-index:3;border:2px solid transparent;background:conic-gradient(from 45deg,#f0abfc,#818cf8,#22d3ee,#f0abfc) border-box;mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:sdPrism 2.7s linear infinite;filter:drop-shadow(0 0 9px rgba(192,132,252,.8));}
+.avatar-frame-venom{position:absolute;inset:-8px;border-radius:50%;pointer-events:none;z-index:3;border:2px solid #84cc16;box-shadow:0 0 8px rgba(132,204,22,.9),inset 0 0 14px rgba(34,197,94,.22);animation:sdVenom 1.9s ease-in-out infinite;}
+.avatar-frame-storm{position:absolute;inset:-9px;border-radius:50%;pointer-events:none;z-index:3;border:2px solid #60a5fa;box-shadow:0 0 9px rgba(96,165,250,.9),0 0 22px rgba(99,102,241,.45);animation:sdStorm 1.35s ease-in-out infinite;}
+.profile-effect-hologram{position:relative;animation:sdHologram 1.8s steps(3,end) infinite;}
+.profile-effect-comet{position:relative;animation:sdComet 2.4s ease-in-out infinite;}
+@keyframes sdPrism{to{transform:rotate(360deg)}}
+@keyframes sdVenom{0%,100%{transform:scale(.98);opacity:.68}50%{transform:scale(1.04);opacity:1}}
+@keyframes sdStorm{0%,100%{transform:rotate(-2deg);opacity:.62;filter:brightness(.9)}50%{transform:rotate(2deg);opacity:1;filter:brightness(1.55)}}
+@keyframes sdHologram{0%,100%{opacity:.72;filter:hue-rotate(0deg) drop-shadow(0 0 5px rgba(34,211,238,.45))}50%{opacity:1;filter:hue-rotate(55deg) drop-shadow(0 0 13px rgba(168,85,247,.8))}}
+@keyframes sdComet{0%,100%{filter:drop-shadow(0 0 3px rgba(255,255,255,.25))}50%{filter:drop-shadow(12px -4px 14px rgba(96,165,250,.85)) drop-shadow(-6px 5px 10px rgba(167,139,250,.65))}}
 </style>
 </head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
@@ -6823,6 +6833,11 @@ const COSMETICS_LIST = [
   {id:"c_animated_eclipse",name:"Animated Eclipse",nameEn:"Animated Eclipse",price:575,type:"frame",desc:"Hareketli mor-siyah eclipse çerçevesi.",class:"avatar-frame-eclipse",gifUrl:"https://i.imgur.com/5mFOKEl.gif"},
   {id:"c_animated_cyber",name:"Animated Cyber",nameEn:"Animated Cyber",price:625,type:"frame",desc:"Hareketli cyber neon avatar çerçevesi.",class:"avatar-frame-cyber",gifUrl:"https://i.imgur.com/0aseHjC.gif"},
   {id:"c_animated_starlight",name:"Animated Starlight",nameEn:"Animated Starlight",price:500,type:"effect",desc:"Hareketli yıldız ışığı profil efekti.",class:"profile-effect-starlight"},
+  {id:"c_prism_frame",name:"Prizma Çerçeve",nameEn:"Prism Frame",price:700,type:"frame",desc:"Renk geçişli kristal neon çerçeve.",class:"avatar-frame-prism"},
+  {id:"c_venom_frame",name:"Venom Çerçeve",nameEn:"Venom Frame",price:650,type:"frame",desc:"Yeşil zehir enerjili hareketli çerçeve.",class:"avatar-frame-venom"},
+  {id:"c_storm_frame",name:"Fırtına Çerçeve",nameEn:"Storm Frame",price:700,type:"frame",desc:"Mavi elektrik enerjili hareketli çerçeve.",class:"avatar-frame-storm"},
+  {id:"c_hologram_effect",name:"Hologram Aura",nameEn:"Hologram Aura",price:650,type:"effect",desc:"Renk değiştiren hologram aura efekti.",class:"profile-effect-hologram"},
+  {id:"c_comet_effect",name:"Kuyruklu Yıldız",nameEn:"Comet Effect",price:600,type:"effect",desc:"Parlak kuyruklu yıldız ışık efekti.",class:"profile-effect-comet"},
 ];
 
 const I18N = {
