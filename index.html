@@ -1197,8 +1197,7 @@ header {
   box-shadow: 0 0 0 3px #a855f7, 0 0 15px #06b6d4;
 }.name-purple {
   color: #c084fc !important;
-  font-weight: 700;
-}
+  font-weight: 700;}
 .name-gold {
   color: #fbbf24 !important;
   font-weight: 700;
@@ -2397,8 +2396,7 @@ header {
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
-.drawer-btn {
-  background: var(--bg-card);
+.drawer-btn {  background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 14px;
   padding: 12px 6px;
@@ -3597,7 +3595,6 @@ header {
     width: 100% !important;
   }
 }
-
 /* Task steps in Tasks Countdown Modal */
 .task-step {
   display: grid !important;
@@ -4797,8 +4794,7 @@ footer{margin-left:248px!important}
       <div class="filter-group">
         <div class="filter-label">
           <i class="fa-solid fa-star"></i>
-          <span id="ratingLabelText">Puan:</span>
-        </div>
+          <span id="ratingLabelText">Puan:</span>        </div>
         <select class="custom-select" id="ratingSelect" onchange="applyFilters()">
           <option value="all" id="optRatingAll">Tümü</option>
           <option value="4" id="optRating4">4+ Yıldız</option>
@@ -5997,7 +5993,6 @@ function playCoinSound() {
     initAudioContext();
     if (!audioCtx) return;
     if (audioCtx.state === 'suspended') audioCtx.resume();
-
     const osc1 = audioCtx.createOscillator();
     const osc2 = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
@@ -7085,7 +7080,7 @@ function syncFromFirestore() {
     // en yeni kayıtlar önce olacak şekilde 150 kayda kadar senkronize edilir.
     const syncCommunityScripts = () => {
       try {
-        db.collection('scripts').orderBy('createdAt','desc').limit(150).onSnapshot(snapshot => {
+        db.collection('scripts').limit(150).onSnapshot(snapshot => {
           const remoteScripts = [];
           snapshot.forEach(doc => {
             const data = doc.data() || {};
@@ -7127,7 +7122,7 @@ function syncFromFirestore() {
           scriptsData = normalizeUnverifiedScriptStats(merged);
           renderMainGrid();
         }, err => {
-          console.warn("Firestore ordered scripts sync notice:", err.message);
+          console.warn("Firestore scripts sync notice:", err.message);
           // createdAt alanı olmayan eski Firebase kayıtları varsa yine kaybolmasın.
           try {
             db.collection('scripts').limit(150).onSnapshot(snapshot => {
@@ -7197,8 +7192,7 @@ function addCoins(amount, reason) {
   playCoinSound();
 
   // Animation pulse
-  const badge = document.getElementById('headerCoinBadge');
-  if (badge) {
+  const badge = document.getElementById('headerCoinBadge');  if (badge) {
     badge.classList.remove('coin-pulse');
     void badge.offsetWidth;
     badge.classList.add('coin-pulse');
@@ -8397,8 +8391,7 @@ function voteScriptStatus(scriptId, isWorking) {
     } catch (e) {}
   }
 
-  // Refresh UI
-  renderMainGrid();
+  // Refresh UI  renderMainGrid();
 
   if (selectedScriptForUnlock && selectedScriptForUnlock.id === scriptId) {
     updateCodeModalVoting(s);
@@ -9597,8 +9590,7 @@ function openModal(id) {
   if (!m) return;
   m.classList.add('active');
   syncModalBodyLock();
-}
-function closeModal(id) {
+}function closeModal(id) {
   const m = document.getElementById(id);
   if (!m) return;
   m.classList.remove('active');
