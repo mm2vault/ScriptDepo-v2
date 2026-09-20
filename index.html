@@ -9537,16 +9537,54 @@ async function sdProcessCosmeticImage(file){
  });
 }
 async function handleAdminCosmeticFile(event){
- const file=event?.target?.files?.[0];if(!file)return;
+ const file=event?.target?.files?.[0];if(!file)return;\n sdSetSmartCosmeticMetadata(file);
  const allowed=file.type.startsWith('image/')||file.type==='video/mp4'||file.type==='video/webm';if(!allowed){showToast('PNG, JPG, GIF, WebP, MP4 veya WebM seç.','fa-file-circle-xmark','red');event.target.value='';return}
  const max=file.type.startsWith('video/')?35*1024*1024:12*1024*1024;if(file.size>max){showToast('Dosya çok büyük. Video 35 MB, görsel 12 MB sınırında.','fa-triangle-exclamation','red');event.target.value='';return}
  if(adminCosmeticObjectUrl)URL.revokeObjectURL(adminCosmeticObjectUrl);adminCosmeticObjectUrl=URL.createObjectURL(file);adminCosmeticProcessedBlob=null;
  const remove=!!document.getElementById('adminCosmeticRemoveBg')?.checked&&file.type.startsWith('image/')&&file.type!=='image/gif',avatar=userProfile.photoURL||'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo',box=document.getElementById('adminCosmeticPreview');
  const media=file.type.startsWith('video/')?'<video class="cosmetic-overlay" src="'+adminCosmeticObjectUrl+'" muted loop autoplay playsinline></video>':'<img class="cosmetic-overlay" src="'+adminCosmeticObjectUrl+'" alt="">';
  if(box)box.innerHTML=`<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Profil önizleme</div><div class="preview-avatar-wrap"><img class="base-avatar" src="${avatar}" alt="">${media}</div></div><div class="preview-info"><b>${escapeHtml(file.name)}</b><div style="margin-top:6px;color:var(--text-secondary);font-size:12px;">${remove?'Arka plan temizleniyor...':'Orijinal medya kullanılacak.'}</div></div></div>`;
- adminCosmeticProcessingPromise=(async()=>{if(!remove){adminCosmeticProcessedBlob=file;return file}try{const out=await sdProcessCosmeticImage(file);adminCosmeticProcessedBlob=out;if(box){const u=URL.createObjectURL(out);box.innerHTML=`<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Şeffaflaştırılmış önizleme</div><div class="preview-avatar-wrap"><img class="base-avatar" src="${avatar}" alt=""><img class="cosmetic-overlay" src="${u}" alt=""></div></div><div class="preview-info"><b>${escapeHtml(out instanceof File && out.name ? out.name : 'Şeffaflaştırılmış görsel')}</b><div style="margin-top:6px;color:var(--green);font-size:12px;"><i class="fa-solid fa-circle-check"></i> Arka plan kaldırıldı. Bu sürüm markete yüklenecek.</div></div></div>`}}catch(err){adminCosmeticProcessedBlob=file;showToast('Arka plan temizlenemedi; orijinal görsel kullanılacak.','fa-triangle-exclamation','red')}})();await adminCosmeticProcessingPromise;
+ adminCosmeticProcessingPromise=(async()=>{if(!remove){adminCosmeticProcessedBlob=file;return file}try{const out=await Promise.race([sdProcessCosmeticImage(file),new Promise((_,rej)=>setTimeout(()=>rej(new Error('AI işlemi zaman aşımına uğradı')),120000))]);adminCosmeticProcessedBlob=out;if(box){const u=URL.createObjectURL(out);box.innerHTML=`<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Şeffaflaştırılmış önizleme</div><div class="preview-avatar-wrap"><img class="base-avatar" src="${avatar}" alt=""><img class="cosmetic-overlay" src="${u}" alt=""></div></div><div class="preview-info"><b>${escapeHtml(out instanceof File && out.name ? out.name : 'Şeffaflaştırılmış görsel')}</b><div style="margin-top:6px;color:var(--green);font-size:12px;"><i class="fa-solid fa-circle-check"></i> Arka plan kaldırıldı. Bu sürüm markete yüklenecek.</div></div></div>`}}catch(err){adminCosmeticProcessedBlob=file;showToast('Arka plan temizlenemedi; orijinal görsel kullanılacak.','fa-triangle-exclamation','red')}})();await adminCosmeticProcessingPromise;
+}
+function sdSmartCosmeticMetadata(file){
+  const raw=(file?.name||'').replace(/\.[^.]+$/,'').replace(/[_-]+/g,' ').replace(/\s+/g,' ').trim();
+  const lower=raw.toLowerCase();
+  const colorWords=lower.includes('pink')||lower.includes('pembe')?'Pembe':lower.includes('red')||lower.includes('kırmızı')?'Kızıl':lower.includes('blue')||lower.includes('mavi')?'Mavi':lower.includes('green')||lower.includes('yeşil')?'Zümrüt':lower.includes('purple')||lower.includes('mor')?'Mor':lower.includes('black')||lower.includes('siyah')?'Obsidyen':lower.includes('gold')||lower.includes('altın')?'Altın':'Neon';
+  const style=lower.includes('fire')||lower.includes('alev')?'Alev':lower.includes('ice')||lower.includes('buz')?'Buz':lower.includes('skull')||lower.includes('kafa')?'Skull':lower.includes('star')||lower.includes('yıldız')?'Star':lower.includes('heart')||lower.includes('kalp')?'Heart':'Pulse';
+  const clean=raw&&raw.length>1?raw.replace(/\b(copy|final|edited|image|img|png|jpg|jpeg|webp|gif)\b/gi,'').trim():'';
+  const name=clean?clean.split(' ').map(w=>w.charAt(0).toUpperCase()+w.slice(1)).join(' ').slice(0,34):`${colorWords} ${style}`;
+  const desc=`${colorWords} tonlarında ${style} tarzı, profile özel kozmetik efekt.`.slice(0,140);
+  return {name,desc};
+}
+function sdSetSmartCosmeticMetadata(file){
+  const nameEl=document.getElementById('adminCosmeticName'),descEl=document.getElementById('adminCosmeticDesc');
+  if(!file||!nameEl||!descEl)return;
+  const meta=sdSmartCosmeticMetadata(file);
+  if(!nameEl.value.trim()||nameEl.dataset.autoName==='true'){nameEl.value=meta.name;nameEl.dataset.autoName='true';}
+  if(!descEl.value.trim()||descEl.dataset.autoDesc==='true'){descEl.value=meta.desc;descEl.dataset.autoDesc='true';}
 }
 async function uploadAdminCosmeticFile(file,id){
+  if(!file)return '';
+  if(!storage)throw new Error('Firebase Storage hazır değil. Sayfayı yenileyip tekrar dene.');
+  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
+  const ref=storage.ref().child('cosmetics/'+id+'/'+Date.now()+'_'+safeName);
+  return await new Promise((resolve,reject)=>{
+    let finished=false;
+    const task=ref.put(file,{contentType:file.type||'application/octet-stream'});
+    const timer=setTimeout(()=>{if(!finished){try{task.cancel();}catch(_){}reject(new Error('Yükleme zaman aşımına uğradı. Dosya boyutunu küçültüp tekrar dene.'));}},120000);
+    task.on(firebase.storage.TaskEvent.STATE_CHANGED,
+      snap=>{
+        const pct=snap.totalBytes?Math.round(snap.bytesTransferred/snap.totalBytes*100):0;
+        const box=document.getElementById('adminCosmeticPreview');
+        const status=box?.querySelector('.admin-cosmetic-processing');
+        if(status)status.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> Kozmetik yükleniyor '+pct+'%';
+      },
+      err=>{finished=true;clearTimeout(timer);reject(err);},
+      async()=>{try{const url=await task.snapshot.ref.getDownloadURL();finished=true;clearTimeout(timer);resolve(url);}catch(err){finished=true;clearTimeout(timer);reject(err);}}
+    );
+  });
+}
+
   if(!file)return '';
   if(!storage)throw new Error('Firebase Storage hazır değil.');
   const ref=storage.ref().child('cosmetics/'+id+'/'+Date.now()+'_'+file.name.replace(/[^a-zA-Z0-9._-]/g,'_'));
