@@ -8650,12 +8650,12 @@ async function handleNewScriptSubmit(e) {
     }
   }
 
-  if (coinPrice > 0 && supabaseClient) {
+  if (supabaseClient) {
     const { data, error } = await supabaseClient.functions.invoke('script-access', {
       body: { action: 'save_code', scriptId: id, code, coinPrice }
     });
     if (error || !data || !data.ok) {
-      showToast("Güvenli kod kaydı başarısız oldu.", "fa-circle-xmark", "red");
+      showToast("Script kodu güvenli sunucuya kaydedilemedi.", "fa-circle-xmark", "red");
       return;
     }
   }
