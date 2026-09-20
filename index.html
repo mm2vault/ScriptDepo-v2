@@ -1197,8 +1197,7 @@ header {
   box-shadow: 0 0 0 3px #a855f7, 0 0 15px #06b6d4;
 }.name-purple {
   color: #c084fc !important;
-  font-weight: 700;}
-.name-gold {
+  font-weight: 700;}.name-gold {
   color: #fbbf24 !important;
   font-weight: 700;
 }
@@ -2397,8 +2396,7 @@ header {
   gap: 8px;
 }
 .drawer-btn {  background: var(--bg-card);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
+  border: 1px solid var(--border-color);  border-radius: 14px;
   padding: 12px 6px;
   display: flex;
   flex-direction: column;
@@ -3597,8 +3595,7 @@ header {
 }
 /* Task steps in Tasks Countdown Modal */
 .task-step {
-  display: grid !important;
-  grid-template-columns: 1fr auto !important;
+  display: grid !important;  grid-template-columns: 1fr auto !important;
   grid-template-areas: "task-info task-action" !important;
   align-items: center !important;
   gap: 12px !important;
@@ -4797,8 +4794,7 @@ footer{margin-left:248px!important}
           <span id="ratingLabelText">Puan:</span>        </div>
         <select class="custom-select" id="ratingSelect" onchange="applyFilters()">
           <option value="all" id="optRatingAll">Tümü</option>
-          <option value="4" id="optRating4">4+ Yıldız</option>
-          <option value="3" id="optRating3">3+ Yıldız</option>
+          <option value="4" id="optRating4">4+ Yıldız</option>          <option value="3" id="optRating3">3+ Yıldız</option>
         </select>
       </div>
 
@@ -5997,8 +5993,7 @@ function playCoinSound() {
     const osc2 = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
 
-    osc1.type = 'sine';
-    osc2.type = 'triangle';
+    osc1.type = 'sine';    osc2.type = 'triangle';
 
     const now = audioCtx.currentTime;
     osc1.frequency.setValueAtTime(987.77, now); // B5
@@ -6790,6 +6785,12 @@ const COSMETICS_LIST = [
   {id:"c_aurora_effect",name:"Aurora Efekti",nameEn:"Aurora Effect",price:450,type:"effect",desc:"Cyan ve mor aurora parıltısı.",class:"profile-effect-aurora"},
   {id:"c_dark_aura",name:"Karanlık Aura",nameEn:"Dark Aura",price:375,type:"effect",desc:"Koyu indigo aura ve gölge efekti.",class:"profile-effect-dark"},
   {id:"c_badge_legend",name:"Legend Rozeti",nameEn:"Legend Badge",price:1000,type:"badge",desc:"Nadir koleksiyon rozeti.",class:"badge-legend"}
+  {id:"c_eclipse_frame",name:"Eclipse Çerçeve",nameEn:"Eclipse Frame",price:425,type:"frame",desc:"Mor-siyah yıldırım neon avatar çerçevesi.",class:"avatar-frame-eclipse"},
+  {id:"c_pulse_frame",name:"Pulse Çerçeve",nameEn:"Pulse Frame",price:475,type:"frame",desc:"Pembe-cyan nabız neon avatar çerçevesi.",class:"avatar-frame-pulse"},
+  {id:"c_cyber_frame",name:"Cyber Çerçeve",nameEn:"Cyber Frame",price:525,type:"frame",desc:"Dijital cyan teknoloji avatar çerçevesi.",class:"avatar-frame-cyber"},
+  {id:"c_obsidian_frame",name:"Obsidyen Çerçeve",nameEn:"Obsidian Frame",price:600,type:"frame",desc:"Koyu siyah ve mor kristal avatar çerçevesi.",class:"avatar-frame-obsidian"},
+  {id:"c_crown_effect",name:"Kraliyet Aura",nameEn:"Royal Aura",price:650,type:"effect",desc:"Avatar çevresinde taç temalı altın aura efekti.",class:"profile-effect-crown"},
+  {id:"c_starlight_effect",name:"Yıldız Işığı",nameEn:"Starlight",price:500,type:"effect",desc:"Profil avatarına yıldız/parıltı aura efekti.",class:"profile-effect-starlight"},
 ];
 
 const I18N = {
@@ -7197,7 +7198,6 @@ function addCoins(amount, reason) {
     void badge.offsetWidth;
     badge.classList.add('coin-pulse');
   }
-
   showToast(`+${amount} Coin! (${reason})`, "fa-coins", "gold");
   addNotification("coin", `Coin Kazanıldı: +${amount}`, reason);
 }
@@ -8397,8 +8397,7 @@ function voteScriptStatus(scriptId, isWorking) {
     updateCodeModalVoting(s);
   }
 
-  showToast(
-    isWorking 
+  showToast(    isWorking 
       ? "Oyunuz kaydedildi! (+2 Coin kazandınız)" 
       : "Patched bildirimi kaydedildi! (+2 Coin kazandınız)",
     isWorking ? "fa-thumbs-up" : "fa-thumbs-down",
@@ -9597,8 +9596,7 @@ function openModal(id) {
   syncModalBodyLock();
 }
 
-// Close modal on background click
-window.addEventListener('click', (e) => {
+// Close modal on background clickwindow.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal-overlay')) {
     e.target.classList.remove('active');
     syncModalBodyLock();
