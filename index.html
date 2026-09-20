@@ -4116,6 +4116,12 @@ html,body{max-width:100%;overflow-x:hidden}img,video,iframe{max-width:100%}butto
 .admin-coin-grant{display:grid;grid-template-columns:1fr 150px auto;gap:8px;align-items:center;margin:12px 0;padding:12px;border:1px solid var(--border-color);border-radius:14px;background:var(--bg-card)}
 @media(max-width:600px){.admin-coin-grant{grid-template-columns:1fr}.admin-coin-grant button{width:100%}}
 </style>
+<style id="cosmetic-frame-fixes">
+.avatar-frame-neon{box-shadow:0 0 0 3px #8b5cf6,0 0 18px #06b6d4!important}
+.avatar-frame-fire{box-shadow:0 0 0 3px #f97316,0 0 18px #ef4444!important}
+.avatar-frame-ice{box-shadow:0 0 0 3px #38bdf8,0 0 18px #93c5fd!important}
+.avatar-frame-gold,.avatar-frame-rainbow,.avatar-frame-neon,.avatar-frame-fire,.avatar-frame-ice{border-radius:50%;transition:box-shadow .2s ease}
+</style>
 </head>
 <body>
 
@@ -8473,8 +8479,12 @@ function openUserProfileModal() {
   const nameCos=COSMETICS_LIST.find(x=>active.includes(x.id)&&x.type==='name');
   const bannerCos=COSMETICS_LIST.find(x=>active.includes(x.id)&&x.type==='banner');
   const effect=COSMETICS_LIST.find(x=>active.includes(x.id)&&x.type==='effect');
-  avatar.className=frame?.class||'';
-  if(effect?.class) avatar.classList.add(effect.class);
+  avatar.className = '';
+  if (frame?.class) avatar.classList.add(frame.class);
+  if (effect?.class) avatar.classList.add(effect.class);
+  // Keep cosmetic state deterministic after every profile render.
+  avatar.dataset.frame = frame?.id || '';
+  avatar.dataset.effect = effect?.id || '';
   const nameEl=document.getElementById('profileDisplayName'); nameEl.className=nameCos?.class||'';
   const banner=document.getElementById('profileBanner'); if(banner){banner.className='profile-banner '+(bannerCos?.class||'');banner.style.backgroundImage=userProfile.bannerUrl?('url("'+userProfile.bannerUrl+'")'):'';}
   const bio=document.getElementById('profileBio'); if(bio) bio.textContent=userProfile.bio||'';
