@@ -8299,7 +8299,7 @@ function submitComment(scriptId) {
 }
 
 // ==================== UNLOCK & GET SCRIPT FLOW ====================
-function handleGetScript(scriptId) {
+async function handleGetScript(scriptId) {
   const s = scriptsData.find(item => item.id === scriptId);
   if (!s) return;
   selectedScriptForUnlock = s; recordTaskProgress('view');
@@ -9501,7 +9501,7 @@ async function uploadAdminCosmeticFile(file,id){
   const snap=await ref.put(file,{contentType:file.type});
   return await snap.ref.getDownloadURL();
 }
-async function adminCreateCosmetic(){
+async async function adminCreateCosmetic(){
   if(!isUserAdmin(currentUser))return;
   const name=document.getElementById('adminCosmeticName')?.value.trim(),type=document.getElementById('adminCosmeticType')?.value||'frame',mode=document.getElementById('adminCosmeticMode')?.value||'css',price=Math.max(0,Math.min(9999,Number(document.getElementById('adminCosmeticPrice')?.value||0))),color1=document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',color2=document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',url=document.getElementById('adminCosmeticUrl')?.value.trim()||'',file=document.getElementById('adminCosmeticFile')?.files?.[0],desc=document.getElementById('adminCosmeticDesc')?.value.trim()||'';
   if(!name){showToast('Kozmetik adı gerekli.','fa-circle-exclamation','red');return;}
