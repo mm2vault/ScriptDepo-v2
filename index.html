@@ -9537,7 +9537,8 @@ async function sdProcessCosmeticImage(file){
  });
 }
 async function handleAdminCosmeticFile(event){
- const file=event?.target?.files?.[0];if(!file)return;\n sdSetSmartCosmeticMetadata(file);
+ const file=event?.target?.files?.[0];if(!file)return;
+ sdSetSmartCosmeticMetadata(file);
  const allowed=file.type.startsWith('image/')||file.type==='video/mp4'||file.type==='video/webm';if(!allowed){showToast('PNG, JPG, GIF, WebP, MP4 veya WebM seç.','fa-file-circle-xmark','red');event.target.value='';return}
  const max=file.type.startsWith('video/')?35*1024*1024:12*1024*1024;if(file.size>max){showToast('Dosya çok büyük. Video 35 MB, görsel 12 MB sınırında.','fa-triangle-exclamation','red');event.target.value='';return}
  if(adminCosmeticObjectUrl)URL.revokeObjectURL(adminCosmeticObjectUrl);adminCosmeticObjectUrl=URL.createObjectURL(file);adminCosmeticProcessedBlob=null;
