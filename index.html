@@ -4123,7 +4123,7 @@ header {
 .store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;z-index:2}.store-cosmetic-preview .store-frame-video{border-radius:inherit}
 .avatar-preview-frame,.admin-cosmetic-preview-stage .preview-avatar-wrap,.store-cosmetic-preview{overflow:visible!important}
 .avatar-preview-frame .avatar-preview-base,.admin-cosmetic-preview-stage .base-avatar,.store-cosmetic-preview .store-avatar-base{position:absolute!important;left:50%;top:50%;transform:translate(-50%,-50%);width:78%!important;height:78%!important;object-fit:cover!important}
-.avatar-preview-frame .avatar-preview-gif,.avatar-preview-frame .avatar-preview-video,.admin-cosmetic-preview-stage .cosmetic-overlay,.store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:112%!important;height:112%!important;object-fit:contain!important;object-position:center!important;pointer-events:none!important}
+.avatar-preview-frame .avatar-preview-gif,.avatar-preview-frame .avatar-preview-video,.admin-cosmetic-preview-stage .cosmetic-overlay,.store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:112%!important;height:112%!important;object-fit:contain!important;object-position:center!important;pointer-events:none!important}.\n.admin-cosmetic-preview-stage .cosmetic-overlay,.store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video,.avatar-preview-frame .avatar-preview-gif,.avatar-preview-frame .avatar-preview-video{left:calc(50% + var(--cosmetic-x,0%))!important;top:calc(50% + var(--cosmetic-y,0%))!important;width:var(--cosmetic-scale,112%)!important;height:var(--cosmetic-scale,112%)!important}
 .store-cosmetic-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:18px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-width:0;transition:.2s ease}
 .store-cosmetic-card:hover{border-color:var(--accent-light);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.2)}
 .store-cosmetic-preview.css-frame{width:92px;height:92px;border-radius:50%;margin:0 auto 10px;background:var(--accent-gradient)}
@@ -5516,6 +5516,9 @@ footer{margin-left:248px!important}
             <div class="form-group"><label>Mod</label><select id="adminCosmeticMode" class="form-select"><option value="css">Sade / CSS</option><option value="animated">Animasyonlu / CSS</option><option value="gif">GIF / WebP</option><option value="video">Video (loop)</option></select></div>
             <div class="form-group"><label>Renk 1</label><input id="adminCosmeticColor1" class="form-input" type="color" value="#8b5cf6" style="height:44px;padding:4px;"></div>
             <div class="form-group"><label>Renk 2</label><input id="adminCosmeticColor2" class="form-input" type="color" value="#22d3ee" style="height:44px;padding:4px;"></div>
+            <div class="form-group"><label>Boyut <span id="adminCosmeticScaleValue">112%</span></label><input id="adminCosmeticScale" class="form-input" type="range" min="40" max="180" step="1" value="112" oninput="updateCosmeticPositionLabels()"></div>
+            <div class="form-group"><label>Yatay konum <span id="adminCosmeticXValue">0%</span></label><input id="adminCosmeticX" class="form-input" type="range" min="-50" max="50" step="1" value="0" oninput="updateCosmeticPositionLabels()"></div>
+            <div class="form-group"><label>Dikey konum <span id="adminCosmeticYValue">0%</span></label><input id="adminCosmeticY" class="form-input" type="range" min="-50" max="50" step="1" value="0" oninput="updateCosmeticPositionLabels()"></div>
             <div class="form-group" style="grid-column:1/-1;">
 <label>Dosya yükle (PNG / JPG / GIF / WebP / MP4 / WebM)</label>
 <input id="adminCosmeticFile" class="form-input" type="file" accept="image/*,video/mp4,video/webm" onchange="handleAdminCosmeticFile(event)">
@@ -8810,12 +8813,13 @@ function renderStoreCosmetics() {
     }
 
     const previewAvatar = userProfile.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
+    const layout=cosmeticLayoutStyle(c);
     const cosmeticPreview = c.type === 'frame'
       ? (c.mode === 'video' && c.mediaUrl
-        ? `<div class="store-cosmetic-preview"><img class="store-avatar-base" src="${previewAvatar}" alt=""><video class="store-frame-video" src="${c.mediaUrl}" muted loop autoplay playsinline></video></div>`
+        ? `<div class="store-cosmetic-preview"><img class="store-avatar-base" src="${previewAvatar}" alt=""><video class="store-frame-video" style="${layout}" src="${c.mediaUrl}" muted loop autoplay playsinline></video></div>`
         : (c.gifUrl
-          ? `<div class="store-cosmetic-preview"><img class="store-avatar-base" src="${previewAvatar}" alt=""><img class="store-frame-gif" src="${c.gifUrl}" alt="${c.name}" loading="lazy"></div>`
-          : `<div class="store-cosmetic-preview css-frame ${c.class}"><img class="store-avatar-base" src="${previewAvatar}" alt=""></div>`))
+          ? `<div class="store-cosmetic-preview"><img class="store-avatar-base" src="${previewAvatar}" alt=""><img class="store-frame-gif" style="${layout}" src="${c.gifUrl}" alt="${c.name}" loading="lazy"></div>`
+          : `<div class="store-cosmetic-preview css-frame ${c.class}" style="${layout}"><img class="store-avatar-base" src="${previewAvatar}" alt=""></div>`))
       : `<div class="store-cosmetic-preview"><div style="width:82px;height:82px;border-radius:50%;background:var(--accent-gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;"><i class="fa-solid fa-wand-magic-sparkles"></i></div></div>`;
     html += `
       <div class="store-cosmetic-card">
@@ -9535,7 +9539,7 @@ async function syncCustomCosmetics(){
         mode:meta.mode||((row.preview||'').match(/\\.(mp4|webm)(\\?|$)/i)?'video':(row.preview?'gif':'css')),
         color1:meta.color1||'#8b5cf6',color2:meta.color2||'#22d3ee',
         gifUrl:meta.gifUrl||row.preview||'',mediaUrl:meta.mediaUrl||row.preview||'',
-        desc:row.description||meta.desc||'',class:row.css_class||'',createdAt:meta.createdAt||Date.now(),createdBy:meta.createdBy||''
+        desc:row.description||meta.desc||'',class:row.css_class||'',createdAt:meta.createdAt||Date.now(),createdBy:meta.createdBy||'',scale:Number(meta.scale??112),offsetX:Number(meta.offsetX??0),offsetY:Number(meta.offsetY??0)
       };
     });
     applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();
@@ -9611,6 +9615,23 @@ async function uploadAdminCosmeticFile(file,id){
   return data.publicUrl;
 }
 
+function getCosmeticLayout(c){
+  return {
+    scale:Math.max(40,Math.min(180,Number(c?.scale??112)||112)),
+    offsetX:Math.max(-50,Math.min(50,Number(c?.offsetX??0)||0)),
+    offsetY:Math.max(-50,Math.min(50,Number(c?.offsetY??0)||0))
+  };
+}
+function cosmeticLayoutStyle(c,base=''){
+  const p=getCosmeticLayout(c);
+  return base+'--cosmetic-scale:'+p.scale+'%;--cosmetic-x:'+p.offsetX+'%;--cosmetic-y:'+p.offsetY+'%;';
+}
+function updateCosmeticPositionLabels(){
+  const s=document.getElementById('adminCosmeticScale'),x=document.getElementById('adminCosmeticX'),y=document.getElementById('adminCosmeticY');
+  if(document.getElementById('adminCosmeticScaleValue'))document.getElementById('adminCosmeticScaleValue').textContent=(s?.value||112)+'%';
+  if(document.getElementById('adminCosmeticXValue'))document.getElementById('adminCosmeticXValue').textContent=(x?.value||0)+'%';
+  if(document.getElementById('adminCosmeticYValue'))document.getElementById('adminCosmeticYValue').textContent=(y?.value||0)+'%';
+}
 function previewAdminCosmetic(cosmeticOverride){
   const box=document.getElementById('adminCosmeticPreview'); if(!box)return;
   const c=cosmeticOverride||{
@@ -9622,29 +9643,34 @@ function previewAdminCosmetic(cosmeticOverride){
     color2:document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',
     mediaUrl:document.getElementById('adminCosmeticUrl')?.value.trim()||'',
     gifUrl:document.getElementById('adminCosmeticUrl')?.value.trim()||'',
+    scale:Number(document.getElementById('adminCosmeticScale')?.value||112),
+    offsetX:Number(document.getElementById('adminCosmeticX')?.value||0),
+    offsetY:Number(document.getElementById('adminCosmeticY')?.value||0),
     class:''
   };
   const avatar=userProfile?.photoURL||'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
   const mediaUrl=c.mediaUrl||c.gifUrl||'';
+  const layout=cosmeticLayoutStyle(c);
   let overlay='';
   if(c.mode==='video'&&mediaUrl){
-    overlay='<video class="cosmetic-overlay" src="'+escapeHtml(mediaUrl)+'" muted loop autoplay playsinline></video>';
+    overlay='<video class="cosmetic-overlay" style="'+layout+'" src="'+escapeHtml(mediaUrl)+'" muted loop autoplay playsinline></video>';
   }else if(mediaUrl&&(c.mode==='gif'||c.mode==='animated')){
-    overlay='<img class="cosmetic-overlay" src="'+escapeHtml(mediaUrl)+'" alt="">';
+    overlay='<img class="cosmetic-overlay" style="'+layout+'" src="'+escapeHtml(mediaUrl)+'" alt="">';
   }else if(c.type==='frame'){
-    overlay='<div class="cosmetic-overlay '+escapeHtml(c.class||cosmeticCssClass(c.id))+'" style="border-radius:50%;"></div>';
+    overlay='<div class="cosmetic-overlay '+escapeHtml(c.class||cosmeticCssClass(c.id))+'" style="'+layout+'border-radius:50%;"></div>';
   }else if(c.type==='name'){
-    overlay='<div style="position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);white-space:nowrap;font-weight:800;font-size:12px;color:'+escapeHtml(c.color1)+';text-shadow:0 0 10px '+escapeHtml(c.color2)+';">'+escapeHtml(c.name)+'</div>';
+    overlay='<div style="'+layout+'position:absolute;left:calc(50% + var(--cosmetic-x));top:calc(100% + var(--cosmetic-y));transform:translate(-50%,-50%) scale(calc(var(--cosmetic-scale) / 112));white-space:nowrap;font-weight:800;font-size:12px;color:'+escapeHtml(c.color1)+';text-shadow:0 0 10px '+escapeHtml(c.color2)+';">'+escapeHtml(c.name)+'</div>';
   }else if(c.type==='banner'){
-    overlay='<div style="position:absolute;left:8%;right:8%;bottom:-10px;padding:5px 8px;border-radius:8px;text-align:center;font-size:10px;font-weight:800;background:linear-gradient(135deg,'+escapeHtml(c.color1)+','+escapeHtml(c.color2)+');color:#fff;">'+escapeHtml(c.name)+'</div>';
+    overlay='<div style="'+layout+'position:absolute;left:calc(8% + var(--cosmetic-x));right:calc(8% - var(--cosmetic-x));bottom:calc(-10px + var(--cosmetic-y));transform:scale(calc(var(--cosmetic-scale) / 112));padding:5px 8px;border-radius:8px;text-align:center;font-size:10px;font-weight:800;background:linear-gradient(135deg,'+escapeHtml(c.color1)+','+escapeHtml(c.color2)+');color:#fff;">'+escapeHtml(c.name)+'</div>';
   }else{
-    overlay='<div class="cosmetic-overlay" style="border-radius:50%;border:2px solid '+escapeHtml(c.color1)+';box-shadow:0 0 18px '+escapeHtml(c.color1)+',inset 0 0 18px '+escapeHtml(c.color2)+';"></div>';
+    overlay='<div class="cosmetic-overlay" style="'+layout+'border-radius:50%;border:2px solid '+escapeHtml(c.color1)+';box-shadow:0 0 18px '+escapeHtml(c.color1)+',inset 0 0 18px '+escapeHtml(c.color2)+';"></div>';
   }
-  box.innerHTML='<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Profil önizleme • '+escapeHtml(c.type||'kozmetik')+'</div><div class="preview-avatar-wrap"><img class="base-avatar" src="'+escapeHtml(avatar)+'" alt="">'+overlay+'</div></div><div class="preview-info"><b>'+escapeHtml(c.name)+'</b><div style="margin-top:6px;color:var(--text-secondary);font-size:12px;">'+escapeHtml(c.mode||'css')+' • '+Number(c.price||0)+' coin</div><div style="margin-top:5px;color:var(--text-muted);font-size:11px;">Bu görünüm profil ve mağaza önizlemesindeki hizalamaya göre gösterilir.</div></div></div>';
+  box.innerHTML='<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Profil önizleme • '+escapeHtml(c.type||'kozmetik')+'</div><div class="preview-avatar-wrap"><img class="base-avatar" src="'+escapeHtml(avatar)+'" alt="">'+overlay+'</div></div><div class="preview-info"><b>'+escapeHtml(c.name)+'</b><div style="margin-top:6px;color:var(--text-secondary);font-size:12px;">'+escapeHtml(c.mode||'css')+' • '+Number(c.price||0)+' coin</div><div style="margin-top:5px;color:var(--text-muted);font-size:11px;">Boyut: '+getCosmeticLayout(c).scale+'% • X: '+getCosmeticLayout(c).offsetX+'% • Y: '+getCosmeticLayout(c).offsetY+'%</div></div></div>';
+  updateCosmeticPositionLabels();
 }
 async function adminCreateCosmetic(){
   if(!isUserAdmin(currentUser))return;
-  const name=document.getElementById('adminCosmeticName')?.value.trim(),type=document.getElementById('adminCosmeticType')?.value||'frame',mode=document.getElementById('adminCosmeticMode')?.value||'css',price=Math.max(0,Math.min(9999,Number(document.getElementById('adminCosmeticPrice')?.value||0))),color1=document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',color2=document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',url=document.getElementById('adminCosmeticUrl')?.value.trim()||'',file=document.getElementById('adminCosmeticFile')?.files?.[0],desc=document.getElementById('adminCosmeticDesc')?.value.trim()||'';
+  const name=document.getElementById('adminCosmeticName')?.value.trim(),type=document.getElementById('adminCosmeticType')?.value||'frame',mode=document.getElementById('adminCosmeticMode')?.value||'css',price=Math.max(0,Math.min(9999,Number(document.getElementById('adminCosmeticPrice')?.value||0))),color1=document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',color2=document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',url=document.getElementById('adminCosmeticUrl')?.value.trim()||'',file=document.getElementById('adminCosmeticFile')?.files?.[0],desc=document.getElementById('adminCosmeticDesc')?.value.trim()||'';\n  const scale=Math.max(40,Math.min(180,Number(document.getElementById('adminCosmeticScale')?.value||112))),offsetX=Math.max(-50,Math.min(50,Number(document.getElementById('adminCosmeticX')?.value||0))),offsetY=Math.max(-50,Math.min(50,Number(document.getElementById('adminCosmeticY')?.value||0)));
   if(!name){showToast('Kozmetik adı gerekli.','fa-circle-exclamation','red');return;}
   if(!file&&!url&&(mode==='gif'||mode==='video')){showToast('Dosya veya medya URLsi seçmelisin.','fa-file-arrow-up','red');return;}
   const id=editingCosmeticId||('admin_cosmetic_'+Date.now());
@@ -9661,9 +9687,9 @@ async function adminCreateCosmetic(){
     }
   }catch(e){showToast('Dosya yüklenemedi: '+(e.message||'Storage hatası'),'fa-circle-xmark','red');return;}
   const actualMode=file?.type?.startsWith('video/')||mode==='video'?'video':(mediaUrl&&mode!=='css'?'gif':mode);
-  const cosmetic={id,name,nameEn:name,price,type,mode:actualMode,color1,color2,gifUrl:actualMode!=='video'?mediaUrl:'',mediaUrl,desc:desc||'Admin tarafından oluşturulan kozmetik efekt.',class:cosmeticCssClass(id),createdAt:getCosmeticById(id)?.createdAt||Date.now(),createdBy:getCosmeticById(id)?.createdBy||currentUser.uid};
+  const cosmetic={id,name,nameEn:name,price,type,mode:actualMode,color1,color2,gifUrl:actualMode!=='video'?mediaUrl:'',mediaUrl,desc:desc||'Admin tarafından oluşturulan kozmetik efekt.',class:cosmeticCssClass(id),createdAt:getCosmeticById(id)?.createdAt||Date.now(),createdBy:getCosmeticById(id)?.createdBy||currentUser.uid,scale,offsetX,offsetY};
   if(!supabaseClient){showToast('Kozmetik sistemi hazır değil.','fa-circle-xmark','red');return;}
-  const {data:saveData,error:saveError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_create_cosmetic',cosmetic:{id,name,description:cosmetic.desc,kind:type,price,css_class:cosmetic.class,preview:mediaUrl,metadata:{nameEn:cosmetic.nameEn,type:cosmetic.type,mode:cosmetic.mode,color1:cosmetic.color1,color2:cosmetic.color2,gifUrl:cosmetic.gifUrl,mediaUrl:cosmetic.mediaUrl,desc:cosmetic.desc,class:cosmetic.class,createdAt:cosmetic.createdAt,createdBy:cosmetic.createdBy}}}});
+  const {data:saveData,error:saveError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_create_cosmetic',cosmetic:{id,name,description:cosmetic.desc,kind:type,price,css_class:cosmetic.class,preview:mediaUrl,metadata:{nameEn:cosmetic.nameEn,type:cosmetic.type,mode:cosmetic.mode,color1:cosmetic.color1,color2:cosmetic.color2,gifUrl:cosmetic.gifUrl,mediaUrl:cosmetic.mediaUrl,desc:cosmetic.desc,class:cosmetic.class,createdAt:cosmetic.createdAt,createdBy:cosmetic.createdBy,scale:cosmetic.scale,offsetX:cosmetic.offsetX,offsetY:cosmetic.offsetY}}}});
   if(saveError||!saveData?.ok){showToast('Kozmetik Supabase kataloğuna kaydedilemedi: '+(saveData?.error||saveError?.message||'bilinmeyen hata'),'fa-circle-xmark','red');return;}
   customCosmetics=[cosmetic,...customCosmetics.filter(x=>x.id!==id)];
   editingCosmeticId=null;adminCosmeticProcessedBlob=null;adminCosmeticProcessingPromise=null;
@@ -9678,7 +9704,7 @@ function adminEditCosmetic(id){
   const c=getCosmeticById(id);if(!c)return;
   editingCosmeticId=id;
   const set=(key,val)=>{const el=document.getElementById(key);if(el)el.value=val??'';};
-  set('adminCosmeticName',c.name);set('adminCosmeticType',c.type||'frame');set('adminCosmeticMode',c.mode||'css');set('adminCosmeticPrice',c.price||0);set('adminCosmeticColor1',c.color1||'#8b5cf6');set('adminCosmeticColor2',c.color2||'#22d3ee');set('adminCosmeticUrl',c.mediaUrl||c.gifUrl||'');set('adminCosmeticDesc',c.desc||'');
+  set('adminCosmeticName',c.name);set('adminCosmeticType',c.type||'frame');set('adminCosmeticMode',c.mode||'css');set('adminCosmeticPrice',c.price||0);set('adminCosmeticColor1',c.color1||'#8b5cf6');set('adminCosmeticColor2',c.color2||'#22d3ee');set('adminCosmeticUrl',c.mediaUrl||c.gifUrl||'');set('adminCosmeticDesc',c.desc||'');set('adminCosmeticScale',c.scale??112);set('adminCosmeticX',c.offsetX??0);set('adminCosmeticY',c.offsetY??0);
   const btn=document.querySelector('#adminCosmeticList')?.closest('section')?.querySelector('.admin-coin-actions .btn-primary');
   if(btn)btn.innerHTML='<i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet';
   previewAdminCosmetic(c);
@@ -10120,7 +10146,7 @@ window.copyCurrentScriptCode = copyCurrentScriptCode;
 window.openCoinStoreModal = openCoinStoreModal;
 window.switchStoreTab = switchStoreTab;
 window.buyStoreItem = buyStoreItem;
-window.toggleCosmeticActive = toggleCosmeticActive;
+window.toggleCosmeticActive = toggleCosmeticActive;\nwindow.updateCosmeticPositionLabels=updateCosmeticPositionLabels;\nwindow.previewAdminCosmetic=previewAdminCosmetic;
 window.updateScriptMetricUI = updateScriptMetricUI;
 window.handleAuthOrProfileClick = handleAuthOrProfileClick;
 window.switchAuthTab = switchAuthTab;
