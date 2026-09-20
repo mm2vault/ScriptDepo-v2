@@ -7037,34 +7037,90 @@ function syncFromFirestore() {
 
   // Listen to scripts collection
   try {
-    db.collection('scripts').limit(50).onSnapshot(snapshot => {
-      const remoteScripts = [];
-      snapshot.forEach(doc => {
-        remoteScripts.push({ id: doc.id, ...doc.data() });
-      });
-      if (remoteScripts.length > 0) {
-        const deleted = new Set(getDeletedScriptIds());
-        const savedScripts = localStorage.getItem('scriptHubCustomScripts');
-        let localCustom = [];
-        try { localCustom = savedScripts ? JSON.parse(savedScripts) : []; } catch (_) { localCustom = []; }
-        const adminOverridesRaw = localStorage.getItem('scriptHubAdminPremiumOverrides');
-        let adminOverrides = [];
-        try { adminOverrides = adminOverridesRaw ? JSON.parse(adminOverridesRaw) : []; } catch (_) { adminOverrides = []; }
-        const remoteById = new Map(remoteScripts.map(s => [s.id, s]));
-        const overrideById = new Map(adminOverrides.map(s => [s.id, s]));
-        const merged = INITIAL_PREMIUM_SCRIPTS.map(base => overrideById.get(base.id) ? { ...base, ...overrideById.get(base.id) } : base);
-        remoteScripts.forEach(s => {
-          if (!deleted.has(s.id) && !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id)) merged.push(s);
+    // ScriptHub topluluk scriptleri: kaynak siteyle aynı Firebase koleksiyonundan,
+    // en yeni kayıtlar önce olacak şekilde 150 kayda kadar senkronize edilir.
+    const syncCommunityScripts = () => {
+      try {
+        db.collection('scripts').orderBy('createdAt','desc').limit(150).onSnapshot(snapshot => {
+          const remoteScripts = [];
+          snapshot.forEach(doc => {
+            const data = doc.data() || {};
+            remoteScripts.push({
+              id: doc.id,
+              ...data,
+              // Eski ScriptHub kayıtlarında alan yoksa premium olmayan kayıtları
+              // otomatik olarak topluluk içeriği kabul et.
+              isCommunity: data.isCommunity !== undefined ? data.isCommunity : !data.isPremium,
+              isPremium: data.isPremium === true
+            });
+          });
+
+          const deleted = new Set(getDeletedScriptIds());
+          const savedScripts = localStorage.getItem('scriptHubCustomScripts');
+          let localCustom = [];
+          try { localCustom = savedScripts ? JSON.parse(savedScripts) : []; } catch (_) { localCustom = []; }
+
+          const adminOverridesRaw = localStorage.getItem('scriptHubAdminPremiumOverrides');
+          let adminOverrides = [];
+          try { adminOverrides = adminOverridesRaw ? JSON.parse(adminOverridesRaw) : []; } catch (_) { adminOverrides = []; }
+
+          const remoteById = new Map(remoteScripts.map(s => [s.id, s]));
+          const overrideById = new Map(adminOverrides.map(s => [s.id, s]));
+          const merged = INITIAL_PREMIUM_SCRIPTS.map(base =>
+            overrideById.get(base.id) ? { ...base, ...overrideById.get(base.id) } : base
+          );
+
+          remoteScripts.forEach(s => {
+            if (!deleted.has(s.id) && !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id)) {
+              merged.push(s);
+            }
+          });
+
+          localCustom.forEach(s => {
+            if (!deleted.has(s.id) && !remoteById.has(s.id)) merged.push(s);
+          });
+
+          scriptsData = normalizeUnverifiedScriptStats(merged);
+          renderMainGrid();
+        }, err => {
+          console.warn("Firestore ordered scripts sync notice:", err.message);
+          // createdAt alanı olmayan eski Firebase kayıtları varsa yine kaybolmasın.
+          try {
+            db.collection('scripts').limit(150).onSnapshot(snapshot => {
+              const remoteScripts = [];
+              snapshot.forEach(doc => {
+                const data = doc.data() || {};
+                remoteScripts.push({
+                  id: doc.id,
+                  ...data,
+                  isCommunity: data.isCommunity !== undefined ? data.isCommunity : !data.isPremium,
+                  isPremium: data.isPremium === true
+                });
+              });
+              const deleted = new Set(getDeletedScriptIds());
+              const savedScripts = localStorage.getItem('scriptHubCustomScripts');
+              let localCustom = [];
+              try { localCustom = savedScripts ? JSON.parse(savedScripts) : []; } catch (_) { localCustom = []; }
+              const remoteById = new Map(remoteScripts.map(s => [s.id, s]));
+              const merged = INITIAL_PREMIUM_SCRIPTS.filter(base => !deleted.has(base.id));
+              remoteScripts.forEach(s => {
+                if (!deleted.has(s.id) && !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id)) merged.push(s);
+              });
+              localCustom.forEach(s => {
+                if (!deleted.has(s.id) && !remoteById.has(s.id)) merged.push(s);
+              });
+              scriptsData = normalizeUnverifiedScriptStats(merged);
+              renderMainGrid();
+            }, fallbackErr => console.warn("Firestore fallback scripts sync notice:", fallbackErr.message));
+          } catch (fallbackErr) {
+            console.warn("Firestore fallback scripts setup notice:", fallbackErr);
+          }
         });
-        localCustom.forEach(s => {
-          if (!deleted.has(s.id) && !remoteById.has(s.id)) merged.push(s);
-        });
-        scriptsData = normalizeUnverifiedScriptStats(merged);
-        renderMainGrid();
+      } catch (e) {
+        console.warn("Firestore community scripts setup notice:", e);
       }
-    }, err => {
-      console.log("Firestore scripts snapshot notice:", err.message);
-    });
+    };
+    syncCommunityScripts();
   } catch (e) {}
 
   // Listen to games collection
