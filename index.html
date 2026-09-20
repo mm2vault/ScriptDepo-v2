@@ -8817,7 +8817,7 @@ function renderStorePremiumScripts() {
 function renderStoreCosmetics() {
   const grid = document.getElementById("storeCosmeticsGrid");
   if (!grid) return;
-  const cosmetics = allCosmetics().filter(c => c.type === "frame");
+  const cosmetics = allCosmetics().filter(c => { const url = c.mediaUrl || c.gifUrl || c.preview || ""; return c.type === "frame" && /^https?:\/\//i.test(url); });
   if (!cosmetics.length) {
     grid.innerHTML = `<div class="cosmetic-empty-state"><i class="fa-solid fa-wand-magic-sparkles"></i><b>Henüz kozmetik yok</b><span>Admin yeni bir medya yüklediğinde burada görünecek.</span></div>`;
     return;
