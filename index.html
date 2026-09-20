@@ -4227,6 +4227,59 @@ input,select,textarea{font-size:16px}
   .modal-overlay .modal-body{padding:12px}
 }
 </style>
+<style id="mobile-system-v2">
+html,body{width:100%;min-width:0;overflow-x:hidden}
+img,video,iframe{max-width:100%}
+button,.btn,.category-pill,.theme-dot,.drawer-btn{touch-action:manipulation}
+input,select,textarea{font-size:16px;max-width:100%}
+.main-container,.script-card,.game-card,.task-card,.filter-bar,.daily-tasks-banner{min-width:0}
+@media(max-width:1024px){
+ header{padding:10px 16px;gap:12px}.main-container{padding:20px 16px 70px}
+ .scripts-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+ .tasks-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ :root{--radius-card:20px;--radius-modal:22px}
+ header{min-height:58px;padding:8px 10px;display:grid;grid-template-columns:auto 1fr auto;gap:8px}
+ .header-logo{width:38px;height:38px;border-radius:10px}.header-titles h1{font-size:16px;white-space:nowrap}.header-titles span{display:none}
+ .header-center{grid-column:1/-1;grid-row:2;width:100%;max-width:none}
+ .search-input{height:44px;padding-left:40px}.header-right{min-width:0;flex-wrap:nowrap;gap:5px}
+ .header-right>.desktop-only{display:none!important}.header-right .btn-icon{width:40px;height:40px}.header-right .coin-badge{padding:8px 10px;gap:5px;font-size:12px}
+ .main-container{padding:14px 10px 80px}
+ .categories-wrapper{margin:0 -10px 16px;padding:0 10px 5px}.categories-list{gap:8px}.category-pill{min-height:42px;padding:9px 13px;font-size:13px}
+ .filter-bar{padding:10px;margin-bottom:16px;border-radius:16px;align-items:stretch;flex-direction:column;gap:9px}
+ .filter-group{width:100%;display:grid;grid-template-columns:1fr 1fr;gap:8px}.filter-group:first-child{grid-template-columns:1fr}
+ .custom-select{width:100%;min-height:42px;padding:9px 11px}.filter-bar .btn{width:100%;min-height:42px}
+ .scripts-grid{grid-template-columns:1fr;gap:14px}.script-card{border-radius:18px}.script-card-img-wrap{height:180px}.script-card-body{padding:15px;gap:10px}
+ .card-title{font-size:16px}.card-desc{font-size:13px;line-height:1.5}
+ .script-card .card-actions,.script-card-footer{display:grid!important;grid-template-columns:1fr 1fr;gap:8px}
+ .script-card .card-actions .btn,.script-card-footer .btn{width:100%;min-height:42px;padding:9px 10px}
+ .daily-tasks-banner{padding:15px;margin-bottom:16px;border-radius:18px}.tasks-title-wrap h2{font-size:16px}
+ .tasks-grid{grid-template-columns:1fr;gap:9px}.task-card{padding:12px;border-radius:15px}.task-details{min-width:0}
+ .hero-section{border-radius:20px!important;padding:16px!important;margin-bottom:16px!important}.hero-section h1{font-size:clamp(24px,7vw,34px)!important;line-height:1.08!important}
+ .hero-section p{font-size:13px!important;line-height:1.55!important}.hero-section .btn{width:100%;min-height:44px}
+ .modal-overlay{padding:0!important;align-items:flex-end!important}.modal-container{width:100%!important;max-width:none!important;max-height:94dvh!important;border-radius:22px 22px 0 0!important;margin:0!important;overflow:hidden}
+ .modal-container.modal-lg{width:100%!important}.modal-header{padding:14px 16px!important;min-height:58px}.modal-header h3{font-size:16px!important}
+ .modal-body{padding:15px!important;overflow-y:auto;overscroll-behavior:contain}.modal-footer{padding:12px 15px!important;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ .modal-footer .btn{width:100%;min-height:44px}
+ #mobileDrawerModal .modal-container{height:100dvh!important;max-height:100dvh!important;border-radius:0!important}
+ #mobileDrawerModal .modal-body{height:calc(100dvh - 64px)}
+ .form-grid,.admin-grid,.profile-grid{grid-template-columns:1fr!important}.modal-body input,.modal-body select,.modal-body textarea{width:100%}
+ #adminModal .modal-container{height:100dvh!important;max-height:100dvh!important}#adminModal .modal-body{height:calc(100dvh - 64px);padding:10px!important}
+ #adminModal .admin-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}#adminModal table{min-width:700px}
+ #adminCoinManager .btn{width:100%}#adminCoinManager select,#adminCoinManager input{width:100%;min-height:42px}
+ .store-grid,.cosmetic-grid,.profile-actions-grid{grid-template-columns:1fr 1fr!important;gap:9px!important}.gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+ .store-cosmetic-card .btn{width:100%;min-height:40px;padding:8px 7px}
+ .notif-dropdown{position:fixed!important;top:64px!important;left:10px!important;right:10px!important;width:auto!important}
+ #chatIframeModal{left:8px!important;right:8px!important;bottom:72px!important;width:auto!important}#chatFabBtn{right:14px!important;bottom:14px!important}
+}
+@media(max-width:420px){
+ .header-logo{width:34px;height:34px}.header-titles h1{font-size:14px}.header-right .coin-badge{max-width:88px;overflow:hidden}
+ .main-container{padding-left:8px;padding-right:8px}.filter-group{grid-template-columns:1fr}.script-card-img-wrap{height:165px}
+ .script-card .card-actions,.script-card-footer{grid-template-columns:1fr}.store-grid,.cosmetic-grid,.profile-actions-grid{grid-template-columns:1fr!important}.modal-footer{grid-template-columns:1fr}
+}
+@media(hover:none){.btn:hover,.category-pill:hover,.script-card:hover{transform:none}}
+</style>
 </head>
 <body>
 
