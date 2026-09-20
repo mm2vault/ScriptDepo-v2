@@ -6560,17 +6560,18 @@ async function ensureSupabaseProfile(user, isNewUser=false) {
 
 // ==================== LOAD LOCAL / REMOTE STATE ====================
 function normalizeUnverifiedScriptStats(list){
-  (list||[]).forEach(s=>{
-    if(s.userId==='system'){
-      s.views=0;s.copies=0;s.downloads=0;s.workingVotes=0;s.patchedVotes=0;
-      if(!s.ratingCount){s.rating=null;s.ratingCount=0;}
-    }
-  });
-  return list;
+  return (list || []).map(s => ({
+    ...s,
+    views: Number.isFinite(Number(s.views)) ? Number(s.views) : 0,
+    copies: Number.isFinite(Number(s.copies)) ? Number(s.copies) : 0,
+    downloads: Number.isFinite(Number(s.downloads)) ? Number(s.downloads) : 0,
+    workingVotes: Number.isFinite(Number(s.workingVotes)) ? Number(s.workingVotes) : 0,
+    patchedVotes: Number.isFinite(Number(s.patchedVotes)) ? Number(s.patchedVotes) : 0
+  }));
 }
 function loadSavedData() {
   // Load local user profile backup if exists
-  const savedProfile = localStorage.getItem('scriptHubUserProfile');
+  const savedProfile = localStorage.getItem('scriptHubGuestProfile');
   if (savedProfile) {
     try {
       const parsed = JSON.parse(savedProfile);
@@ -6627,7 +6628,8 @@ function loadSavedData() {
 }
 
 function checkDailyTasksDateReset() {
-  const todayStr = new Date().toISOString().slice(0, 10);
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}-${String(now.getDate()).padStart(2,'0')}`;
   const lastTaskDate = localStorage.getItem('scriptHubLastTaskDate');
   if (lastTaskDate !== todayStr) {
     userProfile.dailyTasks = {
@@ -6644,7 +6646,8 @@ function checkDailyTasksDateReset() {
 }
 
 function saveUserProfile() {
-  localStorage.setItem('scriptHubUserProfile', JSON.stringify(userProfile));
+  const profileStorageKey = currentUser ? `scriptHubUserProfile:${currentUser.uid}` : 'scriptHubGuestProfile';
+  localStorage.setItem(profileStorageKey, JSON.stringify(userProfile));
   updateUIUserInfo();
   if (currentUser && supabaseClient) {
     supabaseClient.from('profiles').upsert({
@@ -6674,9 +6677,23 @@ function syncFromFirestore() {
         remoteScripts.push({ id: doc.id, ...doc.data() });
       });
       if (remoteScripts.length > 0) {
-        // combine with initial premium scripts
-        const nonDuplicateRemote = remoteScripts.filter(rs => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === rs.id));
-        scriptsData = normalizeUnverifiedScriptStats([...INITIAL_PREMIUM_SCRIPTS, ...nonDuplicateRemote]);
+        const deleted = new Set(getDeletedScriptIds());
+        const savedScripts = localStorage.getItem('scriptHubCustomScripts');
+        let localCustom = [];
+        try { localCustom = savedScripts ? JSON.parse(savedScripts) : []; } catch (_) { localCustom = []; }
+        const adminOverridesRaw = localStorage.getItem('scriptHubAdminPremiumOverrides');
+        let adminOverrides = [];
+        try { adminOverrides = adminOverridesRaw ? JSON.parse(adminOverridesRaw) : []; } catch (_) { adminOverrides = []; }
+        const remoteById = new Map(remoteScripts.map(s => [s.id, s]));
+        const overrideById = new Map(adminOverrides.map(s => [s.id, s]));
+        const merged = INITIAL_PREMIUM_SCRIPTS.map(base => overrideById.get(base.id) ? { ...base, ...overrideById.get(base.id) } : base);
+        remoteScripts.forEach(s => {
+          if (!deleted.has(s.id) && !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id)) merged.push(s);
+        });
+        localCustom.forEach(s => {
+          if (!deleted.has(s.id) && !remoteById.has(s.id)) merged.push(s);
+        });
+        scriptsData = normalizeUnverifiedScriptStats(merged);
         renderMainGrid();
       }
     }, err => {
@@ -6692,8 +6709,13 @@ function syncFromFirestore() {
         remoteGames.push({ id: doc.id, ...doc.data() });
       });
       if (remoteGames.length > 0) {
-        const nonDuplicateGames = remoteGames.filter(rg => !INITIAL_GAMES.some(g => g.id === rg.id));
-        gamesData = [...INITIAL_GAMES, ...nonDuplicateGames];
+        const savedGames = localStorage.getItem('scriptHubCustomGames');
+        let localCustomGames = [];
+        try { localCustomGames = savedGames ? JSON.parse(savedGames) : []; } catch (_) { localCustomGames = []; }
+        const remoteById = new Map(remoteGames.map(g => [g.id, g]));
+        const mergedGames = [...INITIAL_GAMES, ...remoteGames.filter(g => !INITIAL_GAMES.some(ig => ig.id === g.id))];
+        localCustomGames.forEach(g => { if (!remoteById.has(g.id)) mergedGames.push(g); });
+        gamesData = mergedGames;
         if (activeCategory === 'games') renderMainGrid();
       }
     }, err => {});
@@ -7102,7 +7124,11 @@ function renderCategories() {
 
 function selectCategory(catId) {
   activeCategory = catId;
+  activeQuickFilter = 'all';
   currentPage = 1;
+  document.querySelectorAll('.quick-filter-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.getAttribute('data-filter') === 'all');
+  });
   recordTaskProgress('category', catId);
   
   // Sync top nav active classes
@@ -7119,6 +7145,8 @@ function handleSearchDebounce(e) {
   clearTimeout(searchDebounceTimeout);
   searchDebounceTimeout = setTimeout(() => {
     searchQuery = (e.target.value || '').trim().toLowerCase();
+    const clearBtn = document.getElementById('searchClearBtn');
+    if (clearBtn) clearBtn.style.display = searchQuery ? 'inline-flex' : 'none';
     currentPage = 1;
     renderMainGrid();
   }, 300);
@@ -7151,17 +7179,27 @@ function clearSearchInput() {
 
 function resetFilters() {
   activeCategory = 'all';
+  activeQuickFilter = 'all';
   searchQuery = '';
   currentPage = 1;
   const search = document.getElementById('searchInput');
+  const clearBtn = document.getElementById('searchClearBtn');
   if (search) search.value = '';
+  if (clearBtn) clearBtn.style.display = 'none';
   const sort = document.getElementById('sortSelect');
   if (sort) sort.value = 'default';
   const type = document.getElementById('typeSelect');
   if (type) type.value = 'all';
   const rating = document.getElementById('ratingSelect');
   if (rating) rating.value = 'all';
-
+  const executor = document.getElementById('executorSelect');
+  if (executor) executor.value = 'all';
+  document.querySelectorAll('.quick-filter-chip').forEach(chip => {
+    chip.classList.toggle('active', chip.getAttribute('data-filter') === 'all');
+  });
+  document.querySelectorAll('.rblx-nav-btn').forEach(btn => btn.classList.remove('active'));
+  const allNav = document.getElementById('rblxNav_all');
+  if (allNav) allNav.classList.add('active');
   renderCategories();
   renderMainGrid();
 }
@@ -7189,7 +7227,7 @@ function getFilteredScripts() {
   if (activeQuickFilter === 'popular') {
     list.sort((a, b) => (b.views || 0) - (a.views || 0));
   } else if (activeQuickFilter === 'keyless') {
-    list = list.filter(s => s.isKeyless || !s.keyRequired || !((s.desc || '') + (s.name || '')).toLowerCase().includes('keyli'));
+    list = list.filter(s => s.isKeyless === true || s.keyRequired === false);
   } else if (activeQuickFilter === 'mobile') {
     list = list.filter(s => (s.executors || []).some(e => ['delta', 'fluxus', 'codex', 'arceus', 'hydrogen'].includes(e.toLowerCase())));
   } else if (activeQuickFilter === 'pc') {
@@ -7671,6 +7709,11 @@ function toggleFavorite(scriptId, event) {
 function rateScriptPrompt(scriptId) { if(!currentUser){showToast('Puan vermek için giriş yapmalısın.','fa-right-to-bracket','blue');openAuthModal();return;} showToast('Puan sistemi gerçek kullanıcı verilerine bağlanıyor.','fa-circle-info','blue'); }
 
 function submitComment(scriptId) {
+  if (!currentUser) {
+    showToast("Yorum yapmak için önce giriş yapmalısın.", "fa-right-to-bracket", "blue");
+    openAuthModal();
+    return;
+  }
   const input = document.getElementById(`commentInput_${scriptId}`);
   if (!input) return;
   const text = (input.value || '').trim();
@@ -8429,8 +8472,8 @@ function openUserProfileModal() {
   // Check cosmetics on profile avatar
   const avatarImg = document.getElementById('profileAvatarImg');
   avatarImg.className = '';
-  if ((userProfile.activeCosmetics || []).includes('c_gold_frame')) avatarImg.classList.add('avatar-frame-gold');
-  if ((userProfile.activeCosmetics || []).includes('c_rainbow_frame')) avatarImg.classList.add('avatar-frame-rainbow');
+  if (frame?.class) avatarImg.classList.add(frame.class);
+  if (effect?.class) avatarImg.classList.add(effect.class);
 
   const myScriptsCount = scriptsData.filter(s => currentUser && s.userId === currentUser.uid).length;
   const myGamesCount = gamesData.filter(g => currentUser && g.userId === currentUser.uid).length;
@@ -8485,7 +8528,12 @@ function saveUserProfileChanges() {
   userProfile.photoURL=document.getElementById('editAvatarPreview').src;
   userProfile.bio=(document.getElementById('editBioInput')?.value||'').trim().slice(0,160);
   userProfile.bannerUrl=(document.getElementById('editBannerInput')?.value||'').trim();
-  saveUserProfile();closeModal('editProfileModal');openUserProfileModal();showToast("Profil özelleştirmen kaydedildi!","fa-user-check","green");
+  saveUserProfile();
+  scriptsData.forEach(s => { if (currentUser && s.userId === currentUser.uid) s.userName = newName; });
+  closeModal('editProfileModal');
+  openUserProfileModal();
+  renderMainGrid();
+  showToast("Profil özelleştirmen kaydedildi!","fa-user-check","green");
 }
 
 // ==================== ADD SCRIPT & GAME ====================
@@ -8682,7 +8730,7 @@ function handleNewGameSubmit(e) {
   showToast("Oyun başarıyla eklendi! (+20 Coin)", "fa-gamepad", "green");
 }
 
-function deleteScript(scriptId) {
+async function deleteScript(scriptId) {
   const s = scriptsData.find(item => item.id === scriptId);
   const isOwner = currentUser && s && s.userId === currentUser.uid;
   const isAdmin = isUserAdmin(currentUser);
@@ -8695,13 +8743,16 @@ function deleteScript(scriptId) {
   scriptsData = scriptsData.filter(s => s.id !== scriptId);
   const customScripts = scriptsData.filter(s => !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id));
   localStorage.setItem('scriptHubCustomScripts', JSON.stringify(customScripts));
-
+  setDeletedScriptIds([...new Set([...getDeletedScriptIds(), scriptId])]);
   if (db) {
     try {
-      db.collection('scripts').doc(scriptId).delete().catch(() => {});
-    } catch (e) {}
+      await db.collection('scripts').doc(scriptId).delete();
+    } catch (e) {
+      showToast("Script Firestore'dan silinemedi.", "fa-circle-xmark", "red");
+      renderMainGrid();
+      return;
+    }
   }
-
   renderMainGrid();
   showToast("Script silindi.", "fa-trash", "red");
 }
@@ -8740,7 +8791,7 @@ function openAdminModal() {
   openModal('adminModal');
 }
 
-function adminEditScriptPrompt(scriptId) {
+async function adminEditScriptPrompt(scriptId) {
   const s = scriptsData.find(x => x.id === scriptId);
   if (!s) return;
 
@@ -8749,11 +8800,30 @@ function adminEditScriptPrompt(scriptId) {
   const newPrice = prompt("Yeni Coin Fiyatı:", s.coinPrice);
   if (newPrice === null) return;
 
-  s.name = newName;
-  s.coinPrice = parseInt(newPrice, 10) || 0;
-
-  // Save admin override
-  localStorage.setItem('scriptHubAdminPremiumOverrides', JSON.stringify(scriptsData.filter(x => x.isPremium)));
+  const parsedPrice = Math.max(0, Math.min(9999, Number(newPrice)));
+  if (!Number.isFinite(parsedPrice)) {
+    showToast("Geçersiz coin fiyatı.", "fa-circle-xmark", "red");
+    return;
+  }
+  s.name = newName.trim();
+  s.coinPrice = parsedPrice;
+  s.isPremium = parsedPrice > 0;
+  localStorage.setItem('scriptHubAdminPremiumOverrides', JSON.stringify(
+    scriptsData.filter(x => x.isPremium && x.userId === 'system')
+  ));
+  if (db) {
+    try {
+      await db.collection('scripts').doc(scriptId).set({
+        name: s.name,
+        coinPrice: s.coinPrice,
+        isPremium: s.isPremium,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+    } catch (e) {
+      showToast("Admin değişikliği Firestore'a kaydedilemedi.", "fa-circle-xmark", "red");
+      return;
+    }
+  }
   openAdminModal();
   renderMainGrid();
   showToast("Script güncellendi!", "fa-check", "green");
@@ -8993,11 +9063,9 @@ async function loadRealSiteStats(){
 
 // ==================== BOOTSTRAP APP ====================
 window.addEventListener('DOMContentLoaded', () => {
-  loadRealSiteStats();
   switchTheme(currentTheme);
   initFirebase();
   initSupabase();
-  loadRealSiteStats();
   loadSavedData();
   applyTranslations();
   renderCategories();
