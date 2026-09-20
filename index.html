@@ -25,7 +25,12 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <!-- Firebase 10.7.1 Compat SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script type="module">
+import { removeBackground } from "https://esm.sh/@imgly/background-removal@1.7.0";
+window.sdAiRemoveBackground=async function(file,progress){
+ return await removeBackground(file,{model:"medium",output:{format:"image/png",quality:0.95,type:"foreground"},progress});
+};
+</script>\n<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
@@ -9473,18 +9478,11 @@ function syncCustomCosmetics(){
 let adminCosmeticProcessedBlob=null,adminCosmeticProcessingPromise=null,adminCosmeticObjectUrl='';
 function sdBgDist(a,b){return Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2])}
 async function sdProcessCosmeticImage(file){
- const url=URL.createObjectURL(file);
- try{
-  const img=await new Promise((ok,no)=>{const x=new Image();x.onload=()=>ok(x);x.onerror=no;x.src=url});
-  const sc=Math.min(1,1200/Math.max(img.naturalWidth,img.naturalHeight)),cv=document.createElement('canvas');cv.width=Math.max(1,img.naturalWidth*sc|0);cv.height=Math.max(1,img.naturalHeight*sc|0);
-  const x=cv.getContext('2d',{willReadFrequently:true});x.drawImage(img,0,0,cv.width,cv.height);const w=cv.width,h=cv.height,id=x.getImageData(0,0,w,h),d=id.data;
-  const pts=[[0,0],[w-1,0],[0,h-1],[w-1,h-1],[w>>1,0],[w>>1,h-1],[0,h>>1],[w-1,h>>1]],bg=[0,0,0];pts.forEach(p=>{const i=(p[1]*w+p[0])*4;bg[0]+=d[i];bg[1]+=d[i+1];bg[2]+=d[i+2]});bg[0]/=pts.length;bg[1]/=pts.length;bg[2]/=pts.length;
-  const q=[],seen=new Uint8Array(w*h),tol=62,seed=(xx,yy)=>{if(xx<0||yy<0||xx>=w||yy>=h)return;const p=yy*w+xx;if(seen[p])return;const i=p*4;if(d[i+3]>8&&sdBgDist([d[i],d[i+1],d[i+2]],bg)<=tol){seen[p]=1;q.push(p)}};
-  pts.forEach(p=>seed(p[0],p[1]));for(let hq=0;hq<q.length;hq++){const p=q[hq],xx=p%w,yy=p/w|0,i=p*4;d[i+3]=0;seed(xx+1,yy);seed(xx-1,yy);seed(xx,yy+1);seed(xx,yy-1)}
-  x.putImageData(id,0,0);let minX=w,minY=h,maxX=-1,maxY=-1;for(let yy=0;yy<h;yy++)for(let xx=0;xx<w;xx++)if(d[(yy*w+xx)*4+3]>8){minX=Math.min(minX,xx);minY=Math.min(minY,yy);maxX=Math.max(maxX,xx);maxY=Math.max(maxY,yy)}
-  if(maxX>=0){const pad=Math.max(4,Math.min(w,h)*.025|0);minX=Math.max(0,minX-pad);minY=Math.max(0,minY-pad);maxX=Math.min(w-1,maxX+pad);maxY=Math.min(h-1,maxY+pad);const out=document.createElement('canvas');out.width=maxX-minX+1;out.height=maxY-minY+1;out.getContext('2d').drawImage(cv,minX,minY,out.width,out.height);cv.width=out.width;cv.height=out.height;cv.getContext('2d').drawImage(out,0,0)}
-  return await new Promise((ok,no)=>cv.toBlob(b=>b?ok(new File([b],file.name.replace(/\.[^.]+$/,'')+'_transparent.png',{type:'image/png'})):no(new Error('toBlob failed')),'image/png'));
- }finally{URL.revokeObjectURL(url)}
+ if(typeof window.sdAiRemoveBackground!=='function')throw new Error('AI arka plan motoru yüklenemedi.');
+ return await window.sdAiRemoveBackground(file,(key,current,total)=>{
+  const status=document.getElementById('adminCosmeticPreview')?.querySelector('.admin-cosmetic-processing');
+  if(status){const pct=total?Math.round(current/total*100):0;status.innerHTML='<i class="fa-solid fa-spinner"></i> AI arka plan temizliyor '+pct+'%';}
+ });
 }
 async function handleAdminCosmeticFile(event){
  const file=event?.target?.files?.[0];if(!file)return;
