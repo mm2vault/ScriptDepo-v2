@@ -10439,5 +10439,32 @@ function openExecutorGuideModal(execId) {
 </div>
 
 <script>function sdNav(btn){document.querySelectorAll('.sd-nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}function sdSyncCoin(){const a=document.getElementById('headerCoinCount'),b=document.getElementById('sdSideCoin');if(a&&b)b.textContent=a.textContent||'0'}window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{sdSyncCoin();const a=document.getElementById('headerCoinCount');if(a)new MutationObserver(sdSyncCoin).observe(a,{childList:true,subtree:true,characterData:true});if(typeof syncAdminVisibility==='function')syncAdminVisibility()},100));</script>
-<script id="scriptdepo-reference-sync">window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{const avatar=document.getElementById('sdRailAvatar'),frameImg=document.getElementById('sdRailFrame'),name=document.getElementById('sdRailName'),email=document.getElementById('sdRailEmail'),coin=document.getElementById('sdRailCoins'),heroCoin=document.getElementById('sdHeroCoins'),scripts=document.getElementById('sdHeroScripts'),games=document.getElementById('sdHeroGames'),users=document.getElementById('sdHeroUsers'),rs=document.getElementById('sdRailScripts'),ri=document.getElementById('sdRailItems'),rc=document.getElementById('sdRailCosmetics');const sync=()=>{try{if(window.userProfile){if(avatar&&userProfile.photoURL)avatar.src=userProfile.photoURL;if(name)name.textContent=userProfile.displayName||'Kullanıcı';if(email)email.textContent=userProfile.email?'@'+String(userProfile.email).split('@')[0]:'@scriptdepo';const n=Number(userProfile.coins||0);if(coin)coin.textContent=n.toLocaleString('tr-TR');if(heroCoin)heroCoin.textContent=n.toLocaleString('tr-TR');if(document.getElementById('sdSideCoin'))document.getElementById('sdSideCoin').textContent=n.toLocaleString('tr-TR');const active=userProfile.activeCosmetics||[],fc=(typeof allCosmetics==='function'?allCosmetics():[]).find(x=>active.includes(x.id)&&x.type==='frame'&&/^https?:\/\//i.test(x.gifUrl||x.mediaUrl||''));if(frameImg){if(fc){frameImg.src=fc.gifUrl||fc.mediaUrl;frameImg.style.display='block'}else{frameImg.removeAttribute('src');frameImg.style.display='none'}}if(ri)ri.textContent=(userProfile.purchasedScripts||[]).length;if(rc)rc.textContent=(userProfile.inventory||[]).filter(id=>String(id).startsWith('c_')).length}if(scripts&&typeof scriptsData!=='undefined')scripts.textContent=scriptsData.length;if(games&&typeof gamesData!=='undefined')games.textContent=gamesData.length;if(rs&&typeof scriptsData!=='undefined')rs.textContent=scriptsData.length;if(users&&typeof siteStats!=='undefined')users.textContent=siteStats?.users?Number(siteStats.users).toLocaleString('tr-TR'):'—'}catch(e){}};sync();setInterval(sync,1500)},350));</script></body>
+<script id="scriptdepo-reference-sync">
+/* Lightweight legacy UI sync. Cosmetic media itself is rendered by the shared
+   auto-fit renderer; this block only updates counters/profile text. */
+window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{
+  const avatar=document.getElementById('sdRailAvatar'),name=document.getElementById('sdRailName'),
+    email=document.getElementById('sdRailEmail'),coin=document.getElementById('sdRailCoins'),
+    heroCoin=document.getElementById('sdHeroCoins'),scripts=document.getElementById('sdHeroScripts'),
+    games=document.getElementById('sdHeroGames'),users=document.getElementById('sdHeroUsers'),
+    rs=document.getElementById('sdRailScripts'),rc=document.getElementById('sdRailCosmetics');
+  const sync=()=>{
+    try{
+      if(window.userProfile){
+        if(avatar&&userProfile.photoURL)avatar.src=userProfile.photoURL;
+        if(name)name.textContent=userProfile.displayName||'Kullanıcı';
+        if(email)email.textContent=userProfile.email?'@'+String(userProfile.email).split('@')[0]:'@scriptdepo';
+        const n=Number(userProfile.coins||0).toLocaleString('tr-TR');
+        [coin,heroCoin,document.getElementById('sdSideCoin')].forEach(el=>{if(el)el.textContent=n;});
+        if(rc)rc.textContent=(userProfile.inventory||[]).filter(id=>String(id).startsWith('c_')).length;
+      }
+      if(scripts&&typeof scriptsData!=='undefined')scripts.textContent=scriptsData.length;
+      if(rs&&typeof scriptsData!=='undefined')rs.textContent=scriptsData.length;
+      if(games&&typeof gamesData!=='undefined')games.textContent=gamesData.length;
+      if(users&&typeof siteStats!=='undefined')users.textContent=siteStats?.users?Number(siteStats.users).toLocaleString('tr-TR'):'—';
+    }catch(_){}
+  };
+  sync(); setInterval(sync,1500);
+},350));
+</script></body>
 </html>
