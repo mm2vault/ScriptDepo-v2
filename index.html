@@ -4462,6 +4462,9 @@ footer{margin-left:248px!important}
 @media(max-width:1100px) and (min-width:769px){:root{--sd-sidebar:82px!important}.sd-sidebar{width:82px!important}.sd-brand>div:not(.sd-crown-logo),.sd-section-label,.sd-side-bottom{display:none!important}header,.main-container{margin-left:82px!important;width:calc(100% - 82px)!important}.main-container{grid-template-columns:minmax(0,1fr)!important;padding:18px 18px 80px!important}.sd-right-rail{display:none!important}.scripts-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.sd-dashboard-strip{grid-template-columns:repeat(2,1fr)}footer{margin-left:82px!important}}
 @media(max-width:768px){header{height:auto!important;min-height:60px!important;margin-left:0!important;width:100%!important}.main-container{margin-left:0!important;width:100%!important;display:block!important;padding:12px 10px 92px!important}.sd-right-rail{display:none!important}.sd-dashboard-strip{grid-template-columns:1fr 1fr;gap:8px}.sd-quick-card{min-height:62px;padding:9px}.sd-quick-card>i{width:32px;height:32px}.sd-quick-card strong{font-size:10px}.sd-quick-card span{font-size:8px}.sd-quick-card .fa-chevron-right{display:none}.sd-hero-content{grid-template-columns:1fr!important;text-align:center!important}.sd-hero-brand-art{margin:auto;width:72px!important;height:72px!important;font-size:38px!important}.sd-hero-stats{grid-template-columns:1fr 1fr!important}.platform-hero{min-height:0!important}.scripts-grid{grid-template-columns:1fr!important}.script-card-img-wrap{height:155px!important}.categories-wrapper{padding-bottom:3px}.filter-bar{align-items:stretch}.filter-group{flex:1;min-width:145px}.filter-group:last-child{min-width:100%}.filter-group:last-child .btn{flex:1}.sd-help-box{display:none!important}footer{margin-left:0!important}}
 @media(max-width:430px){.sd-dashboard-strip{grid-template-columns:1fr}.sd-hero-stats>div{min-height:64px}.sd-hero-copy .hero-title{font-size:22px!important}.sd-hero-copy .hero-subtitle{font-size:10px!important}.filter-group{min-width:100%!important}.script-card-img-wrap{height:145px!important}}
+/* Admin controls: visible on desktop and tablet for the configured admin account. */
+@media (min-width:769px){html.scriptdepo-admin #adminBtn{display:inline-flex!important;}html.scriptdepo-admin #sdAdminNav{display:flex!important;}}
+@media (min-width:769px) and (max-width:1100px){html.scriptdepo-admin #sdAdminNav{align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(239,68,68,.22),0 0 16px rgba(239,68,68,.08);}html.scriptdepo-admin #sdAdminNav i{color:#f87171!important;}html.scriptdepo-admin #adminBtn{width:42px;min-width:42px;padding:0;justify-content:center;}html.scriptdepo-admin #adminBtn span{display:none;}}
 </style></head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
@@ -8861,9 +8864,17 @@ function syncAdminVisibility() {
     document.getElementById('drawerAdminBtn')
   ].filter(Boolean);
 
+  document.documentElement.classList.toggle('scriptdepo-admin', admin);
+  if (document.body) document.body.classList.toggle('scriptdepo-admin', admin);
+
   elements.forEach(el => {
     el.classList.toggle('is-admin', admin);
     el.setAttribute('aria-hidden', admin ? 'false' : 'true');
+    if (admin) {
+      el.style.setProperty('display', el.id === 'sdAdminNav' ? 'flex' : 'inline-flex', 'important');
+    } else {
+      el.style.removeProperty('display');
+    }
   });
 }
 
