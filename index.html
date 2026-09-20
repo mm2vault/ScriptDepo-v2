@@ -4502,6 +4502,24 @@ footer{margin-left:248px!important}
 @keyframes sdHologram{0%,100%{opacity:.72;filter:hue-rotate(0deg) drop-shadow(0 0 5px rgba(34,211,238,.45))}50%{opacity:1;filter:hue-rotate(55deg) drop-shadow(0 0 13px rgba(168,85,247,.8))}}
 @keyframes sdComet{0%,100%{filter:drop-shadow(0 0 3px rgba(255,255,255,.25))}50%{filter:drop-shadow(12px -4px 14px rgba(96,165,250,.85)) drop-shadow(-6px 5px 10px rgba(167,139,250,.65))}}
 </style>
+<style id="scriptdepo-animated-cosmetics">
+.avatar-frame-aurora-animated{border:2px solid #67e8f9!important;box-shadow:0 0 0 2px rgba(167,139,250,.65),0 0 18px rgba(34,211,238,.65);animation:sdAuroraFrame 3s linear infinite}
+.avatar-frame-flame-animated{border:2px solid #fb7185!important;box-shadow:0 0 0 2px rgba(251,146,60,.5),0 0 22px rgba(239,68,68,.65);animation:sdFlameFrame 1.15s ease-in-out infinite}
+.avatar-frame-lightning-animated{border:2px solid #38bdf8!important;box-shadow:0 0 0 2px rgba(129,230,217,.45),0 0 22px rgba(56,189,248,.65);animation:sdLightningFrame 1.7s steps(2,end) infinite}
+.avatar-frame-rainbow-animated{border:2px solid #a78bfa!important;box-shadow:0 0 0 2px rgba(244,114,182,.45),0 0 22px rgba(167,139,250,.55);animation:sdRainbowFrame 2.4s linear infinite}
+.avatar-frame-void-animated{border:2px solid #8b5cf6!important;box-shadow:0 0 0 2px rgba(17,24,39,.9),0 0 26px rgba(109,40,217,.75);animation:sdVoidFrame 2s ease-in-out infinite}
+.avatar-frame-gold-animated{border:2px solid #fbbf24!important;box-shadow:0 0 0 2px rgba(245,158,11,.5),0 0 24px rgba(251,191,36,.7);animation:sdGoldFrame 1.8s ease-in-out infinite}
+.profile-effect-snow-animated{box-shadow:0 0 28px rgba(186,230,253,.45),0 0 55px rgba(56,189,248,.18);animation:sdSnowEffect 2.2s ease-in-out infinite}
+@keyframes sdAuroraFrame{0%,100%{filter:hue-rotate(0deg) brightness(1)}50%{filter:hue-rotate(80deg) brightness(1.25)}}
+@keyframes sdFlameFrame{0%,100%{transform:scale(1);filter:brightness(1)}50%{transform:scale(1.035);filter:brightness(1.35)}}
+@keyframes sdLightningFrame{0%,82%,100%{filter:brightness(1)}84%{filter:brightness(2.1);box-shadow:0 0 0 3px rgba(125,211,252,.8),0 0 35px rgba(56,189,248,1)}87%{filter:brightness(.9)}}
+@keyframes sdRainbowFrame{from{filter:hue-rotate(0deg) saturate(1.2)}to{filter:hue-rotate(360deg) saturate(1.35)}}
+@keyframes sdVoidFrame{0%,100%{opacity:.86;box-shadow:0 0 0 2px rgba(17,24,39,.95),0 0 18px rgba(109,40,217,.55)}50%{opacity:1;box-shadow:0 0 0 2px rgba(139,92,246,.75),0 0 34px rgba(124,58,237,.95)}}
+@keyframes sdGoldFrame{0%,100%{filter:brightness(1) saturate(1)}50%{filter:brightness(1.45) saturate(1.3)}}
+@keyframes sdSnowEffect{0%,100%{filter:brightness(1)}50%{filter:brightness(1.3) drop-shadow(0 0 10px rgba(186,230,253,.65))}}
+.store-cosmetic-preview .avatar-frame-aurora-animated,.store-cosmetic-preview .avatar-frame-flame-animated,.store-cosmetic-preview .avatar-frame-lightning-animated,.store-cosmetic-preview .avatar-frame-rainbow-animated,.store-cosmetic-preview .avatar-frame-void-animated,.store-cosmetic-preview .avatar-frame-gold-animated{animation-duration:1.6s}
+@media(prefers-reduced-motion:reduce){.avatar-frame-aurora-animated,.avatar-frame-flame-animated,.avatar-frame-lightning-animated,.avatar-frame-rainbow-animated,.avatar-frame-void-animated,.avatar-frame-gold-animated,.profile-effect-snow-animated{animation:none!important}}
+</style>
 </head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
@@ -6873,6 +6891,13 @@ const COSMETICS_LIST = [
   {id:"c_storm_frame",name:"Fırtına Çerçeve",nameEn:"Storm Frame",price:700,type:"frame",desc:"Mavi elektrik enerjili hareketli çerçeve.",class:"avatar-frame-storm"},
   {id:"c_hologram_effect",name:"Hologram Aura",nameEn:"Hologram Aura",price:650,type:"effect",desc:"Renk değiştiren hologram aura efekti.",class:"profile-effect-hologram"},
   {id:"c_comet_effect",name:"Kuyruklu Yıldız",nameEn:"Comet Effect",price:600,type:"effect",desc:"Parlak kuyruklu yıldız ışık efekti.",class:"profile-effect-comet"},
+  {id:"c_animated_aurora",name:"Animated Aurora",nameEn:"Animated Aurora",price:650,type:"frame",desc:"Yavaşça renk değiştiren hareketli aurora çerçevesi.",class:"avatar-frame-aurora-animated"},
+  {id:"c_animated_flame",name:"Animated Flame",nameEn:"Animated Flame",price:700,type:"frame",desc:"Nabız atan alev enerjili hareketli çerçeve.",class:"avatar-frame-flame-animated"},
+  {id:"c_animated_lightning",name:"Animated Lightning",nameEn:"Animated Lightning",price:750,type:"frame",desc:"Elektrik çakması animasyonlu cyan çerçeve.",class:"avatar-frame-lightning-animated"},
+  {id:"c_animated_rainbow",name:"Animated Rainbow",nameEn:"Animated Rainbow",price:800,type:"frame",desc:"Sürekli renk geçişli hareketli rainbow çerçeve.",class:"avatar-frame-rainbow-animated"},
+  {id:"c_animated_void",name:"Animated Void",nameEn:"Animated Void",price:850,type:"frame",desc:"Karanlık mor enerjiyle titreşen void çerçeve.",class:"avatar-frame-void-animated"},
+  {id:"c_animated_gold",name:"Animated Gold",nameEn:"Animated Gold",price:900,type:"frame",desc:"Altın enerji parıltısı animasyonlu premium çerçeve.",class:"avatar-frame-gold-animated"},
+  {id:"c_animated_snow",name:"Animated Snow",nameEn:"Animated Snow",price:725,type:"effect",desc:"Avatar çevresinde hareketli buz ve kar parıltısı.",class:"profile-effect-snow-animated"},
 ];
 
 const I18N = {
@@ -7084,8 +7109,19 @@ function loadSavedData() {
   if (adminOverrides) {
     try {
       const parsedOverrides = JSON.parse(adminOverrides);
-      // Empty/corrupt override caches must never erase the built-in script catalog.
-      if (Array.isArray(parsedOverrides) && parsedOverrides.length > 0) premiumPool = parsedOverrides;
+      // Admin overrides are patches, never a replacement for the built-in catalog.
+      // A partial/old override list must not make the rest of the scripts disappear.
+      if (Array.isArray(parsedOverrides) && parsedOverrides.length > 0) {
+        const overrideById = new Map(parsedOverrides.map(s => [s.id, s]));
+        premiumPool = INITIAL_PREMIUM_SCRIPTS.map(base =>
+          overrideById.has(base.id) ? { ...base, ...overrideById.get(base.id) } : base
+        );
+        parsedOverrides.forEach(s => {
+          if (s && s.id && !INITIAL_PREMIUM_SCRIPTS.some(base => base.id === s.id)) {
+            premiumPool.push(s);
+          }
+        });
+      }
     } catch (e) {}
   }
   // Keep the last known-good catalog as an offline fallback.
@@ -7205,9 +7241,9 @@ function syncFromFirestore() {
 
           const remoteById = new Map(remoteScripts.map(s => [s.id, s]));
           const overrideById = new Map(adminOverrides.map(s => [s.id, s]));
-          const merged = INITIAL_PREMIUM_SCRIPTS.map(base =>
-            overrideById.get(base.id) ? { ...base, ...overrideById.get(base.id) } : base
-          );
+          const merged = INITIAL_PREMIUM_SCRIPTS
+            .filter(base => !deleted.has(base.id))
+            .map(base => overrideById.get(base.id) ? { ...base, ...overrideById.get(base.id) } : base);
 
           remoteScripts.forEach(s => {
             if (!deleted.has(s.id) && !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id)) {
