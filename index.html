@@ -8815,38 +8815,43 @@ function renderStorePremiumScripts() {
 }
 
 function renderStoreCosmetics() {
-  const grid = document.getElementById('storeCosmeticsGrid');
+  const grid = document.getElementById("storeCosmeticsGrid");
   if (!grid) return;
-  const cosmetics = allCosmetics().filter(c => {
-    const url = c.mediaUrl || c.gifUrl || c.preview || '';
-    return c.type === 'frame' && (!url || /^https?:\/\//i.test(url) || String(c.mode).toLowerCase() === 'css');
-  });
+  const cosmetics = allCosmetics().filter(c => c.type === "frame");
   if (!cosmetics.length) {
-    grid.innerHTML = '<div class="cosmetic-empty-state"><i class="fa-solid fa-wand-magic-sparkles"></i><b>Henüz kozmetik yok</b><span>Admin yeni bir medya yüklediğinde burada görünecek.</span></div>';
+    grid.innerHTML = `<div class="cosmetic-empty-state"><i class="fa-solid fa-wand-magic-sparkles"></i><b>Henüz kozmetik yok</b><span>Admin yeni bir medya yüklediğinde burada görünecek.</span></div>`;
     return;
   }
-  const avatar = userProfile?.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
+  const avatar = userProfile?.photoURL || "https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo";
   grid.innerHTML = cosmetics.map(c => {
     const owned = (userProfile.inventory || []).includes(c.id);
     const active = (userProfile.activeCosmetics || []).includes(c.id);
-    const url = c.mediaUrl || c.gifUrl || c.preview || '';
-    const mode = String(c.mode || '').toLowerCase();
-    let overlay = '';
-    if (url && /^https?:\/\//i.test(url)) {
-      overlay = mode === 'video'
-        ? '<video class="sd-cosmetic-media" src="' + escapeHtml(url) + '" muted loop autoplay playsinline></video>'
-        : '<img class="sd-cosmetic-media" src="' + escapeHtml(url) + '" alt="" loading="lazy" onerror="this.closest(\\'.sd-cosmetic-preview\\').classList.add(\\'media-broken\\')">';
-    }
-    return '<article class="store-cosmetic-card sd-cosmetic-card ' + (active ? 'is-equipped' : '') + '">' +
-      '<div class="store-cosmetic-preview sd-cosmetic-preview"><img class="store-avatar-base sd-cosmetic-avatar" src="' + escapeHtml(avatar) + '" alt="">' +
-      '<div class="sd-cosmetic-safe">' + overlay + '</div><span class="sd-cosmetic-live"><i class="fa-solid fa-circle"></i> CANLI ÖNİZLEME</span></div>' +
-      '<div class="store-cosmetic-info"><div class="store-cosmetic-title-row"><h5>' + escapeHtml(c.name) + '</h5><span class="cosmetic-type-pill">Çerçeve</span></div>' +
-      '<p>' + escapeHtml(c.desc || 'Profil fotoğrafına otomatik uyarlanır.') + '</p></div>' +
-      '<div class="store-cosmetic-footer"><span class="cosmetic-price"><i class="fa-solid fa-coins"></i> ' + Number(c.price || 0) + '</span>' +
-      (owned ? '<button class="btn btn-outline btn-sm cosmetic-action ' + (active ? 'is-active' : '') + '" onclick="toggleCosmeticActive(\\'' + c.id + '\\')">' + (active ? '<i class="fa-solid fa-check"></i> Kuşanıldı' : 'Kuşan') + '</button>' :
-      '<button class="btn btn-primary btn-sm cosmetic-action" onclick="buyStoreItem(\\'cosmetic\\',\\'' + c.id + '\\',' + Number(c.price || 0) + ')">Satın Al</button>') +
-      '</div></article>';
-  }).join('');
+    const url = c.mediaUrl || c.gifUrl || c.preview || "";
+    const mode = String(c.mode || "").toLowerCase();
+    const overlay = url && /^https?:\/\//i.test(url)
+      ? (mode === "video"
+        ? `<video class="sd-cosmetic-media" src="${escapeHtml(url)}" muted loop autoplay playsinline></video>`
+        : `<img class="sd-cosmetic-media" src="${escapeHtml(url)}" alt="" loading="lazy" onerror="this.style.display='none'">`)
+      : "";
+    return `<article class="store-cosmetic-card sd-cosmetic-card ${active ? "is-equipped" : ""}">
+      <div class="store-cosmetic-preview sd-cosmetic-preview">
+        <img class="sd-cosmetic-avatar" src="${escapeHtml(avatar)}" alt="">
+        <div class="sd-cosmetic-safe">${overlay}</div>
+        <span class="sd-cosmetic-live"><i class="fa-solid fa-circle"></i> CANLI ÖNİZLEME</span>
+      </div>
+      <div class="store-cosmetic-info">
+        <div class="store-cosmetic-title-row"><h5>${escapeHtml(c.name)}</h5><span class="cosmetic-type-pill">Çerçeve</span></div>
+        <p>${escapeHtml(c.desc || "Profil fotoğrafına otomatik uyarlanır.")}</p>
+      </div>
+      <div class="store-cosmetic-footer">
+        <span class="cosmetic-price"><i class="fa-solid fa-coins"></i> ${Number(c.price || 0)}</span>
+        ${owned
+          ? `<button class="btn btn-outline btn-sm cosmetic-action ${active ? "is-active" : ""}" onclick="toggleCosmeticActive('${c.id}')">${active ? '<i class="fa-solid fa-check"></i> Kuşanıldı' : 'Kuşan'}</button>`
+          : `<button class="btn btn-primary btn-sm cosmetic-action" onclick="buyStoreItem('cosmetic','${c.id}',${Number(c.price || 0)})">Satın Al</button>`}
+      </div>
+    </article>`;
+  }).join("");
+}).join('');
 }).join('');
 }
 function renderStoreInventory() {
