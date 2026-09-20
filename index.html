@@ -4280,6 +4280,83 @@ input,select,textarea{font-size:16px;max-width:100%}
 }
 @media(hover:none){.btn:hover,.category-pill:hover,.script-card:hover{transform:none}}
 </style>
+<style id="scriptdepo-responsive-system">
+/* Single responsive system: base -> tablet -> phone -> small phone */
+html,body{width:100%;min-width:0;overflow-x:hidden}
+*,*::before,*::after{box-sizing:border-box}
+img,video,iframe{max-width:100%}
+button,.btn,.category-pill,.theme-dot,.drawer-btn{touch-action:manipulation}
+input,select,textarea{max-width:100%}
+.main-container{width:100%;min-width:0}
+.scripts-grid,.tasks-grid{min-width:0}
+.scripts-grid>*,.tasks-grid>*{min-width:0}
+@media(max-width:1100px){
+ .main-container{padding-left:16px;padding-right:16px}
+ .scripts-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:700px){
+ :root{--radius-card:20px;--radius-modal:22px}
+ body{padding-bottom:env(safe-area-inset-bottom)}
+ header{padding:8px 10px;gap:8px}
+ .header-logo{width:38px;height:38px}
+ .header-titles h1{font-size:16px;white-space:nowrap}
+ .header-titles span{display:none}
+ .header-center{width:100%;max-width:none}
+ .search-input{height:44px;font-size:16px}
+ .header-right{gap:5px;flex-wrap:nowrap}
+ .header-right>.desktop-only{display:none!important}
+ .header-right .btn-icon{width:40px;height:40px}
+ .header-right .coin-badge{padding:8px 10px;font-size:12px}
+ .main-container{padding:14px 10px 80px}
+ .categories-wrapper{margin-left:-10px;margin-right:-10px;padding-left:10px;padding-right:10px}
+ .category-pill{min-height:42px;padding:9px 13px;font-size:13px}
+ .filter-bar{padding:10px;flex-direction:column;align-items:stretch;gap:9px}
+ .filter-group{width:100%;gap:8px}
+ .custom-select{width:100%;min-height:42px}
+ .filter-bar .btn{min-height:42px}
+ .scripts-grid{grid-template-columns:1fr;gap:14px}
+ .script-card-img-wrap{height:180px}
+ .script-card-body{padding:15px}
+ .script-card .card-actions,.script-card-footer{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ .script-card .card-actions .btn,.script-card-footer .btn{width:100%;min-height:42px}
+ .tasks-grid{grid-template-columns:1fr}
+ .task-card{min-width:0}
+ .daily-tasks-banner{padding:15px}
+ .hero-section{padding:16px!important;border-radius:20px!important}
+ .hero-section h1{font-size:clamp(24px,7vw,34px)!important}
+ .hero-section .btn{min-height:44px}
+ .modal-overlay{padding:0!important;align-items:flex-end!important}
+ .modal-container{width:100%!important;max-width:none!important;max-height:94dvh!important;margin:0!important;border-radius:22px 22px 0 0!important;overflow:hidden}
+ .modal-container.modal-lg{width:100%!important}
+ .modal-body{overflow-y:auto;overscroll-behavior:contain}
+ .modal-footer{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ .modal-footer .btn{width:100%;min-height:44px}
+ #mobileDrawerModal .modal-container,#adminModal .modal-container{height:100dvh!important;max-height:100dvh!important;border-radius:0!important}
+ #mobileDrawerModal .modal-body,#adminModal .modal-body{height:calc(100dvh - 64px);overflow-y:auto}
+ #adminModal .admin-table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+ #adminModal table{min-width:700px}
+ #adminCoinManager .btn{width:100%;min-height:42px}
+ #adminCoinManager input,#adminCoinManager select{width:100%;min-height:42px}
+ .notif-dropdown{position:fixed!important;top:64px!important;left:10px!important;right:10px!important;width:auto!important}
+ #chatIframeModal{left:8px!important;right:8px!important;width:auto!important}
+ #chatFabBtn{right:14px!important;bottom:14px!important}
+ .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}
+}
+@media(max-width:420px){
+ .header-logo{width:34px;height:34px}
+ .header-titles h1{font-size:14px}
+ .header-right .coin-badge{max-width:88px}
+ .main-container{padding-left:8px;padding-right:8px}
+ .filter-group{display:grid;grid-template-columns:1fr}
+ .script-card-img-wrap{height:165px}
+ .script-card .card-actions,.script-card-footer{grid-template-columns:1fr}
+ .modal-footer{grid-template-columns:1fr}
+ .store-grid,.cosmetic-grid,.profile-actions-grid{grid-template-columns:1fr!important}
+}
+@media(hover:none){
+ .btn:hover,.category-pill:hover,.script-card:hover{transform:none}
+}
+</style>
 </head>
 <body>
 
