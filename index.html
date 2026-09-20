@@ -4541,7 +4541,30 @@ footer{margin-left:248px!important}
 .sd-cosmetic-card .store-cosmetic-info{min-height:92px!important}
 .sd-cosmetic-card.is-equipped{border-color:rgba(16,185,129,.55)!important;box-shadow:0 0 28px rgba(16,185,129,.12)!important}
 #adminCosmeticScale,#adminCosmeticX,#adminCosmeticY,#adminCosmeticScaleValue,#adminCosmeticXValue,#adminCosmeticYValue,#adminCosmeticMode,#adminCosmeticColor1,#adminCosmeticColor2{display:none!important}
-</style></head>
+</style><style id="sdCosmeticAdminV2">
+#adminCosmeticType,#adminCosmeticMode,#adminCosmeticColor1,#adminCosmeticColor2,#adminCosmeticScale,#adminCosmeticX,#adminCosmeticY,#adminCosmeticUrl,#adminCosmeticRemoveBg{display:none!important}
+#adminCosmeticTypeValue,#adminCosmeticModeValue{display:none!important}
+</style>
+<script id="sdCosmeticBootV2">
+(function(){
+  function boot(){
+    const file=document.getElementById('adminCosmeticFile');
+    if(file){file.accept='image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm';}
+    const url=document.getElementById('adminCosmeticUrl');
+    if(url){const p=url.closest('.form-group');if(p)p.style.display='none';}
+    const bg=document.getElementById('adminCosmeticRemoveBg');
+    if(bg){bg.checked=true;const p=bg.closest('.form-group');if(p)p.style.display='none';}
+    ['adminCosmeticType','adminCosmeticMode','adminCosmeticColor1','adminCosmeticColor2','adminCosmeticScale','adminCosmeticX','adminCosmeticY'].forEach(id=>{
+      const el=document.getElementById(id); if(el){const p=el.closest('.form-group');if(p)p.style.display='none';}
+    });
+    const name=document.getElementById('adminCosmeticName');
+    if(name) name.placeholder='Kozmetik adı';
+    const desc=document.getElementById('adminCosmeticDesc');
+    if(desc) desc.placeholder='Kısa açıklama (isteğe bağlı)';
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
+})();
+</script></head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
 <div class="sd-section-label">ANA MENÜ</div><nav class="sd-nav">
@@ -9100,12 +9123,12 @@ function openUserProfileModal() {
   avatar.dataset.effect = effect?.id || '';
   const gifFrame = document.getElementById('profileAvatarGifFrame');
   if (gifFrame) {
-    if (frame?.gifUrl && frame.mode !== 'video') { gifFrame.src = frame.gifUrl; gifFrame.alt = frame.name; gifFrame.style.cssText = cosmeticLayoutStyle(frame)+'display:block;'; }
+    if (frame?.gifUrl && frame.mode !== 'video') { gifFrame.src = frame.gifUrl; gifFrame.alt = frame.name; gifFrame.style.cssText = 'position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;display:block;'; }
     else { gifFrame.removeAttribute('src'); gifFrame.alt = ''; gifFrame.style.display = 'none'; }
   }
   const videoFrame=document.getElementById('profileAvatarVideoFrame');
   if(videoFrame){
-    if(frame?.mode==='video' && frame.mediaUrl){videoFrame.src=frame.mediaUrl;videoFrame.style.cssText=cosmeticLayoutStyle(frame)+'display:block;';videoFrame.play().catch(()=>{});}
+    if(frame?.mode==='video' && frame.mediaUrl){videoFrame.src=frame.mediaUrl;videoFrame.style.cssText='position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;display:block;';videoFrame.play().catch(()=>{});}
     else{videoFrame.pause();videoFrame.removeAttribute('src');videoFrame.style.display='none';}
   }
   const nameEl=document.getElementById('profileDisplayName'); nameEl.className=nameCos?.class||'';
