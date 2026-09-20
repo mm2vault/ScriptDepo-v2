@@ -7128,7 +7128,7 @@ function syncFromFirestore() {
     // en yeni kayıtlar önce olacak şekilde 150 kayda kadar senkronize edilir.
     const syncCommunityScripts = () => {
       try {
-        db.collection('scripts').limit(150).onSnapshot(snapshot => {
+        db.collection('scripts').orderBy('createdAt', 'desc').limit(150).onSnapshot(snapshot => {
           const remoteScripts = [];
           snapshot.forEach(doc => {
             const data = doc.data() || {};
@@ -8802,8 +8802,13 @@ async function buyStoreItem(type,itemId,price){
 }
 function toggleCosmeticActive(cosmeticId) {
   if (!userProfile.activeCosmetics) userProfile.activeCosmetics = [];
+  if (!userProfile.inventory) userProfile.inventory = [];
   const cosmetic = COSMETICS_LIST.find(c => c.id === cosmeticId);
   if (!cosmetic) return;
+  if (!userProfile.inventory.includes(cosmeticId)) {
+    showToast("Bu kozmetik henüz koleksiyonunda yok.", "fa-lock", "red");
+    return;
+  }
   const index = userProfile.activeCosmetics.indexOf(cosmeticId);
   if (index > -1) {
     userProfile.activeCosmetics.splice(index, 1);
@@ -9211,6 +9216,19 @@ async function handleNewScriptSubmit(e) {
   const idx = scriptsData.findIndex(x => x.id === id);
   if (idx >= 0) scriptsData[idx] = { ...scriptsData[idx], ...scriptObj, code: coinPrice > 0 ? '' : code };
   else scriptsData.unshift(scriptObj);
+
+  // Keep community scripts locally too, so a temporary Firebase/Supabase
+  // sync problem cannot make a newly added script disappear after refresh.
+  try {
+    const localKey = 'scriptHubCustomScripts';
+    const localScripts = JSON.parse(localStorage.getItem(localKey) || '[]');
+    const localIdx = localScripts.findIndex(x => x.id === id);
+    const localObj = { ...scriptObj, code: coinPrice > 0 ? '' : code };
+    if (localIdx >= 0) localScripts[localIdx] = { ...localScripts[localIdx], ...localObj };
+    else localScripts.unshift(localObj);
+    localStorage.setItem(localKey, JSON.stringify(localScripts.slice(0, 300)));
+  } catch (_) {}
+
   setDeletedScriptIds(getDeletedScriptIds().filter(x => x !== id));
   closeModal('addScriptModal');
   resetScriptForm();
