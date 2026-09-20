@@ -9117,12 +9117,12 @@ function openUserProfileModal() {
   avatar.dataset.effect = effect?.id || '';
   const gifFrame = document.getElementById('profileAvatarGifFrame');
   if (gifFrame) {
-    if (frame?.gifUrl && frame.mode !== 'video') { gifFrame.src = frame.gifUrl; gifFrame.alt = frame.name; gifFrame.style.display = 'block'; }
+    if (frame?.gifUrl && frame.mode !== 'video') { gifFrame.src = frame.gifUrl; gifFrame.alt = frame.name; gifFrame.style.cssText = cosmeticLayoutStyle(frame)+'display:block;'; }
     else { gifFrame.removeAttribute('src'); gifFrame.alt = ''; gifFrame.style.display = 'none'; }
   }
   const videoFrame=document.getElementById('profileAvatarVideoFrame');
   if(videoFrame){
-    if(frame?.mode==='video' && frame.mediaUrl){videoFrame.src=frame.mediaUrl;videoFrame.style.display='block';videoFrame.play().catch(()=>{});}
+    if(frame?.mode==='video' && frame.mediaUrl){videoFrame.src=frame.mediaUrl;videoFrame.style.cssText=cosmeticLayoutStyle(frame)+'display:block;';videoFrame.play().catch(()=>{});}
     else{videoFrame.pause();videoFrame.removeAttribute('src');videoFrame.style.display='none';}
   }
   const nameEl=document.getElementById('profileDisplayName'); nameEl.className=nameCos?.class||'';
