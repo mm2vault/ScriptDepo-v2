@@ -4136,6 +4136,23 @@ html,body{max-width:100%;overflow-x:hidden}img,video,iframe{max-width:100%}butto
 .store-cosmetic-preview.css-frame{width:92px;height:92px;border-radius:50%;margin:0 auto 10px;background:var(--accent-gradient)}
 @media(max-width:600px){.store-cosmetic-preview{width:96px;height:96px}.store-cosmetic-preview .store-avatar-base{width:68px;height:68px}.avatar-preview-frame{width:82px;height:82px}.avatar-preview-frame .avatar-preview-base{width:68px;height:68px}}
 </style>
+
+<style id="admin-panel-overhaul">
+.admin-control-card{margin:16px 0;padding:16px;border:1px solid rgba(239,68,68,.28);border-radius:20px;background:linear-gradient(145deg,rgba(124,58,237,.10),rgba(239,68,68,.06));box-shadow:0 12px 30px rgba(0,0,0,.14)}
+.admin-control-head{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:14px}
+.admin-control-head h4{margin:0;font-size:17px;font-weight:800}.admin-control-head p{margin:5px 0 0;color:var(--text-muted);font-size:12px;line-height:1.45}
+.admin-badge{padding:5px 9px;border-radius:999px;background:rgba(239,68,68,.14);color:#ef4444;font-size:10px;font-weight:900;letter-spacing:.7px}
+.admin-coin-grid{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:10px;align-items:end}.admin-coin-actions{display:flex;gap:7px;flex-wrap:wrap}
+.admin-control-status{min-height:20px;margin-top:10px;font-size:12px;font-weight:700;color:var(--green)}
+.admin-user-mini-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:7px;margin-top:10px}
+.admin-user-mini{padding:9px 11px;border:1px solid var(--border-color);border-radius:12px;background:var(--bg-card);display:flex;justify-content:space-between;gap:8px;min-width:0}
+.admin-user-mini span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.admin-user-mini b{color:var(--gold);white-space:nowrap}
+.admin-table-scroll{scrollbar-width:thin}.admin-table-scroll table{min-width:650px}
+#adminModal .modal-container{width:min(1100px,96vw);max-height:92vh}
+#adminModal .modal-body{overflow:auto}
+@media(max-width:900px){.admin-coin-grid{grid-template-columns:1fr 1fr}.admin-coin-actions{grid-column:1/-1}}
+@media(max-width:600px){#adminModal .modal-container{width:100vw;max-width:100vw;height:100dvh;max-height:100dvh;border-radius:0}#adminModal .modal-body{padding:12px}.admin-control-card{padding:12px;border-radius:16px}.admin-control-head{flex-direction:column}.admin-coin-grid{grid-template-columns:1fr}.admin-coin-actions{display:grid;grid-template-columns:1fr 1fr}.admin-coin-actions .btn:nth-child(2){grid-column:1/-1;order:-1}.admin-user-mini-list{grid-template-columns:1fr}.admin-table-scroll{margin:0 -2px}.admin-table-scroll table{font-size:12px}}
+</style>
 </head>
 <body>
 
@@ -5109,21 +5126,56 @@ html,body{max-width:100%;overflow-x:hidden}img,video,iframe{max-width:100%}butto
           <button class="btn btn-outline btn-sm" onclick="openAdminModal()"><i class="fa-solid fa-rotate"></i> Yenile</button>
         </div>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+        <section class="admin-control-card" id="adminCoinManager">
+          <div class="admin-control-head">
+            <div>
+              <h4><i class="fa-solid fa-coins" style="color:var(--gold);"></i> Coin Yönetimi</h4>
+              <p>Admin olarak kendine, seçtiğin kullanıcıya veya tüm kayıtlı kullanıcılara coin ver.</p>
+            </div>
+            <span class="admin-badge">ADMIN</span>
+          </div>
+          <div class="admin-coin-grid">
+            <div class="form-group">
+              <label>Hedef</label>
+              <select id="adminCoinTarget" class="form-select" onchange="toggleAdminCoinUserSelect()">
+                <option value="self">Kendime</option>
+                <option value="user">Seçilen kullanıcı</option>
+                <option value="all">Tüm kayıtlı kullanıcılar</option>
+              </select>
+            </div>
+            <div class="form-group" id="adminCoinUserWrap" style="display:none;">
+              <label>Kullanıcı</label>
+              <select id="adminCoinUser" class="form-select"></select>
+            </div>
+            <div class="form-group">
+              <label>Coin miktarı</label>
+              <input id="adminCoinAmount" class="form-input" type="number" min="-1000000" max="1000000" step="1" value="100" placeholder="Örn. 500" />
+            </div>
+            <div class="admin-coin-actions">
+              <button class="btn btn-gold" onclick="adminGrantCoins(100)"><i class="fa-solid fa-plus"></i> +100</button>
+              <button class="btn btn-primary" onclick="adminGrantCoins()"><i class="fa-solid fa-paper-plane"></i> Coin Ver</button>
+              <button class="btn btn-outline" onclick="adminGrantCoins(-100)"><i class="fa-solid fa-minus"></i> -100</button>
+            </div>
+          </div>
+          <div id="adminCoinStatus" class="admin-control-status"></div>
+          <div class="admin-user-mini-list" id="adminUserMiniList"></div>
+        </section>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 16px;">
           <h4 style="font-size: 15px; font-weight: 700;">Script Yönetimi</h4>
           <button class="btn btn-outline btn-sm" onclick="resetAdminPremiumOverrides()">
             <i class="fa-solid fa-rotate-left"></i> Premium Sıfırla
           </button>
         </div>
 
-        <div style="max-height: 350px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 16px;">
+        <div class="admin-table-scroll" style="max-height: 420px; overflow:auto; border: 1px solid var(--border-color); border-radius: 16px;">
           <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
             <thead>
               <tr style="border-bottom: 1px solid var(--border-color); text-align: left; background: rgba(0,0,0,0.2);">
-                <th style="padding: 10px 14px;">Script</th>
-                <th style="padding: 10px 14px;">Kategori</th>
-                <th style="padding: 10px 14px;">Fiyat</th>
-                <th style="padding: 10px 14px;">İşlemler</th>
+                <th style="padding: 10px 14px;min-width:220px;">Script</th>
+                <th style="padding: 10px 14px;min-width:120px;">Kategori</th>
+                <th style="padding: 10px 14px;min-width:110px;">Fiyat</th>
+                <th style="padding: 10px 14px;min-width:130px;">İşlemler</th>
               </tr>
             </thead>
             <tbody id="adminScriptTableBody">
@@ -8815,75 +8867,68 @@ async function deleteScript(scriptId) {
 // ==================== ADMIN PANEL ====================
 function openAdminModal() {
   if (!isUserAdmin(currentUser)) {
-    showToast("Yetkisiz erişim! Bu panele yalnızca yöneticiler erişebilir.", "fa-shield-halved", "red");
+    showToast("Yetkisiz erişim!", "fa-shield-halved", "red");
     return;
   }
-  document.getElementById('adminStatScripts').textContent = scriptsData.length;
-  document.getElementById('adminStatUsers').textContent = "128";
-  document.getElementById('adminStatGames').textContent = gamesData.length;
-  document.getElementById('adminStatComments').textContent = scriptsData.reduce((acc, cur) => acc + (cur.comments || []).length, 0);
-  document.getElementById('adminStatReports').textContent = reportsData.length;
-
-  const tbody = document.getElementById('adminScriptTableBody');
-  if (tbody) {
-    let html = '';
-    scriptsData.forEach(s => {
-      html += `
-        <tr style="border-bottom: 1px solid var(--border-color);">
-          <td style="padding: 10px 14px; font-weight: 700;">${s.name}</td>
-          <td style="padding: 10px 14px; color: var(--accent-light);">${s.category}</td>
-          <td style="padding: 10px 14px; color: var(--gold);">${s.coinPrice} coin</td>
-          <td style="padding: 10px 14px;">
-            <button class="btn btn-outline btn-sm" onclick="adminEditScriptPrompt('${s.id}')"><i class="fa-solid fa-pen"></i></button>
-            <button class="btn btn-outline btn-sm" onclick="deleteScript('${s.id}'); openAdminModal();" style="color: #ef4444;"><i class="fa-solid fa-trash"></i></button>
-          </td>
-        </tr>
-      `;
-    });
-    tbody.innerHTML = html;
+  const set=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  set('adminStatScripts',scriptsData.length);
+  set('adminStatGames',gamesData.length);
+  set('adminStatComments',scriptsData.reduce((acc,s)=>acc+(s.comments||[]).length,0));
+  set('adminStatReports',reportsData.length);
+  const usersCount=document.getElementById('adminStatUsers'); if(usersCount)usersCount.textContent='…';
+  const tbody=document.getElementById('adminScriptTableBody');
+  if(tbody){
+    tbody.innerHTML=scriptsData.map(s=>`
+      <tr style="border-bottom:1px solid var(--border-color);">
+        <td style="padding:10px 14px;"><div style="display:flex;align-items:center;gap:9px;">
+          <img src="${s.image||DEFAULT_SCRIPT_IMAGE}" style="width:42px;height:42px;border-radius:10px;object-fit:cover;border:1px solid var(--border-color);" onerror="this.src='https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png'">
+          <div><b style="display:block;">${escapeHtml(s.name||'İsimsiz')}</b><small style="color:var(--text-muted);">${escapeHtml(s.id||'')}</small></div>
+        </div></td>
+        <td style="padding:10px 14px;color:var(--accent-light);">${escapeHtml(s.category||'other')}</td>
+        <td style="padding:10px 14px;color:var(--gold);font-weight:800;">${Number(s.coinPrice||0)} coin</td>
+        <td style="padding:10px 14px;"><div style="display:flex;gap:6px;flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" onclick="openAdminEditScript('${s.id}')"><i class="fa-solid fa-pen-to-square"></i> Düzenle</button>
+          <button class="btn btn-outline btn-sm" onclick="deleteScript('${s.id}');setTimeout(openAdminModal,100)" style="color:#ef4444;"><i class="fa-solid fa-trash"></i></button>
+        </div></td>
+      </tr>`).join('');
   }
-
   openModal('adminModal');
+  loadAdminUsers();
 }
-
-async function adminEditScriptPrompt(scriptId) {
-  const s = scriptsData.find(x => x.id === scriptId);
-  if (!s) return;
-
-  const newName = prompt("Yeni Script Adı:", s.name);
-  if (!newName) return;
-  const newPrice = prompt("Yeni Coin Fiyatı:", s.coinPrice);
-  if (newPrice === null) return;
-
-  const parsedPrice = Math.max(0, Math.min(9999, Number(newPrice)));
-  if (!Number.isFinite(parsedPrice)) {
-    showToast("Geçersiz coin fiyatı.", "fa-circle-xmark", "red");
-    return;
-  }
-  s.name = newName.trim();
-  s.coinPrice = parsedPrice;
-  s.isPremium = parsedPrice > 0;
-  localStorage.setItem('scriptHubAdminPremiumOverrides', JSON.stringify(
-    scriptsData.filter(x => x.isPremium && x.userId === 'system')
-  ));
-  if (db) {
-    try {
-      await db.collection('scripts').doc(scriptId).set({
-        name: s.name,
-        coinPrice: s.coinPrice,
-        isPremium: s.isPremium,
-        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-      }, { merge: true });
-    } catch (e) {
-      showToast("Admin değişikliği Firestore'a kaydedilemedi.", "fa-circle-xmark", "red");
-      return;
-    }
-  }
-  openAdminModal();
-  renderMainGrid();
-  showToast("Script güncellendi!", "fa-check", "green");
+async function loadAdminUsers(){
+  if(!supabaseClient||!isUserAdmin(currentUser))return;
+  const {data,error}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_list_users'}});
+  if(error||!data?.ok){const e=document.getElementById('adminStatUsers');if(e)e.textContent='?';return;}
+  const users=data.users||[], stat=document.getElementById('adminStatUsers'); if(stat)stat.textContent=users.length;
+  const sel=document.getElementById('adminCoinUser');
+  if(sel)sel.innerHTML=users.map(u=>`<option value="${u.id}">${escapeHtml(u.name||u.email||u.id)} — ${u.coins} coin</option>`).join('');
+  const mini=document.getElementById('adminUserMiniList');
+  if(mini)mini.innerHTML=users.slice(0,8).map(u=>`<div class="admin-user-mini"><span>${escapeHtml(u.name||u.email||'Kullanıcı')}</span><b>${u.coins} 🪙</b></div>`).join('');
 }
-
+function toggleAdminCoinUserSelect(){
+  const target=document.getElementById('adminCoinTarget')?.value;
+  const wrap=document.getElementById('adminCoinUserWrap');
+  if(wrap)wrap.style.display=target==='user'?'block':'none';
+}
+async function adminGrantCoins(preset){
+  if(!isUserAdmin(currentUser)||!supabaseClient)return;
+  const input=document.getElementById('adminCoinAmount');
+  const amount=Number(preset??input?.value);
+  if(!Number.isInteger(amount)||amount===0||Math.abs(amount)>1000000){showToast('Geçerli bir coin miktarı gir.','fa-triangle-exclamation','red');return;}
+  const target=document.getElementById('adminCoinTarget')?.value||'self';
+  const userId=document.getElementById('adminCoinUser')?.value||'';
+  const status=document.getElementById('adminCoinStatus');
+  if(status)status.textContent='İşlem yapılıyor…';
+  const {data,error}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_coin_grant',target,userId,amount}});
+  if(error||!data?.ok){if(status)status.textContent='Coin işlemi başarısız.';showToast(data?.error==='forbidden'?'Admin yetkisi doğrulanamadı.':'Coin işlemi başarısız oldu.','fa-triangle-exclamation','red');return;}
+  if(status)status.textContent=`✓ ${data.updated} kullanıcıya ${amount>0?'+':''}${amount} coin uygulandı.`;
+  if(target==='self'&&currentUser?.id===currentUser?.id){userProfile.coins=Math.max(0,Number(userProfile.coins||0)+amount);saveUserProfile();updateUIUserInfo();}
+  await loadAdminUsers();
+  showToast(`Coin işlemi tamamlandı: ${amount>0?'+':''}${amount}`,'fa-coins','gold');
+}
+async function adminEditScriptPrompt(scriptId){
+  return openAdminEditScript(scriptId);
+}
 function resetAdminPremiumOverrides() {
   localStorage.removeItem('scriptHubAdminPremiumOverrides');
   scriptsData = [...INITIAL_PREMIUM_SCRIPTS, ...scriptsData.filter(s => !s.isPremium)];
@@ -9264,6 +9309,10 @@ window.previewAddGameImage = previewAddGameImage;
 window.handleNewGameSubmit = handleNewGameSubmit;
 window.deleteScript = deleteScript;
 window.openAdminModal = openAdminModal;
+window.loadAdminUsers = loadAdminUsers;
+window.toggleAdminCoinUserSelect = toggleAdminCoinUserSelect;
+window.adminGrantCoins = adminGrantCoins;
+window.adminEditScriptPrompt = adminEditScriptPrompt;
 window.adminEditScriptPrompt = adminEditScriptPrompt;
 window.resetAdminPremiumOverrides = resetAdminPremiumOverrides;
 window.openLeaderboardModal = openLeaderboardModal;
