@@ -9520,12 +9520,26 @@ function renderAdminCosmetics(){
   const el=document.getElementById('adminCosmeticList');if(!el)return;
   el.innerHTML=customCosmetics.length?customCosmetics.map(c=>'<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 12px;border:1px solid var(--border-color);border-radius:12px;margin-top:7px;background:var(--bg-card);"><div><b>'+escapeHtml(c.name)+'</b><small style="display:block;color:var(--text-muted);">'+escapeHtml(c.type)+' • '+c.price+' coin • '+escapeHtml(c.mode||'css')+'</small></div><button class="btn btn-outline btn-sm" style="color:#ef4444;" onclick="adminDeleteCosmetic(\''+c.id+'\')"><i class="fa-solid fa-trash"></i></button></div>').join(''):'<div style="color:var(--text-muted);font-size:12px;">Henüz admin kozmetiği eklenmedi.</div>';
 }
-function syncCustomCosmetics(){
-  if(!db){renderAdminCosmetics();applyCustomCosmeticStyles();return;}
-  db.collection('cosmetics').onSnapshot(snapshot=>{
-    customCosmetics=[];snapshot.forEach(doc=>customCosmetics.push({id:doc.id,...doc.data()}));
+async function syncCustomCosmetics(){
+  if(!supabaseClient){renderAdminCosmetics();applyCustomCosmeticStyles();return;}
+  try{
+    const {data,error}=await supabaseClient.from('profile_cosmetic_catalog').select('id,name,description,kind,price,css_class,preview,metadata,enabled').eq('enabled',true).order('created_at',{ascending:false});
+    if(error)throw error;
+    customCosmetics=(data||[]).map(row=>{
+      const meta=row.metadata&&typeof row.metadata==='object'?row.metadata:{};
+      return {
+        id:row.id,name:row.name,nameEn:meta.nameEn||row.name,price:Number(row.price||0),type:meta.type||row.kind||'frame',
+        mode:meta.mode||((row.preview||'').match(/\\.(mp4|webm)(\\?|$)/i)?'video':(row.preview?'gif':'css')),
+        color1:meta.color1||'#8b5cf6',color2:meta.color2||'#22d3ee',
+        gifUrl:meta.gifUrl||row.preview||'',mediaUrl:meta.mediaUrl||row.preview||'',
+        desc:row.description||meta.desc||'',class:row.css_class||'',createdAt:meta.createdAt||Date.now(),createdBy:meta.createdBy||''
+      };
+    });
     applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();
-  },err=>console.warn('Cosmetics sync notice:',err.message));
+  }catch(err){
+    console.warn('Supabase cosmetics sync notice:',err.message);
+    renderAdminCosmetics();applyCustomCosmeticStyles();renderStoreCosmetics();renderStoreInventory();
+  }
 }
 let adminCosmeticProcessedBlob=null,adminCosmeticProcessingPromise=null,adminCosmeticObjectUrl='';
 function sdBgDist(a,b){return Math.hypot(a[0]-b[0],a[1]-b[1],a[2]-b[2])}
@@ -9566,24 +9580,14 @@ function sdSetSmartCosmeticMetadata(file){
 }
 async function uploadAdminCosmeticFile(file,id){
   if(!file)return '';
-  if(!storage)throw new Error('Firebase Storage hazır değil. Sayfayı yenileyip tekrar dene.');
-  const safeName=file.name.replace(/[^a-zA-Z0-9._-]/g,'_');
-  const ref=storage.ref().child('cosmetics/'+id+'/'+Date.now()+'_'+safeName);
-  return await new Promise((resolve,reject)=>{
-    let finished=false;
-    const task=ref.put(file,{contentType:file.type||'application/octet-stream'});
-    const timer=setTimeout(()=>{if(!finished){try{task.cancel();}catch(_){}reject(new Error('Yükleme zaman aşımına uğradı. Dosya boyutunu küçültüp tekrar dene.'));}},120000);
-    task.on(firebase.storage.TaskEvent.STATE_CHANGED,
-      snap=>{
-        const pct=snap.totalBytes?Math.round(snap.bytesTransferred/snap.totalBytes*100):0;
-        const box=document.getElementById('adminCosmeticPreview');
-        const status=box?.querySelector('.admin-cosmetic-processing');
-        if(status)status.innerHTML='<i class="fa-solid fa-cloud-arrow-up"></i> Kozmetik yükleniyor '+pct+'%';
-      },
-      err=>{finished=true;clearTimeout(timer);reject(err);},
-      async()=>{try{const url=await task.snapshot.ref.getDownloadURL();finished=true;clearTimeout(timer);resolve(url);}catch(err){finished=true;clearTimeout(timer);reject(err);}}
-    );
-  });
+  if(!supabaseClient)throw new Error('Supabase Storage hazır değil. Sayfayı yenileyip tekrar dene.');
+  const safeName=(file.name||'cosmetic').replace(/[^a-zA-Z0-9._-]/g,'_');
+  const path=id+'/'+Date.now()+'_'+safeName;
+  const {error}=await supabaseClient.storage.from('cosmetics').upload(path,file,{contentType:file.type||'application/octet-stream',upsert:false});
+  if(error)throw error;
+  const {data}=supabaseClient.storage.from('cosmetics').getPublicUrl(path);
+  if(!data?.publicUrl)throw new Error('Yüklenen dosyanın public URLsi alınamadı.');
+  return data.publicUrl;
 }
 
 async function adminCreateCosmetic(){
@@ -9604,9 +9608,8 @@ async function adminCreateCosmetic(){
   const actualMode=file?.type?.startsWith('video/')||mode==='video'?'video':(mediaUrl?'gif':mode);
   const cosmetic={id,name,nameEn:name,price,type,mode:actualMode,color1,color2,gifUrl:actualMode!=='video'?mediaUrl:'',mediaUrl,desc:desc||'Admin tarafından oluşturulan kozmetik.',class:cosmeticCssClass(id),createdAt:Date.now(),createdBy:currentUser.uid};
   if(!supabaseClient){showToast('Kozmetik sistemi hazır değil.','fa-circle-xmark','red');return;}
-  const {data:saveData,error:saveError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_create_cosmetic',cosmetic:{id,name,description:cosmetic.desc,kind:type,price,css_class:cosmetic.class,preview:mediaUrl}}});
-  if(saveError||!saveData?.ok){showToast('Kozmetik kataloğa kaydedilemedi.','fa-circle-xmark','red');return;}
-  if(db){try{await db.collection('cosmetics').doc(id).set(cosmetic);}catch(e){console.warn('Firestore cosmetic mirror:',e.message);}}
+  const {data:saveData,error:saveError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_create_cosmetic',cosmetic:{id,name,description:cosmetic.desc,kind:type,price,css_class:cosmetic.class,preview:mediaUrl,metadata:{nameEn:cosmetic.nameEn,type:cosmetic.type,mode:cosmetic.mode,color1:cosmetic.color1,color2:cosmetic.color2,gifUrl:cosmetic.gifUrl,mediaUrl:cosmetic.mediaUrl,desc:cosmetic.desc,class:cosmetic.class,createdAt:cosmetic.createdAt,createdBy:cosmetic.createdBy}}}});
+  if(saveError||!saveData?.ok){showToast('Kozmetik Supabase kataloğuna kaydedilemedi: '+(saveData?.error||saveError?.message||'bilinmeyen hata'),'fa-circle-xmark','red');return;}
   customCosmetics=[cosmetic,...customCosmetics.filter(x=>x.id!==id)];
   applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();
   showToast('Kozmetik mağazaya eklendi!','fa-wand-magic-sparkles','green');
