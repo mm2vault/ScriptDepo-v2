@@ -4535,7 +4535,7 @@ footer{margin-left:248px!important}
 .sd-cosmetic-preview{position:relative!important;aspect-ratio:1/1!important;min-height:260px!important;display:grid!important;place-items:center!important;overflow:hidden!important;background:radial-gradient(circle at center,rgba(124,58,237,.12),rgba(5,6,20,.92))!important;border-radius:24px!important;padding:18px!important}
 .sd-cosmetic-avatar{position:absolute!important;width:62%!important;height:62%!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;border-radius:50%!important;object-fit:cover!important;z-index:1!important}
 .sd-cosmetic-safe{position:absolute!important;inset:0!important;z-index:2!important;display:grid!important;place-items:center!important;pointer-events:none!important}
-.sd-cosmetic-media{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;display:block!important}
+.sd-cosmetic-media{position:absolute!important;left:50%!important;top:50%!important;width:var(--sd-fit-w,94%)!important;height:var(--sd-fit-h,94%)!important;max-width:none!important;max-height:none!important;transform:translate(-50%,-50%) translate(var(--sd-fit-x,0%),var(--sd-fit-y,0%))!important;object-fit:contain!important;object-position:center!important;display:block!important;pointer-events:none!important}
 .sd-cosmetic-live{position:absolute!important;top:12px!important;left:12px!important;z-index:4!important;padding:5px 9px!important;border-radius:999px!important;background:rgba(0,0,0,.58)!important;color:#fff!important;font-size:9px!important;font-weight:800!important;letter-spacing:.06em!important}
 .sd-cosmetic-live i{font-size:6px!important;color:#22c55e!important;margin-right:4px!important}
 .sd-cosmetic-card .store-cosmetic-info{min-height:92px!important}
@@ -8880,7 +8880,7 @@ function renderStoreCosmetics() {
     const mode = String(c.mode || "").toLowerCase();
     const overlay = url && /^https?:\/\//i.test(url)
       ? (mode === "video"
-        ? `<video class="sd-cosmetic-media" src="${escapeHtml(url)}" muted loop autoplay playsinline></video>`
+        ? `<video class="sd-cosmetic-media" src="${escapeHtml(url)}" muted loop autoplay playsinline onloadedmetadata="sdAutoFitMedia(this)"></video>`
         : `<img class="sd-cosmetic-media" src="${escapeHtml(url)}" alt="" loading="lazy" onerror="this.style.display='none'">`)
       : "";
     return `<article class="store-cosmetic-card sd-cosmetic-card ${active ? "is-equipped" : ""}">
@@ -9701,14 +9701,21 @@ function cosmeticMediaStyle(c){
   return 'position:absolute;left:calc(50% + '+p.offsetX+'%);top:calc(50% + '+p.offsetY+'%);width:'+p.scale+'%;height:'+p.scale+'%;transform:translate(-50%,-50%);object-fit:contain;object-position:center;pointer-events:none;'+(mode==='gif'?'image-rendering:auto;':'');
 }
 function autoFitCosmeticMedia(el){
-  if(!el)return;
-  const w=el.naturalWidth||el.videoWidth,h=el.naturalHeight||el.videoHeight;
-  if(!w||!h)return;
-  const ratio=Math.max(w,h)/Math.min(w,h);
-  const target=Math.round(Math.max(82,Math.min(122,108+Math.min(14,(ratio-1)*10))));
-  el.style.setProperty('--cosmetic-auto-scale',target+'%');
-  el.dataset.autoFit='true';
+ if(!el)return;
+ const w=el.naturalWidth||el.videoWidth,h=el.naturalHeight||el.videoHeight;if(!w||!h)return;
+ let fitW=94,fitH=94,fitX=0,fitY=0;
+ try{
+  if(el.tagName==='IMG'){
+   const cv=document.createElement('canvas'),ctx=cv.getContext('2d',{willReadFrequently:true});cv.width=w;cv.height=h;ctx.drawImage(el,0,0,w,h);
+   const d=ctx.getImageData(0,0,w,h).data;let minX=w,minY=h,maxX=-1,maxY=-1,count=0;
+   const sx=Math.max(1,Math.floor(w/260)),sy=Math.max(1,Math.floor(h/260));
+   for(let y=0;y<h;y+=sy)for(let x=0;x<w;x+=sx)if(d[(y*w+x)*4+3]>18){minX=Math.min(minX,x);minY=Math.min(minY,y);maxX=Math.max(maxX,x);maxY=Math.max(maxY,y);count++;}
+   if(count&&maxX>=minX&&maxY>=minY){const cw=Math.max(.01,(maxX-minX+1)/w),ch=Math.max(.01,(maxY-minY+1)/h),scale=Math.min(100,88/Math.max(cw,ch));fitW=Math.max(62,scale);fitH=Math.max(62,scale);fitX=(.5-(minX+maxX+1)/(2*w))*100*(fitW/100);fitY=(.5-(minY+maxY+1)/(2*h))*100*(fitH/100);}
+  }else{const ratio=w/Math.max(1,h);if(ratio>1.8){fitW=98;fitH=Math.max(55,Math.round(98/ratio));}else if(ratio<.56){fitH=98;fitW=Math.max(55,Math.round(98*ratio));}}
+ }catch(_){ }
+ el.style.setProperty('--sd-fit-w',fitW+'%');el.style.setProperty('--sd-fit-h',fitH+'%');el.style.setProperty('--sd-fit-x',fitX+'%');el.style.setProperty('--sd-fit-y',fitY+'%');el.dataset.autoFit='true';
 }
+function sdAutoFitMedia(el){if(!el)return;if(el.tagName==='VIDEO'){if(el.readyState>=1)autoFitCosmeticMedia(el);else el.addEventListener('loadedmetadata',()=>autoFitCosmeticMedia(el),{once:true});}else if(el.complete)autoFitCosmeticMedia(el);else el.addEventListener('load',()=>autoFitCosmeticMedia(el),{once:true});}
 function updateCosmeticPositionLabels(){
   const s=document.getElementById('adminCosmeticScale'),x=document.getElementById('adminCosmeticX'),y=document.getElementById('adminCosmeticY');
   if(document.getElementById('adminCosmeticScaleValue'))document.getElementById('adminCosmeticScaleValue').textContent=(s?.value||112)+'%';
@@ -9772,11 +9779,11 @@ async function adminCreateCosmetic() {
     }
     const id = editingCosmeticId || ('admin_cosmetic_' + Date.now());
     const mediaUrl = await uploadAdminCosmeticFile(uploadFile, id);
-    const mode = isVideo ? 'video' : 'gif';
+    const mode = isVideo ? 'video' : (isGif ? 'gif' : 'image');
     const cosmetic = { id, name, nameEn:name, price, type:'frame', mode, gifUrl:isVideo?'':mediaUrl, mediaUrl, desc, class:cosmeticCssClass(id), createdAt:Date.now(), createdBy:currentUser.uid };
     const {data,error} = await supabaseClient.functions.invoke('profile-shop', {body:{action:'admin_create_cosmetic', cosmetic:{
       id,name,description:desc,kind:'frame',price,css_class:cosmetic.class,preview:mediaUrl,
-      metadata:{nameEn:name,type:'frame',mode,mediaUrl,gifUrl:cosmetic.gifUrl,desc,createdAt:cosmetic.createdAt,createdBy:currentUser.uid,autoProfileFit:true,aiProcessed:!isVideo&&!isGif}
+      metadata:{nameEn:name,type:'frame',mode,mediaUrl,gifUrl:cosmetic.gifUrl,desc,createdAt:cosmetic.createdAt,createdBy:currentUser.uid,autoProfileFit:true,autoFitVersion:2,aiProcessed:!isVideo&&!isGif}
     }}});
     if (error || !data?.ok) throw new Error(data?.error || error?.message || 'Katalog kaydı başarısız');
     customCosmetics=[cosmetic,...customCosmetics.filter(x=>x.id!==id)];
