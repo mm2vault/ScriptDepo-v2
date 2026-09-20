@@ -4345,7 +4345,28 @@ header{margin-left:var(--sd-sidebar);width:calc(100% - var(--sd-sidebar));min-he
 @media (max-width:768px){.sd-sidebar{display:none}header{margin-left:0;width:100%;padding:10px 12px;min-height:60px}.header-left{display:flex!important}.header-left .header-titles h1{font-size:16px}.header-left .header-titles span{display:none}.header-left .brand-logo-icon{width:38px!important;height:38px!important}.header-center{order:3;flex-basis:100%;max-width:none!important}.header-right{gap:6px}.header-right .desktop-only{display:none!important}.header-right .coin-badge{padding:7px 10px;font-size:12px}.rblx-top-nav-wrap{margin-left:0;width:100%;top:60px}.rblx-top-nav-inner{padding:7px 10px}.rblx-nav-btn{padding:8px 10px;font-size:11px}.main-container{margin-left:0;padding:16px 11px 92px}.platform-hero{border-radius:20px!important}.hero-title{font-size:25px!important}.hero-subtitle{font-size:12px!important}.hero-cards-grid{grid-template-columns:1fr!important}.scripts-grid{grid-template-columns:1fr!important;gap:13px}.filter-bar{border-radius:15px!important;padding:10px!important}.categories-list{gap:7px}.category-pill{padding:8px 12px;font-size:12px}.modal-container{width:calc(100vw - 20px)!important;max-height:calc(100vh - 20px)!important;border-radius:20px!important}.mobile-bottom-nav{z-index:140!important}.search-input{font-size:13px}}
 @media (max-width:420px){.main-container{padding-left:8px;padding-right:8px}.hero-title{font-size:22px!important}.scripts-grid{gap:11px}.script-card-body{padding:14px!important}.rblx-nav-btn span{display:none}.rblx-nav-btn i{margin:0}.rblx-badge-hot{display:none}}
 </style>
-</head>
+<style id="scriptdepo-reference-ui">
+/* Reference screenshot UI */
+.main-container{display:grid!important;grid-template-columns:minmax(0,1fr) 310px;gap:24px;align-items:start;max-width:1500px!important;margin-left:var(--sd-sidebar)!important;margin-right:0!important;padding:22px 24px 90px!important}
+.main-container>*:not(.sd-right-rail){grid-column:1}.sd-right-rail{grid-column:2;grid-row:1 / span 30;position:sticky;top:96px;display:grid;gap:13px;align-self:start}
+.platform-hero{position:relative!important;min-height:190px!important;padding:20px 22px!important;border-radius:14px!important;border:1px solid rgba(139,92,246,.65)!important;background:radial-gradient(circle at 18% 60%,rgba(124,58,237,.28),transparent 38%),linear-gradient(135deg,#090817,#0c0a1c 60%,#090813)!important;overflow:hidden!important}
+.platform-hero:after{content:"";position:absolute;inset:0;background:linear-gradient(125deg,transparent 45%,rgba(139,92,246,.13),transparent 65%);pointer-events:none}
+.hero-top-row{position:relative;z-index:2}.hero-top-row .hero-tag{opacity:0}.hero-collapse-btn{position:absolute;right:0;top:0}
+.sd-hero-content{position:relative;z-index:2;display:grid!important;grid-template-columns:150px minmax(230px,1fr) minmax(380px,1.1fr);gap:16px!important;align-items:center!important;height:145px}
+.sd-hero-brand-art{width:145px;height:125px;display:flex;align-items:center;justify-content:center;color:#a855f7;filter:drop-shadow(0 0 22px rgba(139,92,246,.75));font-size:100px;transform:rotate(-4deg)}
+.sd-hero-copy .hero-title{font-size:27px!important;margin:0 0 8px!important}.sd-hero-copy .hero-subtitle{font-size:13px!important;line-height:1.6!important;margin:0!important;max-width:320px!important}.sd-mobile-tag{display:none!important}
+.sd-hero-stats{display:grid;grid-template-columns:repeat(4,1fr);background:rgba(8,7,18,.7);border:1px solid rgba(139,92,246,.25);border-radius:14px;padding:16px 8px}.sd-hero-stats>div{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-right:1px solid rgba(255,255,255,.06)}.sd-hero-stats>div:last-child{border:0}.sd-hero-stats i{color:#a78bfa;font-size:17px}.sd-hero-stats span{font-size:10px;color:#8f96ab}.sd-hero-stats b{font-size:19px;color:#f5f7ff}
+.sd-profile-card,.sd-mini-card{background:linear-gradient(180deg,rgba(13,15,31,.98),rgba(7,9,17,.98));border:1px solid rgba(104,112,160,.22);border-radius:14px;padding:16px;box-shadow:0 15px 45px rgba(0,0,0,.22)}
+.sd-profile-card{text-align:center}.sd-profile-avatar{width:132px;height:132px;margin:0 auto 10px;position:relative;border-radius:50%;display:flex;align-items:center;justify-content:center;background:radial-gradient(circle,rgba(139,92,246,.15),transparent 62%)}.sd-profile-avatar img{width:104px;height:104px;border-radius:50%;object-fit:cover;display:block;border:1px solid rgba(139,92,246,.35)}.sd-camera{position:absolute;right:3px;bottom:8px;width:27px;height:27px;border-radius:50%;background:#6d3df2;color:#fff;display:grid;place-items:center;font-size:11px;border:2px solid #0c0e1a}.sd-profile-card h3{font-size:19px;margin:4px 0}.sd-profile-card>p{font-size:11px;color:#7e879c;margin:0 0 20px}.sd-level-row{display:flex;justify-content:space-between;font-size:11px;margin-bottom:6px}.sd-level-row span{background:rgba(99,67,237,.3);padding:4px 8px;border-radius:7px;color:#c4b5fd;font-weight:800}.sd-level-row small{color:#7d8599}.sd-xp{height:7px;border-radius:10px;background:#17192a;overflow:hidden;margin-bottom:17px}.sd-xp i{display:block;width:64%;height:100%;background:linear-gradient(90deg,#6333f4,#a855f7);border-radius:inherit}.sd-rail-coin{display:flex;align-items:center;justify-content:center;gap:8px;margin:9px 0 16px;font-size:16px}.sd-rail-coin i{color:#fbbf24}.sd-rail-coin b{font-size:21px}.sd-rail-coin span{font-size:11px;color:#81899d}.sd-rail-stats{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:11px}.sd-rail-stats div{padding:10px 5px;background:rgba(22,24,48,.72);border:1px solid rgba(94,102,160,.16);border-radius:9px;display:grid;grid-template-columns:20px 1fr;align-items:center;text-align:left}.sd-rail-stats i{grid-row:span 2;color:#a78bfa;font-size:13px}.sd-rail-stats b{font-size:13px}.sd-rail-stats small{font-size:9px;color:#747c91}.sd-primary-btn,.sd-outline-btn{width:100%;height:39px;border-radius:8px;font-weight:800;cursor:pointer}.sd-primary-btn{border:0;color:#fff;background:linear-gradient(90deg,#6132f5,#7c3aed);box-shadow:0 8px 20px rgba(99,51,245,.2);margin-bottom:8px}.sd-outline-btn{border:1px solid rgba(124,58,237,.45);color:#c4b5fd;background:rgba(96,59,237,.06)}
+.sd-mini-card{padding:14px}.sd-mini-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}.sd-mini-head h4{font-size:13px;margin:0}.sd-mini-head h4 i{color:#a78bfa;margin-right:6px}.sd-mini-head button{border:0;background:transparent;color:#a78bfa;font-size:10px;cursor:pointer}.sd-task{display:grid;grid-template-columns:1fr auto;gap:4px 8px;margin:12px 0;font-size:10px}.sd-task>b{color:#aab1c4;font-size:9px}.sd-task>i{height:5px;background:#181a2b;border-radius:8px;overflow:hidden}.sd-task>i em{display:block;height:100%;background:#7144f5;border-radius:inherit}.sd-task>strong{font-size:9px;color:#fbbf24;grid-column:2;grid-row:1 / span 2;align-self:center}.sd-activity>div:not(.sd-mini-head){display:flex;gap:9px;align-items:center;padding:8px 0;border-top:1px solid rgba(255,255,255,.045)}.sd-activity p{margin:0;font-size:10px}.sd-activity small{display:block;color:#687086;margin-top:2px}.sd-activity-icon{width:25px;height:25px;border-radius:50%;display:grid;place-items:center;background:rgba(124,58,237,.14)}
+/* cards to match reference */
+.scripts-grid{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:14px!important}.script-card{border-radius:12px!important;background:linear-gradient(180deg,#0c1020,#080b15)!important;border:1px solid rgba(92,74,190,.58)!important;box-shadow:none!important}.script-card:hover{transform:translateY(-3px);box-shadow:0 15px 30px rgba(0,0,0,.3)!important;border-color:#8b5cf6!important}.script-card-img-wrap{height:108px!important}.script-card-body{padding:12px!important}.script-card h3{font-size:14px!important}.script-card p{font-size:10px!important}.section-title{font-size:19px!important}.section-title i{color:#a78bfa!important}
+.filter-bar,.daily-tasks-banner{border-radius:12px!important}.game-card{border-radius:12px!important;border-color:rgba(92,74,190,.55)!important}
+.store-cosmetic-preview .store-frame-gif,.avatar-preview-frame .avatar-preview-gif{mix-blend-mode:screen!important;background:transparent!important}.store-cosmetic-preview .store-avatar-base,.avatar-preview-frame .avatar-preview-base{position:relative;z-index:1;background:transparent!important}.store-cosmetic-preview .store-frame-gif,.avatar-preview-frame .avatar-preview-gif{z-index:3!important}.store-cosmetic-preview,.avatar-preview-frame{isolation:isolate!important;background:transparent!important}
+@media (max-width:1200px){.main-container{grid-template-columns:minmax(0,1fr) 280px!important}.scripts-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important}.sd-hero-content{grid-template-columns:120px 1fr!important}.sd-hero-stats{grid-column:1/-1;display:none}.sd-hero-brand-art{font-size:78px;width:110px}}
+@media (max-width:900px){.main-container{display:block!important}.sd-right-rail{display:none}.scripts-grid{grid-template-columns:repeat(2,minmax(0,1fr))!important}.platform-hero{min-height:170px!important}.sd-hero-content{height:auto;grid-template-columns:90px 1fr!important}.sd-hero-brand-art{font-size:65px;width:90px}.sd-hero-copy .hero-title{font-size:23px!important}}
+@media (max-width:600px){.main-container{padding:12px 9px 90px!important}.scripts-grid{grid-template-columns:1fr!important}.platform-hero{padding:15px!important}.sd-hero-content{grid-template-columns:1fr!important;text-align:center;gap:5px!important}.sd-hero-brand-art{height:70px;width:100%;font-size:52px}.sd-hero-copy .hero-title{font-size:22px!important}.sd-hero-copy .hero-subtitle{max-width:none!important;font-size:11px!important}.sd-mobile-tag{display:flex!important;justify-content:center!important;opacity:.8!important}.hero-collapse-btn{display:none}.script-card-img-wrap{height:150px!important}}
+</style></head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar"><div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><img src="https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png" alt="ScriptDepo"><div><strong><span style="display:inline;color:#a78bfa">Script</span><span style="display:inline;color:#fff">Depo</span></strong><span>Roblox Script Platform</span></div></div><div class="sd-section-label">Keşfet</div><nav class="sd-nav"><button class="active" onclick="resetFilters();sdNav(this)"><i class="fa-solid fa-house"></i><span>Ana Sayfa</span></button><button onclick="selectCategory('all');sdNav(this)"><i class="fa-solid fa-scroll"></i><span>Scriptler</span></button><button onclick="selectCategory('games');sdNav(this)"><i class="fa-solid fa-gamepad"></i><span>Oyunlar</span></button><button onclick="selectCategory('executors');sdNav(this)"><i class="fa-solid fa-microchip"></i><span>Executors Hub</span></button></nav><div class="sd-section-label">Hesabım</div><nav class="sd-nav"><button onclick="openCoinStoreModal('scripts');sdNav(this)"><i class="fa-solid fa-store"></i><span>Market</span></button><button onclick="document.getElementById('dailyTasksBanner')?.scrollIntoView({behavior:'smooth',block:'start'});sdNav(this)"><i class="fa-solid fa-bullseye"></i><span>Görevler</span></button><button onclick="openCoinStoreModal('inventory');sdNav(this)"><i class="fa-solid fa-box-open"></i><span>Envanter</span></button><button onclick="handleAuthOrProfileClick();sdNav(this)"><i class="fa-solid fa-user"></i><span>Profil</span></button></nav><div class="sd-section-label">Araçlar</div><nav class="sd-nav"><button onclick="openGuideModal('howtouse');sdNav(this)"><i class="fa-solid fa-book-open"></i><span>Rehber</span></button><button onclick="openLeaderboardModal();sdNav(this)"><i class="fa-solid fa-ranking-star"></i><span>Liderlik</span></button><button id="sdAdminNav" style="display:none" onclick="openAdminModal();sdNav(this)"><i class="fa-solid fa-shield-halved"></i><span>Admin</span></button></nav><div class="sd-side-bottom"><div class="sd-side-coin" onclick="openCoinStoreModal('scripts')" style="cursor:pointer"><div><small>Bakiye</small><b><i class="fa-solid fa-coins"></i> <span id="sdSideCoin">50</span></b></div><i class="fa-solid fa-chevron-right" style="color:#6d7385"></i></div><div class="sd-side-footer">ScriptDepo • 2026</div></div></aside>
 
 
@@ -4527,91 +4548,37 @@ header{margin-left:var(--sd-sidebar);width:calc(100% - var(--sd-sidebar));min-he
   </div>
 
   <!-- Main Container -->
-  <main class="main-container">
+  <main class="main-container"><aside class="sd-right-rail" id="sdRightRail">
+  <div class="sd-profile-card">
+    <div class="sd-profile-avatar"><img id="sdRailAvatar" src="https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo" alt=""><span class="sd-camera"><i class="fa-solid fa-camera"></i></span></div>
+    <h3 id="sdRailName">Misafir</h3><p id="sdRailEmail">@scriptdepo</p>
+    <div class="sd-level-row"><span>Seviye 1</span><small id="sdXpText">0 / 500 XP</small></div><div class="sd-xp"><i id="sdXpBar"></i></div>
+    <div class="sd-rail-coin"><i class="fa-solid fa-coins"></i><b id="sdRailCoins">0</b><span>Coin</span></div>
+    <div class="sd-rail-stats"><div><i class="fa-solid fa-scroll"></i><b id="sdRailScripts">0</b><small>Script</small></div><div><i class="fa-solid fa-calendar-check"></i><b>5</b><small>Görev</small></div><div><i class="fa-solid fa-box-open"></i><b id="sdRailItems">0</b><small>Koleksiyon</small></div><div><i class="fa-solid fa-wand-magic-sparkles"></i><b id="sdRailCosmetics">0</b><small>Kozmetik</small></div></div>
+    <button class="sd-primary-btn" onclick="handleAuthOrProfileClick()">Profil Düzenle</button>
+    <button class="sd-outline-btn" onclick="openCoinStoreModal('inventory')">Avatar &amp; Çerçeve</button>
+  </div>
+  <div class="sd-mini-card"><div class="sd-mini-head"><h4><i class="fa-solid fa-bullseye"></i> Günlük Görevler</h4><button onclick="document.getElementById('dailyTasksBanner')?.scrollIntoView({behavior:'smooth'})">Tümünü Gör →</button></div><div class="sd-task"><span>3 Script Görüntüle</span><b>2/3</b><i><em style="width:67%"></em></i><strong>🪙 100</strong></div><div class="sd-task"><span>5 Farklı Oyun İncele</span><b>1/5</b><i><em style="width:20%"></em></i><strong>🪙 150</strong></div><div class="sd-task"><span>1 Yorum Yap</span><b>0/1</b><i><em style="width:0%"></em></i><strong>🪙 100</strong></div></div>
+  <div class="sd-mini-card sd-activity"><div class="sd-mini-head"><h4><i class="fa-solid fa-bolt"></i> Son Aktiviteler</h4></div><div><span class="sd-activity-icon">📜</span><p>Yeni bir script eklendi<small>Şimdi</small></p></div><div><span class="sd-activity-icon">✓</span><p>Görev tamamlandı<small>Az önce</small></p></div><div><span class="sd-activity-icon">👤</span><p>Yeni bir kullanıcı kaydoldu<small>Bugün</small></p></div></div>
+</aside>
     <!-- Platform Intro & Explanatory Hero Banner -->
     <section class="platform-hero" id="platformIntroHero">
-      <div class="hero-top-row">
-        <div class="hero-tag">
-          <i class="fa-solid fa-bolt" style="color: var(--gold);"></i>
-          <span>ROBLOX SCRIPTHUB 2026 EDITION</span>
-        </div>
-        <button class="hero-collapse-btn" onclick="toggleHeroIntro()" id="btnToggleHero" title="Paneli Gizle/Göster">
-          <i class="fa-solid fa-chevron-up" id="heroToggleIcon"></i>
-          <span id="heroToggleText">Gizle</span>
-        </button>
-      </div>
-
-      <div class="hero-content" id="heroMainContent">
-        <div class="hero-text-wrap">
-          <h2 class="hero-title">Roblox Script & Oyun Dünyasının En Güvenli Merkezi</h2>
-          <p class="hero-subtitle">
-            Delta, Wave, Solara, Hydrogen ve tüm executorlar ile %100 uyumlu, virüssüz ve test edilmiş MM2, Blox Fruits, Da Hood ve Roblox oyunları için scriptler. Görevleri tamamlayarak veya kupon girerek bedava Coin kazan, script kodunu anında executor programına yapıştır!
-          </p>
-        </div>
-
-        <!-- 4 Explanatory Bento Cards -->
-        <div class="hero-cards-grid">
-          <div class="hero-card" onclick="openGuideModal('executors')">
-            <div class="hero-card-icon" style="background: rgba(124, 58, 237, 0.15); color: var(--accent-light);">
-              <i class="fa-solid fa-microchip"></i>
-            </div>
-            <div class="hero-card-info">
-              <h4>1. Executor Nedir?</h4>
-              <p>Delta, Wave, Solara, Hydrogen. Roblox'ta Lua scriptlerini çalıştıran güvenli programlardır.</p>
-              <span class="hero-card-link">Detayları Gör <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-          </div>
-
-          <div class="hero-card" onclick="openGuideModal('coins')">
-            <div class="hero-card-icon" style="background: rgba(251, 191, 36, 0.15); color: var(--gold);">
-              <i class="fa-solid fa-coins"></i>
-            </div>
-            <div class="hero-card-info">
-              <h4>2. Coin Nasıl Kazanılır?</h4>
-              <p>Günlük görevlerle (+100'e kadar), sponsor takipleriyle ve kuponlarla ücretsiz Coin topla!</p>
-              <span class="hero-card-link">Taktikleri Oku <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-          </div>
-
-          <div class="hero-card" onclick="openGuideModal('safety')">
-            <div class="hero-card-icon" style="background: rgba(16, 185, 129, 0.15); color: var(--green);">
-              <i class="fa-solid fa-shield-halved"></i>
-            </div>
-            <div class="hero-card-info">
-              <h4>3. Güvenlik & Oylama</h4>
-              <p>Topluluk oyları yalnızca gerçek kullanıcı etkileşimlerinden oluşur.</p>
-              <span class="hero-card-link">Güvenlik Rehberi <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-          </div>
-
-          <div class="hero-card" onclick="openGuideModal('howtouse')">
-            <div class="hero-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
-              <i class="fa-solid fa-terminal"></i>
-            </div>
-            <div class="hero-card-info">
-              <h4>4. 3 Adımda Çalıştır</h4>
-              <p>Scripti Aç & Kodu Kopyala -> Oyunu Başlat -> Executor'a Yapıştırıp "Execute" Butonuna Bas!</p>
-              <span class="hero-card-link">Adım Adım İzle <i class="fa-solid fa-arrow-right"></i></span>
-            </div>
-          </div>
-        </div>
-
-        <div class="hero-actions">
-          <button class="btn btn-primary" onclick="openGuideModal('howtouse')">
-            <i class="fa-solid fa-book-open"></i>
-            <span>Detaylı Kullanım Rehberi & SSS</span>
-          </button>
-          <button class="btn btn-gold" onclick="openPromoCodeModal()">
-            <i class="fa-solid fa-gift"></i>
-            <span>Ücretsiz Kupon Kodu Kullan (+100 🪙)</span>
-          </button>
-          <a href="https://discord.gg/JJmEGx9mN3" target="_blank" rel="noopener noreferrer" class="btn btn-social-discord">
-            <i class="fa-brands fa-discord"></i>
-            <span>Discord Yardım & Topluluk</span>
-          </a>
-        </div>
-      </div>
-    </section>
+  <div class="sd-hero-glow"></div>
+  <div class="hero-top-row">
+    <div class="hero-tag"><i class="fa-solid fa-crown"></i><span>SCRIPTDEPO DASHBOARD</span></div>
+    <button class="hero-collapse-btn" onclick="toggleHeroIntro()" id="btnToggleHero"><i class="fa-solid fa-chevron-up" id="heroToggleIcon"></i><span id="heroToggleText">Gizle</span></button>
+  </div>
+  <div class="hero-content sd-hero-content" id="heroMainContent">
+    <div class="sd-hero-brand-art"><i class="fa-solid fa-crown"></i></div>
+    <div class="sd-hero-copy"><div class="hero-tag sd-mobile-tag"><i class="fa-solid fa-bolt"></i><span>ROBLOX SCRIPTHUB 2026</span></div><h2 class="hero-title">ScriptDepo’ya Hoş Geldin!</h2><p class="hero-subtitle">En iyi scriptler, oyunlar ve kozmetiklerle oyununu daha eğlenceli hale getir!</p></div>
+    <div class="sd-hero-stats">
+      <div><i class="fa-solid fa-scroll"></i><span>Scriptler</span><b id="sdHeroScripts">0</b></div>
+      <div><i class="fa-solid fa-gamepad"></i><span>Oyunlar</span><b id="sdHeroGames">0</b></div>
+      <div><i class="fa-solid fa-users"></i><span>Kullanıcılar</span><b id="sdHeroUsers">0</b></div>
+      <div><i class="fa-solid fa-coins"></i><span>Coin</span><b id="sdHeroCoins">0</b></div>
+    </div>
+  </div>
+</section>
 
     <!-- Daily Tasks Section -->
     <section class="daily-tasks-banner" id="dailyTasksSection">
@@ -9660,5 +9627,11 @@ function openExecutorGuideModal(execId) {
 </div>
 
 <script>function sdNav(btn){document.querySelectorAll('.sd-nav button').forEach(x=>x.classList.remove('active'));if(btn)btn.classList.add('active')}function sdSyncCoin(){const a=document.getElementById('headerCoinCount'),b=document.getElementById('sdSideCoin');if(a&&b)b.textContent=a.textContent||'0'}window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{sdSyncCoin();const a=document.getElementById('headerCoinCount');if(a)new MutationObserver(sdSyncCoin).observe(a,{childList:true,subtree:true,characterData:true});const admin=document.getElementById('adminBtn'),nav=document.getElementById('sdAdminNav');if(admin&&nav){const sync=()=>nav.style.display=getComputedStyle(admin).display==='none'?'none':'flex';sync();new MutationObserver(sync).observe(admin,{attributes:true,attributeFilter:['style','class'])}},100));</script>
-</body>
+<script id="scriptdepo-reference-sync">
+window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{
+ const avatar=document.getElementById('sdRailAvatar'),name=document.getElementById('sdRailName'),email=document.getElementById('sdRailEmail'),coin=document.getElementById('sdRailCoins'),heroCoin=document.getElementById('sdHeroCoins'),scripts=document.getElementById('sdHeroScripts'),games=document.getElementById('sdHeroGames'),users=document.getElementById('sdHeroUsers'),rs=document.getElementById('sdRailScripts'),ri=document.getElementById('sdRailItems'),rc=document.getElementById('sdRailCosmetics');
+ const sync=()=>{try{if(window.userProfile){if(avatar&&userProfile.photoURL)avatar.src=userProfile.photoURL;if(name)name.textContent=userProfile.displayName||'Kullanıcı';if(email)email.textContent=userProfile.email?'@'+String(userProfile.email).split('@')[0]:'@scriptdepo';const n=Number(userProfile.coins||0);if(coin)coin.textContent=n.toLocaleString('tr-TR');if(heroCoin)heroCoin.textContent=n.toLocaleString('tr-TR');if(ri)ri.textContent=(userProfile.purchasedScripts||[]).length;if(rc)rc.textContent=(userProfile.inventory||[]).filter(id=>String(id).startsWith('c_')).length;if(ri){}if(document.getElementById('sdSideCoin'))document.getElementById('sdSideCoin').textContent=n.toLocaleString('tr-TR');}if(scripts&&window.scriptsData)scripts.textContent=scriptsData.length;if(games&&window.gamesData)games.textContent=gamesData.length;if(users)users.textContent=window.siteStats?.users?Number(window.siteStats.users).toLocaleString('tr-TR'):'—';if(rs&&window.scriptsData)rs.textContent=scriptsData.length;}catch(e){}};
+ sync();setInterval(sync,1500);
+},350));
+</script></body>
 </html>
