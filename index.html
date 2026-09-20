@@ -8739,9 +8739,11 @@ function renderStoreCosmetics() {
 
     const previewAvatar = userProfile.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
     const cosmeticPreview = c.type === 'frame'
-      ? (c.gifUrl
-        ? `<div class="store-cosmetic-preview"><img class="store-avatar-base" src="${previewAvatar}" alt=""><img class="store-frame-gif" src="${c.gifUrl}" alt="${c.name}" loading="lazy"></div>`
-        : `<div class="store-cosmetic-preview css-frame ${c.class}"><img class="store-avatar-base" src="${previewAvatar}" alt=""></div>`)
+      ? (c.mode === 'video' && c.mediaUrl
+        ? `<div class="store-cosmetic-preview"><img class="store-avatar-base" src="${previewAvatar}" alt=""><video class="store-frame-video" src="${c.mediaUrl}" muted loop autoplay playsinline></video></div>`
+        : (c.gifUrl
+          ? `<div class="store-cosmetic-preview"><img class="store-avatar-base" src="${previewAvatar}" alt=""><img class="store-frame-gif" src="${c.gifUrl}" alt="${c.name}" loading="lazy"></div>`
+          : `<div class="store-cosmetic-preview css-frame ${c.class}"><img class="store-avatar-base" src="${previewAvatar}" alt=""></div>`))
       : `<div class="store-cosmetic-preview"><div style="width:82px;height:82px;border-radius:50%;background:var(--accent-gradient);display:flex;align-items:center;justify-content:center;color:#fff;font-size:26px;"><i class="fa-solid fa-wand-magic-sparkles"></i></div></div>`;
     html += `
       <div class="store-cosmetic-card">
@@ -8801,7 +8803,7 @@ function renderStoreInventory() {
       const isActive = (userProfile.activeCosmetics || []).includes(c.id);
       html += `
         <div style="background: var(--bg-card); padding: 12px; border-radius: 14px; border: 1px solid var(--border-color); display: flex; align-items: center; gap: 10px;">
-          ${c.gifUrl ? `<img src="${c.gifUrl}" alt="${c.name}" style="width:52px;height:52px;object-fit:contain;flex:0 0 52px;" loading="lazy">` : ''}
+          ${c.mode==='video' && c.mediaUrl ? `<video src="${c.mediaUrl}" muted loop autoplay playsinline style="width:52px;height:52px;object-fit:contain;flex:0 0 52px;"></video>` : (c.gifUrl ? `<img src="${c.gifUrl}" alt="${c.name}" style="width:52px;height:52px;object-fit:contain;flex:0 0 52px;" loading="lazy">` : '')}
           <div style="flex:1;min-width:0;"><span style="font-size: 13px; font-weight: 700;">${c.name}</span></div>
           <button class="btn btn-outline btn-sm" onclick="toggleCosmeticActive('${c.id}')" style="border-color: ${isActive ? 'var(--green)' : 'var(--border-color)'}; color: ${isActive ? 'var(--green)' : 'var(--text-primary)'};">
             ${isActive ? 'Devre Dışı' : 'Aktifleştir'}
