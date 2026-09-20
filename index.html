@@ -9631,6 +9631,7 @@ function updateCosmeticPositionLabels(){
   if(document.getElementById('adminCosmeticScaleValue'))document.getElementById('adminCosmeticScaleValue').textContent=(s?.value||112)+'%';
   if(document.getElementById('adminCosmeticXValue'))document.getElementById('adminCosmeticXValue').textContent=(x?.value||0)+'%';
   if(document.getElementById('adminCosmeticYValue'))document.getElementById('adminCosmeticYValue').textContent=(y?.value||0)+'%';
+  if(document.getElementById('adminCosmeticPreview')) previewAdminCosmetic();
 }
 function previewAdminCosmetic(cosmeticOverride){
   const box=document.getElementById('adminCosmeticPreview'); if(!box)return;
@@ -9666,7 +9667,6 @@ function previewAdminCosmetic(cosmeticOverride){
     overlay='<div class="cosmetic-overlay" style="'+layout+'border-radius:50%;border:2px solid '+escapeHtml(c.color1)+';box-shadow:0 0 18px '+escapeHtml(c.color1)+',inset 0 0 18px '+escapeHtml(c.color2)+';"></div>';
   }
   box.innerHTML='<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Profil önizleme • '+escapeHtml(c.type||'kozmetik')+'</div><div class="preview-avatar-wrap"><img class="base-avatar" src="'+escapeHtml(avatar)+'" alt="">'+overlay+'</div></div><div class="preview-info"><b>'+escapeHtml(c.name)+'</b><div style="margin-top:6px;color:var(--text-secondary);font-size:12px;">'+escapeHtml(c.mode||'css')+' • '+Number(c.price||0)+' coin</div><div style="margin-top:5px;color:var(--text-muted);font-size:11px;">Boyut: '+getCosmeticLayout(c).scale+'% • X: '+getCosmeticLayout(c).offsetX+'% • Y: '+getCosmeticLayout(c).offsetY+'%</div></div></div>';
-  updateCosmeticPositionLabels();
 }
 async function adminCreateCosmetic(){
   if(!isUserAdmin(currentUser))return;
@@ -9710,6 +9710,7 @@ function adminEditCosmetic(id){
   previewAdminCosmetic(c);
   const box=document.getElementById('adminCosmeticPreview');
   if(box){const note=document.createElement('div');note.className='admin-cosmetic-processing';note.style.marginTop='8px';note.innerHTML='<i class="fa-solid fa-pen"></i> '+escapeHtml(c.name)+' düzenleniyor. Alanları değiştirip <b>Önizleme</b> butonuna basabilirsin.';box.appendChild(note);}
+  updateCosmeticPositionLabels();
   document.getElementById('adminCosmeticName')?.scrollIntoView({behavior:'smooth',block:'center'});
 }
 
