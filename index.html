@@ -8819,7 +8819,7 @@ function renderStoreCosmetics() {
   if (!grid) return;
   const cosmetics = allCosmetics().filter(c => {
     const url = c.mediaUrl || c.gifUrl || c.preview || '';
-    return c.type === 'frame' && (!url || /^https?:\\/\\//i.test(url) || String(c.mode).toLowerCase() === 'css');
+    return c.type === 'frame' && (!url || /^https?:\/\//i.test(url) || String(c.mode).toLowerCase() === 'css');
   });
   if (!cosmetics.length) {
     grid.innerHTML = '<div class="cosmetic-empty-state"><i class="fa-solid fa-wand-magic-sparkles"></i><b>Henüz kozmetik yok</b><span>Admin yeni bir medya yüklediğinde burada görünecek.</span></div>';
@@ -8832,7 +8832,7 @@ function renderStoreCosmetics() {
     const url = c.mediaUrl || c.gifUrl || c.preview || '';
     const mode = String(c.mode || '').toLowerCase();
     let overlay = '';
-    if (url && /^https?:\\/\\//i.test(url)) {
+    if (url && /^https?:\/\//i.test(url)) {
       overlay = mode === 'video'
         ? '<video class="sd-cosmetic-media" src="' + escapeHtml(url) + '" muted loop autoplay playsinline></video>'
         : '<img class="sd-cosmetic-media" src="' + escapeHtml(url) + '" alt="" loading="lazy" onerror="this.closest(\\'.sd-cosmetic-preview\\').classList.add(\\'media-broken\\')">';
