@@ -9450,13 +9450,22 @@ async function adminCreateCosmetic(){
   if(!name){showToast('Kozmetik adı gerekli.','fa-circle-exclamation','red');return;}
   if(mode==='gif'&&!url){showToast('GIF/WebP modu için URL gerekli.','fa-link','red');return;}
   const id='admin_cosmetic_'+Date.now(),cosmetic={id,name,nameEn:name,price,type,mode,color1,color2,gifUrl:mode==='gif'?url:'',desc:desc||'Admin tarafından oluşturulan kozmetik.',class:cosmeticCssClass(id),createdAt:Date.now(),createdBy:currentUser.uid};
-  if(db){try{await db.collection('cosmetics').doc(id).set(cosmetic);}catch(e){showToast('Kozmetik kaydedilemedi.','fa-circle-xmark','red');return;}}
+  if(!supabaseClient){showToast('Kozmetik sistemi hazır değil.','fa-circle-xmark','red');return;}
+  const {data:saveData,error:saveError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_create_cosmetic',cosmetic:{
+    id,name,description:desc||'Admin tarafından oluşturulan kozmetik.',kind:type,price,css_class:cosmetic.class,preview:mode==='gif'?url:''
+  }}}});
+  if(saveError||!saveData?.ok){showToast('Kozmetik kaydedilemedi.','fa-circle-xmark','red');return;}
+  if(db){try{await db.collection('cosmetics').doc(id).set(cosmetic);}catch(e){console.warn('Firestore cosmetic mirror:',e.message);}}
   customCosmetics.unshift(cosmetic);applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();showToast('Kozmetik mağazaya eklendi!','fa-wand-magic-sparkles','green');
 }
 async function adminDeleteCosmetic(id){
   if(!isUserAdmin(currentUser))return;
   if(!confirm('Bu kozmetiği silmek istediğine emin misin?'))return;
-  if(db){try{await db.collection('cosmetics').doc(id).delete();}catch(e){showToast('Kozmetik silinemedi.','fa-circle-xmark','red');return;}}
+  if(supabaseClient){
+    const {data:delData,error:delError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_delete_cosmetic',cosmeticId:id}});
+    if(delError||!delData?.ok){showToast('Kozmetik silinemedi.','fa-circle-xmark','red');return;}
+  }
+  if(db){try{await db.collection('cosmetics').doc(id).delete();}catch(e){console.warn('Firestore cosmetic mirror delete:',e.message);}}
   customCosmetics=customCosmetics.filter(c=>c.id!==id);applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();showToast('Kozmetik silindi.','fa-trash','red');
 }
 function openAdminModal() {
