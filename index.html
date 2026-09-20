@@ -7083,7 +7083,19 @@ function loadSavedData() {
   let premiumPool = [...INITIAL_PREMIUM_SCRIPTS];
   if (adminOverrides) {
     try {
-      premiumPool = JSON.parse(adminOverrides);
+      const parsedOverrides = JSON.parse(adminOverrides);
+      // Empty/corrupt override caches must never erase the built-in script catalog.
+      if (Array.isArray(parsedOverrides) && parsedOverrides.length > 0) premiumPool = parsedOverrides;
+    } catch (e) {}
+  }
+  // Keep the last known-good catalog as an offline fallback.
+  const cachedCatalog = localStorage.getItem('scriptHubLastKnownGoodScripts');
+  if (cachedCatalog) {
+    try {
+      const parsedCached = JSON.parse(cachedCatalog);
+      if (Array.isArray(parsedCached) && parsedCached.length > premiumPool.length) {
+        premiumPool = parsedCached;
+      }
     } catch (e) {}
   }
 
@@ -7212,7 +7224,9 @@ function syncFromFirestore() {
           });
 
           // Boş/bozuk snapshot mevcut script listesini sıfırlamasın.
-          scriptsData = normalizeUnverifiedScriptStats(merged.length ? merged : (previousScripts.length ? previousScripts : INITIAL_PREMIUM_SCRIPTS));
+          const safeMerged = merged.length ? merged : (previousScripts.length ? previousScripts : INITIAL_PREMIUM_SCRIPTS);
+          scriptsData = normalizeUnverifiedScriptStats(safeMerged);
+          try { localStorage.setItem('scriptHubLastKnownGoodScripts', JSON.stringify(scriptsData.slice(0, 300))); } catch (_) {}
           renderMainGrid();
         }, err => {
           console.warn("Firestore scripts sync notice:", err.message);
@@ -7245,7 +7259,9 @@ function syncFromFirestore() {
               previousScripts.forEach(s => {
                 if (!deleted.has(s.id) && !remoteById.has(s.id) && !merged.some(m=>m.id===s.id)) merged.push(s);
               });
-              scriptsData = normalizeUnverifiedScriptStats(merged.length ? merged : (previousScripts.length ? previousScripts : INITIAL_PREMIUM_SCRIPTS));
+              const safeMerged = merged.length ? merged : (previousScripts.length ? previousScripts : INITIAL_PREMIUM_SCRIPTS);
+              scriptsData = normalizeUnverifiedScriptStats(safeMerged);
+              try { localStorage.setItem('scriptHubLastKnownGoodScripts', JSON.stringify(scriptsData.slice(0, 300))); } catch (_) {}
               renderMainGrid();
             }, fallbackErr => console.warn("Firestore fallback scripts sync notice:", fallbackErr.message));
           } catch (fallbackErr) {
