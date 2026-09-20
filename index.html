@@ -30,7 +30,8 @@ import { removeBackground } from "https://esm.sh/@imgly/background-removal@1.7.0
 window.sdAiRemoveBackground=async function(file,progress){
  return await removeBackground(file,{model:"medium",output:{format:"image/png",quality:0.95,type:"foreground"},progress});
 };
-</script>\n<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+</script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
@@ -4123,7 +4124,8 @@ header {
 .store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none;z-index:2}.store-cosmetic-preview .store-frame-video{border-radius:inherit}
 .avatar-preview-frame,.admin-cosmetic-preview-stage .preview-avatar-wrap,.store-cosmetic-preview{overflow:visible!important}
 .avatar-preview-frame .avatar-preview-base,.admin-cosmetic-preview-stage .base-avatar,.store-cosmetic-preview .store-avatar-base{position:absolute!important;left:50%;top:50%;transform:translate(-50%,-50%);width:78%!important;height:78%!important;object-fit:cover!important}
-.avatar-preview-frame .avatar-preview-gif,.avatar-preview-frame .avatar-preview-video,.admin-cosmetic-preview-stage .cosmetic-overlay,.store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:112%!important;height:112%!important;object-fit:contain!important;object-position:center!important;pointer-events:none!important}.\n.admin-cosmetic-preview-stage .cosmetic-overlay,.store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video,.avatar-preview-frame .avatar-preview-gif,.avatar-preview-frame .avatar-preview-video{left:calc(50% + var(--cosmetic-x,0%))!important;top:calc(50% + var(--cosmetic-y,0%))!important;width:var(--cosmetic-scale,112%)!important;height:var(--cosmetic-scale,112%)!important}
+.avatar-preview-frame .avatar-preview-gif,.avatar-preview-frame .avatar-preview-video,.admin-cosmetic-preview-stage .cosmetic-overlay,.store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video{position:absolute!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;width:112%!important;height:112%!important;object-fit:contain!important;object-position:center!important;pointer-events:none!important}.
+.admin-cosmetic-preview-stage .cosmetic-overlay,.store-cosmetic-preview .store-frame-gif,.store-cosmetic-preview .store-frame-video,.avatar-preview-frame .avatar-preview-gif,.avatar-preview-frame .avatar-preview-video{left:calc(50% + var(--cosmetic-x,0%))!important;top:calc(50% + var(--cosmetic-y,0%))!important;width:var(--cosmetic-scale,112%)!important;height:var(--cosmetic-scale,112%)!important}
 .store-cosmetic-card{background:var(--bg-card);border:1px solid var(--border-color);border-radius:18px;padding:14px;display:flex;flex-direction:column;justify-content:space-between;gap:8px;min-width:0;transition:.2s ease}
 .store-cosmetic-card:hover{border-color:var(--accent-light);transform:translateY(-2px);box-shadow:0 10px 28px rgba(0,0,0,.2)}
 .store-cosmetic-preview.css-frame{width:92px;height:92px;border-radius:50%;margin:0 auto 10px;background:var(--accent-gradient)}
