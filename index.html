@@ -8396,7 +8396,8 @@ function voteScriptStatus(scriptId, isWorking) {
   updateUIUserInfo();
   if (typeof playSuccessSound === "function") playSuccessSound();
 
-  // Firestore sync if available  if (db) {
+  // Firestore sync if available
+  if (db) {
     try {
       db.collection("scripts").doc(scriptId).update({
         workingVotes: s.workingVotes,
@@ -8407,7 +8408,8 @@ function voteScriptStatus(scriptId, isWorking) {
     } catch (e) {}
   }
 
-  // Refresh UI  renderMainGrid();
+  // Refresh UI
+  renderMainGrid();
 
   if (selectedScriptForUnlock && selectedScriptForUnlock.id === scriptId) {
     updateCodeModalVoting(s);
@@ -9605,14 +9607,16 @@ function openModal(id) {
   if (!m) return;
   m.classList.add('active');
   syncModalBodyLock();
-}function closeModal(id) {
+}
+function closeModal(id) {
   const m = document.getElementById(id);
   if (!m) return;
   m.classList.remove('active');
   syncModalBodyLock();
 }
 
-// Close modal on background clickwindow.addEventListener('click', (e) => {
+// Close modal on background click
+window.addEventListener('click', (e) => {
   if (e.target.classList.contains('modal-overlay')) {
     e.target.classList.remove('active');
     syncModalBodyLock();
