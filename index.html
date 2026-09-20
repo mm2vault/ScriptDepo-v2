@@ -697,8 +697,7 @@ header {
 }
 .script-card:hover {
   transform: translateY(-6px);
-  border-color: var(--border-hover);
-  box-shadow: var(--shadow);
+  border-color: var(--border-hover);  box-shadow: var(--shadow);
 }
 .script-card-img-wrap {
   width: 100%;
@@ -1397,8 +1396,7 @@ header {
     width: calc(100vw - 30px);
     right: 15px;
     bottom: 95px;
-  }
-  .toast-container {
+  }  .toast-container {
     right: 20px;
     bottom: 95px;
   }
@@ -2097,8 +2095,7 @@ header {
     font-size: 14px !important;
     border-radius: 10px !important;
     flex-shrink: 0 !important;
-  }
-  .hero-card-info h4 {
+  }  .hero-card-info h4 {
     font-size: 13px !important;
     margin-bottom: 2px !important;
   }
@@ -2797,8 +2794,7 @@ header {
   align-items: flex-start;
   justify-content: space-between;
   gap: 8px;
-}
-.card-title {
+}.card-title {
   font-size: 16px;
   font-weight: 800;
   color: var(--text-primary);
@@ -3498,7 +3494,6 @@ header {
   overflow: hidden !important;
   box-sizing: border-box !important;
 }
-
 .modal-header {
   grid-area: modal-header !important;
   display: flex !important;
@@ -4197,8 +4192,7 @@ input,select,textarea{max-width:100%}
  .hero-section h1{font-size:clamp(24px,7vw,34px)!important}
  .hero-section .btn{min-height:44px}
  .modal-overlay{padding:0!important;align-items:flex-end!important}
- .modal-container{width:100%!important;max-width:none!important;max-height:94dvh!important;margin:0!important;border-radius:22px 22px 0 0!important;overflow:hidden}
- .modal-container.modal-lg{width:100%!important}
+ .modal-container{width:100%!important;max-width:none!important;max-height:94dvh!important;margin:0!important;border-radius:22px 22px 0 0!important;overflow:hidden} .modal-container.modal-lg{width:100%!important}
  .modal-body{overflow-y:auto;overscroll-behavior:contain}
  .modal-footer{display:grid;grid-template-columns:1fr 1fr;gap:8px}
  .modal-footer .btn{width:100%;min-height:44px}
@@ -4897,8 +4891,7 @@ footer{margin-left:248px!important}
     <iframe src="https://scripthub.mm2ultimatehub.workers.dev/" class="chat-iframe-content" title="ScriptHub Chat Widget"></iframe>
   </div>
 
-  <!-- Scroll to top button -->
-  <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Yukarı Çık">
+  <!-- Scroll to top button -->  <button class="scroll-top-btn" id="scrollTopBtn" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" title="Yukarı Çık">
     <i class="fa-solid fa-arrow-up"></i>
   </button>
 
@@ -5597,8 +5590,7 @@ footer{margin-left:248px!important}
       <div class="modal-body">
         <p style="font-size: 13px; color: var(--text-secondary);">Discord, YouTube veya TikTok topluluğumuzdan aldığınız kupon kodunu girerek anında ücretsiz Coin kazanın!</p>
         
-        <div class="form-group" style="margin-top: 14px;">
-          <label>Kupon Kodu</label>
+        <div class="form-group" style="margin-top: 14px;">          <label>Kupon Kodu</label>
           <div style="display: flex; gap: 8px;">
             <input type="text" id="promoCodeInput" class="form-input" placeholder="Örn: MM2ULTIMATE, DISCORD..." style="text-transform: uppercase; font-weight: 700; letter-spacing: 1px;" onkeyup="if(event.key==='Enter') submitPromoCode()" />
             <button class="btn btn-gold" onclick="submitPromoCode()" style="white-space: nowrap;">
@@ -6297,8 +6289,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
-    image: "https://i.postimg.cc/jScztNGG/no-Filter.jpg",
-    downloads: 18450,
+    image: "https://i.postimg.cc/jScztNGG/no-Filter.jpg",    downloads: 18450,
     views: 46200,
     status: "active",
     version: "v4.5.1",
@@ -6998,7 +6989,6 @@ function loadSavedData() {
       userProfile = { ...userProfile, ...parsed };
     } catch (e) {}
   }
-
   // Load scripts from cache or defaults
   const savedScripts = localStorage.getItem('scriptHubCustomScripts');
   let customScripts = [];
@@ -7697,8 +7687,7 @@ function getFilteredScripts() {
   } else if (activeCategory === 'community') {
     list = list.filter(s => !s.isPremium);
   } else if (activeCategory !== 'all' && activeCategory !== 'games') {
-    list = list.filter(s => (s.category || '').toLowerCase() === activeCategory.toLowerCase());
-  }
+    list = list.filter(s => (s.category || '').toLowerCase() === activeCategory.toLowerCase());  }
 
   // Quick Filter Chips Bar
   if (activeQuickFilter === 'popular') {
@@ -8397,8 +8386,7 @@ function voteScriptStatus(scriptId, isWorking) {
   updateUIUserInfo();
   if (typeof playSuccessSound === "function") playSuccessSound();
 
-  // Firestore sync if available
-  if (db) {
+  // Firestore sync if available  if (db) {
     try {
       db.collection("scripts").doc(scriptId).update({
         workingVotes: s.workingVotes,
@@ -8767,18 +8755,30 @@ async function buyStoreItem(type,itemId,price){
 }
 function toggleCosmeticActive(cosmeticId) {
   if (!userProfile.activeCosmetics) userProfile.activeCosmetics = [];
+  const cosmetic = COSMETICS_LIST.find(c => c.id === cosmeticId);
+  if (!cosmetic) return;
   const index = userProfile.activeCosmetics.indexOf(cosmeticId);
   if (index > -1) {
     userProfile.activeCosmetics.splice(index, 1);
     showToast("Kozmetik devre dışı bırakıldı.", "fa-circle-minus");
   } else {
+    // Aynı türden iki kozmetik aynı anda çakışmasın; yeni seçilen otomatik olarak eskisinin yerini alır.
+    if (cosmetic.type) {
+      userProfile.activeCosmetics = userProfile.activeCosmetics.filter(id => {
+        const other = COSMETICS_LIST.find(c => c.id === id);
+        return !other || other.type !== cosmetic.type;
+      });
+    }
     userProfile.activeCosmetics.push(cosmeticId);
-    showToast("Kozmetik aktifleştirildi!", "fa-wand-magic-sparkles", "green");
+    showToast(cosmetic.name + " aktifleştirildi!", "fa-wand-magic-sparkles", "green");
   }
   saveUserProfile();
   renderStoreCosmetics();
   renderStoreInventory();
   updateUIUserInfo();
+  if (typeof openUserProfileModal === 'function' && document.getElementById('userProfileModal')?.classList.contains('active')) {
+    openUserProfileModal();
+  }
 }
 
 // ==================== AUTHENTICATION ====================
@@ -9093,12 +9093,11 @@ function resetScriptForm() {
   const price = document.getElementById('addScriptPrice'); if (price) price.value = '30';
   const file = document.getElementById('addScriptImageFile'); if (file) file.value = '';
   const title = document.getElementById('addScriptModalTitle'); if (title) title.textContent = 'Script Ekle';
-  const submit = document.getElementById('addScriptSubmitText'); if (submit) submit.textContent = 'Herkese Açık Ekle! (+25 Coin)';
+  const submit = document.getElementById('addScriptSubmitText'); if (submit) submit.textContent = 'Topluluğa Ekle';
   previewAddScriptImage('');
 }
 function openAddScriptModal() {
-  if (!currentUser) {
-    showToast("Script eklemek için lütfen giriş yapın.", "fa-lock");
+  if (!currentUser) {    showToast("Script eklemek için lütfen giriş yapın.", "fa-lock");
     openModal('authModal');
     return;
   }
@@ -9108,7 +9107,8 @@ function openAddScriptModal() {
 
 function previewAddScriptImage(url) {
   const preview = document.getElementById('addScriptImagePreview');
-  if (url && url.startsWith('http')) {
+  if (!preview) return;
+  if (url && (url.startsWith('http') || url.startsWith('data:image/'))) {
     preview.src = url;
     preview.style.display = 'block';
   } else {
@@ -9797,8 +9797,7 @@ window.resetAdminPremiumOverrides = resetAdminPremiumOverrides;
 window.openLeaderboardModal = openLeaderboardModal;
 window.switchLeaderboardTab = switchLeaderboardTab;
 window.openReportModal = openReportModal;
-window.submitScriptReport = submitScriptReport;
-window.toggleChatWidget = toggleChatWidget;
+window.submitScriptReport = submitScriptReport;window.toggleChatWidget = toggleChatWidget;
 window.exportDataBackup = exportDataBackup;
 window.openPrivacyModal = openPrivacyModal;
 window.acceptCookieConsent = acceptCookieConsent;
