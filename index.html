@@ -4531,7 +4531,17 @@ footer{margin-left:248px!important}
 .store-cosmetic-card{min-height:330px!important;padding:14px!important;border-radius:22px!important;display:flex!important;flex-direction:column!important;gap:12px!important;overflow:hidden;position:relative}.store-cosmetic-card:hover{transform:translateY(-3px);border-color:rgba(168,85,247,.45)!important}.store-cosmetic-card.is-equipped{box-shadow:0 0 0 1px rgba(34,211,238,.25),0 12px 34px rgba(34,211,238,.08)!important}.store-cosmetic-preview{height:170px!important;min-height:170px!important;border-radius:17px!important;position:relative!important;overflow:hidden!important;display:flex!important;align-items:center!important;justify-content:center!important;background:radial-gradient(circle,rgba(139,92,246,.13),rgba(5,4,10,.72) 68%)!important;border:1px solid rgba(168,85,247,.15)!important}.store-avatar-base{width:92px!important;height:92px!important;border-radius:50%!important;object-fit:cover!important;position:relative!important;z-index:1!important;box-shadow:0 0 0 1px rgba(255,255,255,.08),0 10px 25px rgba(0,0,0,.3)!important}.store-cosmetic-media{z-index:2!important;max-width:none!important;max-height:none!important}.store-css-cosmetic{position:absolute;inset:50% auto auto 50%;width:108%;height:108%;transform:translate(-50%,-50%);border-radius:50%;z-index:2;pointer-events:none}.store-name-preview,.store-badge-preview,.store-effect-preview{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;gap:8px;font-weight:800}.store-name-preview{font-size:18px;text-shadow:0 0 14px currentColor}.store-badge-preview{padding:10px 14px;border:1px solid rgba(251,191,36,.35);border-radius:14px;color:#fbbf24;background:rgba(251,191,36,.08)}.store-effect-preview{width:110px;height:110px;border-radius:50%;border:1px solid rgba(168,85,247,.3);color:#c084fc;background:radial-gradient(circle,rgba(168,85,247,.28),transparent 68%);font-size:25px}.store-effect-preview span{display:none}.store-cosmetic-info{flex:1}.store-cosmetic-title-row{display:flex;align-items:center;gap:7px;justify-content:space-between}.store-cosmetic-title-row h5{font-size:15px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.cosmetic-type-pill{font-size:9px;text-transform:uppercase;letter-spacing:.06em;padding:4px 7px;border-radius:999px;background:rgba(139,92,246,.1);color:#c4b5fd;border:1px solid rgba(139,92,246,.18);white-space:nowrap}.store-cosmetic-info p{font-size:12px!important;line-height:1.45!important;color:var(--text-muted)!important;min-height:34px!important;margin-top:5px}.store-cosmetic-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:auto}.cosmetic-price{font-weight:900;color:var(--gold);font-size:14px}.cosmetic-action{min-width:112px}.cosmetic-action.is-active{border-color:#22d3ee!important;color:#67e8f9!important;background:rgba(34,211,238,.08)!important}.media-broken{opacity:.35}
 @media(max-width:800px){.store-cosmetic-card{min-height:315px!important}.store-cosmetic-preview{height:155px!important;min-height:155px!important}}
 </style>
-</head>
+<style id="sdCosmeticEngineV2">
+.sd-cosmetic-preview{position:relative!important;aspect-ratio:1/1!important;min-height:260px!important;display:grid!important;place-items:center!important;overflow:hidden!important;background:radial-gradient(circle at center,rgba(124,58,237,.12),rgba(5,6,20,.92))!important;border-radius:24px!important;padding:18px!important}
+.sd-cosmetic-avatar{position:absolute!important;width:62%!important;height:62%!important;left:50%!important;top:50%!important;transform:translate(-50%,-50%)!important;border-radius:50%!important;object-fit:cover!important;z-index:1!important}
+.sd-cosmetic-safe{position:absolute!important;inset:0!important;z-index:2!important;display:grid!important;place-items:center!important;pointer-events:none!important}
+.sd-cosmetic-media{width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;display:block!important}
+.sd-cosmetic-live{position:absolute!important;top:12px!important;left:12px!important;z-index:4!important;padding:5px 9px!important;border-radius:999px!important;background:rgba(0,0,0,.58)!important;color:#fff!important;font-size:9px!important;font-weight:800!important;letter-spacing:.06em!important}
+.sd-cosmetic-live i{font-size:6px!important;color:#22c55e!important;margin-right:4px!important}
+.sd-cosmetic-card .store-cosmetic-info{min-height:92px!important}
+.sd-cosmetic-card.is-equipped{border-color:rgba(16,185,129,.55)!important;box-shadow:0 0 28px rgba(16,185,129,.12)!important}
+#adminCosmeticScale,#adminCosmeticX,#adminCosmeticY,#adminCosmeticScaleValue,#adminCosmeticXValue,#adminCosmeticYValue,#adminCosmeticMode,#adminCosmeticColor1,#adminCosmeticColor2{display:none!important}
+</style></head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
 <div class="sd-section-label">ANA MENÜ</div><nav class="sd-nav">
@@ -8782,39 +8792,39 @@ function renderStorePremiumScripts() {
 }
 
 function renderStoreCosmetics() {
-  const grid=document.getElementById('storeCosmeticsGrid');
-  if(!grid)return;
-  const cosmetics=allCosmetics();
-  if(!cosmetics.length){
-    grid.innerHTML='<div class="cosmetic-empty-state"><i class="fa-solid fa-wand-magic-sparkles"></i><b>Henüz kozmetik yok</b><span>Admin tarafından yeni kozmetikler eklendiğinde burada görünecek.</span></div>';
+  const grid = document.getElementById('storeCosmeticsGrid');
+  if (!grid) return;
+  const cosmetics = allCosmetics().filter(c => {
+    const url = c.mediaUrl || c.gifUrl || c.preview || '';
+    return c.type === 'frame' && (!url || /^https?:\\/\\//i.test(url) || String(c.mode).toLowerCase() === 'css');
+  });
+  if (!cosmetics.length) {
+    grid.innerHTML = '<div class="cosmetic-empty-state"><i class="fa-solid fa-wand-magic-sparkles"></i><b>Henüz kozmetik yok</b><span>Admin yeni bir medya yüklediğinde burada görünecek.</span></div>';
     return;
   }
-  const avatar=userProfile.photoURL||'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
-  grid.innerHTML=cosmetics.map(c=>{
-    const owned=(userProfile.inventory||[]).includes(c.id);
-    const active=(userProfile.activeCosmetics||[]).includes(c.id);
-    const mode=String(c.mode||'css').toLowerCase();
-    let preview='';
-    if(c.type==='frame'){
-      if((mode==='gif'||mode==='video')&&/^https?:\/\//i.test(c.mediaUrl||'')){
-        preview=mode==='video'
-          ? '<video class="store-cosmetic-media" style="'+cosmeticMediaStyle(c)+'" src="'+escapeHtml(c.mediaUrl)+'" muted loop autoplay playsinline onloadedmetadata="autoFitCosmeticMedia(this)"></video>'
-          : '<img class="store-cosmetic-media" style="'+cosmeticMediaStyle(c)+'" src="'+escapeHtml(c.mediaUrl)+'" alt="" loading="lazy" onload="autoFitCosmeticMedia(this)" onerror="this.closest(\'.store-cosmetic-preview\').classList.add(\'media-broken\')">';
-      }else{
-        preview='<div class="store-css-cosmetic '+escapeHtml(c.class||cosmeticCssClass(c.id))+'" style="'+cosmeticLayoutStyle(c)+'"></div>';
-      }
-    }else if(c.type==='name'){
-      preview='<div class="store-name-preview '+escapeHtml(c.class||'')+'">'+escapeHtml(c.name)+'</div>';
-    }else if(c.type==='badge'){
-      preview='<div class="store-badge-preview"><i class="fa-solid fa-certificate"></i><span>'+escapeHtml(c.name)+'</span></div>';
-    }else{
-      preview='<div class="store-effect-preview"><i class="fa-solid fa-sparkles"></i><span>'+escapeHtml(c.name)+'</span></div>';
+  const avatar = userProfile?.photoURL || 'https://api.dicebear.com/7.x/bottts/svg?seed=ScriptDepo';
+  grid.innerHTML = cosmetics.map(c => {
+    const owned = (userProfile.inventory || []).includes(c.id);
+    const active = (userProfile.activeCosmetics || []).includes(c.id);
+    const url = c.mediaUrl || c.gifUrl || c.preview || '';
+    const mode = String(c.mode || '').toLowerCase();
+    let overlay = '';
+    if (url && /^https?:\\/\\//i.test(url)) {
+      overlay = mode === 'video'
+        ? '<video class="sd-cosmetic-media" src="' + escapeHtml(url) + '" muted loop autoplay playsinline></video>'
+        : '<img class="sd-cosmetic-media" src="' + escapeHtml(url) + '" alt="" loading="lazy" onerror="this.closest(\\'.sd-cosmetic-preview\\').classList.add(\\'media-broken\\')">';
     }
-    const button=owned
-      ? '<button class="btn btn-outline btn-sm cosmetic-action '+(active?'is-active':'')+'" onclick="toggleCosmeticActive(\''+c.id+'\')">'+(active?'<i class="fa-solid fa-check"></i> Aktif':'Aktifleştir')+'</button>'
-      : '<button class="btn btn-primary btn-sm cosmetic-action" onclick="buyStoreItem(\'cosmetic\',\''+c.id+'\','+Number(c.price||0)+')">Satın Al</button>';
-    return '<article class="store-cosmetic-card '+(active?'is-equipped':'')+'"><div class="store-cosmetic-preview"><img class="store-avatar-base" src="'+escapeHtml(avatar)+'" alt="">'+preview+'</div><div class="store-cosmetic-info"><div class="store-cosmetic-title-row"><h5>'+escapeHtml(c.name)+'</h5><span class="cosmetic-type-pill">'+escapeHtml(c.type||'kozmetik')+'</span></div><p>'+escapeHtml(c.desc||'Profil için özel kozmetik.')+'</p></div><div class="store-cosmetic-footer"><span class="cosmetic-price"><i class="fa-solid fa-coins"></i> '+Number(c.price||0)+'</span>'+button+'</div></article>';
+    return '<article class="store-cosmetic-card sd-cosmetic-card ' + (active ? 'is-equipped' : '') + '">' +
+      '<div class="store-cosmetic-preview sd-cosmetic-preview"><img class="store-avatar-base sd-cosmetic-avatar" src="' + escapeHtml(avatar) + '" alt="">' +
+      '<div class="sd-cosmetic-safe">' + overlay + '</div><span class="sd-cosmetic-live"><i class="fa-solid fa-circle"></i> CANLI ÖNİZLEME</span></div>' +
+      '<div class="store-cosmetic-info"><div class="store-cosmetic-title-row"><h5>' + escapeHtml(c.name) + '</h5><span class="cosmetic-type-pill">Çerçeve</span></div>' +
+      '<p>' + escapeHtml(c.desc || 'Profil fotoğrafına otomatik uyarlanır.') + '</p></div>' +
+      '<div class="store-cosmetic-footer"><span class="cosmetic-price"><i class="fa-solid fa-coins"></i> ' + Number(c.price || 0) + '</span>' +
+      (owned ? '<button class="btn btn-outline btn-sm cosmetic-action ' + (active ? 'is-active' : '') + '" onclick="toggleCosmeticActive(\\'' + c.id + '\\')">' + (active ? '<i class="fa-solid fa-check"></i> Kuşanıldı' : 'Kuşan') + '</button>' :
+      '<button class="btn btn-primary btn-sm cosmetic-action" onclick="buyStoreItem(\\'cosmetic\\',\\'' + c.id + '\\',' + Number(c.price || 0) + ')">Satın Al</button>') +
+      '</div></article>';
   }).join('');
+}).join('');
 }
 function renderStoreInventory() {
   const container = document.getElementById('storeInventoryContent');
@@ -8897,25 +8907,20 @@ function toggleCosmeticActive(cosmeticId) {
   const index = userProfile.activeCosmetics.indexOf(cosmeticId);
   if (index > -1) {
     userProfile.activeCosmetics.splice(index, 1);
-    showToast("Kozmetik devre dışı bırakıldı.", "fa-circle-minus");
+    showToast("Çerçeve çıkarıldı.", "fa-circle-minus");
   } else {
-    // Aynı türden iki kozmetik aynı anda çakışmasın; yeni seçilen otomatik olarak eskisinin yerini alır.
-    if (cosmetic.type) {
-      userProfile.activeCosmetics = userProfile.activeCosmetics.filter(id => {
-        const other = getCosmeticById(id);
-        return !other || other.type !== cosmetic.type;
-      });
-    }
+    userProfile.activeCosmetics = userProfile.activeCosmetics.filter(id => {
+      const other = getCosmeticById(id);
+      return !other || other.type !== 'frame';
+    });
     userProfile.activeCosmetics.push(cosmeticId);
-    showToast(cosmetic.name + " aktifleştirildi!", "fa-wand-magic-sparkles", "green");
+    showToast(cosmetic.name + " kuşanıldı!", "fa-wand-magic-sparkles", "green");
   }
   saveUserProfile();
   renderStoreCosmetics();
   renderStoreInventory();
   updateUIUserInfo();
-  if (typeof openUserProfileModal === 'function' && document.getElementById('userProfileModal')?.classList.contains('active')) {
-    openUserProfileModal();
-  }
+  if (typeof openUserProfileModal === 'function' && document.getElementById('userProfileModal')?.classList.contains('active')) openUserProfileModal();
 }
 
 // ==================== AUTHENTICATION ====================
@@ -9671,37 +9676,41 @@ function previewAdminCosmetic(cosmeticOverride){
   }
   box.innerHTML='<div class="admin-cosmetic-preview-stage"><div><div class="preview-label">Profil önizleme • '+escapeHtml(c.type||'kozmetik')+'</div><div class="preview-avatar-wrap"><img class="base-avatar" src="'+escapeHtml(avatar)+'" alt="">'+overlay+'</div></div><div class="preview-info"><b>'+escapeHtml(c.name)+'</b><div style="margin-top:6px;color:var(--text-secondary);font-size:12px;">'+escapeHtml(c.mode||'css')+' • '+Number(c.price||0)+' coin</div><div style="margin-top:5px;color:var(--text-muted);font-size:11px;">Boyut: '+getCosmeticLayout(c).scale+'% • X: '+getCosmeticLayout(c).offsetX+'% • Y: '+getCosmeticLayout(c).offsetY+'%</div></div></div>';
 }
-async function adminCreateCosmetic(){
-  if(!isUserAdmin(currentUser))return;
-  const name=document.getElementById('adminCosmeticName')?.value.trim(),type=document.getElementById('adminCosmeticType')?.value||'frame',mode=document.getElementById('adminCosmeticMode')?.value||'css',price=Math.max(0,Math.min(9999,Number(document.getElementById('adminCosmeticPrice')?.value||0))),color1=document.getElementById('adminCosmeticColor1')?.value||'#8b5cf6',color2=document.getElementById('adminCosmeticColor2')?.value||'#22d3ee',url=document.getElementById('adminCosmeticUrl')?.value.trim()||'',file=document.getElementById('adminCosmeticFile')?.files?.[0],desc=document.getElementById('adminCosmeticDesc')?.value.trim()||'';
-  const scale=Math.max(40,Math.min(180,Number(document.getElementById('adminCosmeticScale')?.value||112))),offsetX=Math.max(-50,Math.min(50,Number(document.getElementById('adminCosmeticX')?.value||0))),offsetY=Math.max(-50,Math.min(50,Number(document.getElementById('adminCosmeticY')?.value||0)));
-  if(!name){showToast('Kozmetik adı gerekli.','fa-circle-exclamation','red');return;}
-  if(!file&&!url&&(mode==='gif'||mode==='video')){showToast('Dosya veya medya URLsi seçmelisin.','fa-file-arrow-up','red');return;}
-  const id=editingCosmeticId||('admin_cosmetic_'+Date.now());
-  let mediaUrl=url;
-  try{
-    if(file){
-      if(adminCosmeticProcessingPromise)await adminCosmeticProcessingPromise;
-      const uploadFile=adminCosmeticProcessedBlob||file;
-      showToast(editingCosmeticId?'Yeni kozmetik medyası yükleniyor...':'Kozmetik dosyası yükleniyor...','fa-cloud-arrow-up','blue');
-      mediaUrl=await uploadAdminCosmeticFile(uploadFile,id);
-    }else if(editingCosmeticId){
-      const old=getCosmeticById(editingCosmeticId);
-      mediaUrl=url||old?.mediaUrl||old?.gifUrl||'';
+async async function adminCreateCosmetic() {
+  if (!isUserAdmin(currentUser)) return;
+  const name = document.getElementById('adminCosmeticName')?.value.trim();
+  const price = Math.max(0, Math.min(9999, Number(document.getElementById('adminCosmeticPrice')?.value || 0)));
+  const desc = document.getElementById('adminCosmeticDesc')?.value.trim() || 'Profil fotoğrafına otomatik uyarlanan kozmetik.';
+  const file = document.getElementById('adminCosmeticFile')?.files?.[0];
+  if (!name) return showToast('Kozmetik adı gerekli.', 'fa-circle-exclamation', 'red');
+  if (!file) return showToast('Sadece resim, GIF veya video dosyası seç.', 'fa-file-arrow-up', 'red');
+  if (!supabaseClient) return showToast('Kozmetik sistemi hazır değil.', 'fa-circle-xmark', 'red');
+  const isVideo = file.type.startsWith('video/');
+  const isGif = file.type === 'image/gif';
+  let uploadFile = file;
+  try {
+    if (!isVideo && !isGif && typeof sdProcessCosmeticImage === 'function') {
+      showToast('AI görseli profil için hazırlıyor...', 'fa-wand-magic-sparkles', 'blue');
+      uploadFile = await Promise.race([sdProcessCosmeticImage(file), new Promise((_, r) => setTimeout(() => r(new Error('AI zaman aşımı')), 120000))]);
     }
-  }catch(e){showToast('Dosya yüklenemedi: '+(e.message||'Storage hatası'),'fa-circle-xmark','red');return;}
-  const actualMode=file?.type?.startsWith('video/')||mode==='video'?'video':(mediaUrl&&mode!=='css'?'gif':mode);
-  const cosmetic={id,name,nameEn:name,price,type,mode:actualMode,color1,color2,gifUrl:actualMode!=='video'?mediaUrl:'',mediaUrl,desc:desc||'Admin tarafından oluşturulan kozmetik efekt.',class:cosmeticCssClass(id),createdAt:getCosmeticById(id)?.createdAt||Date.now(),createdBy:getCosmeticById(id)?.createdBy||currentUser.uid,scale,offsetX,offsetY};
-  if(!supabaseClient){showToast('Kozmetik sistemi hazır değil.','fa-circle-xmark','red');return;}
-  const {data:saveData,error:saveError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_create_cosmetic',cosmetic:{id,name,description:cosmetic.desc,kind:type,price,css_class:cosmetic.class,preview:mediaUrl,metadata:{nameEn:cosmetic.nameEn,type:cosmetic.type,mode:cosmetic.mode,color1:cosmetic.color1,color2:cosmetic.color2,gifUrl:cosmetic.gifUrl,mediaUrl:cosmetic.mediaUrl,desc:cosmetic.desc,class:cosmetic.class,createdAt:cosmetic.createdAt,createdBy:cosmetic.createdBy,scale:cosmetic.scale,offsetX:cosmetic.offsetX,offsetY:cosmetic.offsetY}}}});
-  if(saveError||!saveData?.ok){showToast('Kozmetik Supabase kataloğuna kaydedilemedi: '+(saveData?.error||saveError?.message||'bilinmeyen hata'),'fa-circle-xmark','red');return;}
-  customCosmetics=[cosmetic,...customCosmetics.filter(x=>x.id!==id)];
-  editingCosmeticId=null;adminCosmeticProcessedBlob=null;adminCosmeticProcessingPromise=null;
-  applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();
-  showToast('Kozmetik '+(saveData?.cosmetic?.id===id&&saveData?.cosmetic?.created_at?'güncellendi':'mağazaya eklendi')+'!','fa-wand-magic-sparkles','green');
-  ['adminCosmeticName','adminCosmeticUrl','adminCosmeticDesc'].forEach(x=>{const el=document.getElementById(x);if(el)el.value='';});
-  const f=document.getElementById('adminCosmeticFile');if(f)f.value='';
-  const btn=document.querySelector('#adminCosmeticList')?.closest('section')?.querySelector('.admin-coin-actions .btn-primary');if(btn){btn.innerHTML='<i class="fa-solid fa-plus"></i> Kozmetiği Ekle';}
+    const id = editingCosmeticId || ('admin_cosmetic_' + Date.now());
+    const mediaUrl = await uploadAdminCosmeticFile(uploadFile, id);
+    const mode = isVideo ? 'video' : 'gif';
+    const cosmetic = { id, name, nameEn:name, price, type:'frame', mode, gifUrl:isVideo?'':mediaUrl, mediaUrl, desc, class:cosmeticCssClass(id), createdAt:Date.now(), createdBy:currentUser.uid };
+    const {data,error} = await supabaseClient.functions.invoke('profile-shop', {body:{action:'admin_create_cosmetic', cosmetic:{
+      id,name,description:desc,kind:'frame',price,css_class:cosmetic.class,preview:mediaUrl,
+      metadata:{nameEn:name,type:'frame',mode,mediaUrl,gifUrl:cosmetic.gifUrl,desc,createdAt:cosmetic.createdAt,createdBy:currentUser.uid,autoProfileFit:true,aiProcessed:!isVideo&&!isGif}
+    }}});
+    if (error || !data?.ok) throw new Error(data?.error || error?.message || 'Katalog kaydı başarısız');
+    customCosmetics=[cosmetic,...customCosmetics.filter(x=>x.id!==id)];
+    editingCosmeticId=null; adminCosmeticProcessedBlob=null; adminCosmeticProcessingPromise=null;
+    renderAdminCosmetics(); renderStoreCosmetics(); renderStoreInventory();
+    showToast('Kozmetik başarıyla eklendi!', 'fa-wand-magic-sparkles', 'green');
+    ['adminCosmeticName','adminCosmeticUrl','adminCosmeticDesc'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+    const input=document.getElementById('adminCosmeticFile'); if(input) input.value='';
+  } catch(e) {
+    showToast('Kozmetik yüklenemedi: '+(e.message||'bilinmeyen hata'), 'fa-circle-xmark', 'red');
+  }
 }
 function adminEditCosmetic(id){
   if(!isUserAdmin(currentUser))return;
