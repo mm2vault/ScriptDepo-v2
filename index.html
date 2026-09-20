@@ -4454,7 +4454,23 @@ footer{margin-left:248px!important}
 @media(max-width:768px){.sd-community-box{margin:12px 0}.sd-community-actions button{padding:10px 6px}}
 
 .sd-community-dashboard-note{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:0 0 20px;padding:12px 14px;border:1px solid rgba(124,58,237,.22);border-radius:16px;background:rgba(124,58,237,.07);color:var(--text-secondary);font-size:12px}.sd-community-dashboard-note>i{color:var(--accent-light)}.sd-community-dashboard-note span{flex:1;min-width:190px}.sd-community-dashboard-note b{color:var(--text-primary)}.sd-community-dashboard-note .btn{padding:7px 12px;font-size:11px}@media(max-width:600px){.sd-community-dashboard-note{align-items:flex-start}.sd-community-dashboard-note .btn{flex:1}}
-</style></head>
+</style><style id="scriptdepo-extra-animated-cosmetics">
+/* Extra animated cosmetics */
+.avatar-frame-eclipse{border:3px solid #8b5cf6!important;box-shadow:0 0 0 2px rgba(168,85,247,.35),0 0 16px rgba(139,92,246,.85)!important;animation:sdEclipseSpin 3s linear infinite}
+.avatar-frame-pulse{border:3px solid #22d3ee!important;box-shadow:0 0 0 2px rgba(34,211,238,.3),0 0 18px rgba(34,211,238,.75)!important;animation:sdPulseFrame 1.5s ease-in-out infinite}
+.avatar-frame-cyber{border:3px dashed #38bdf8!important;box-shadow:0 0 0 2px rgba(56,189,248,.3),0 0 15px rgba(14,165,233,.8)!important;animation:sdCyberFrame 1.1s steps(2,end) infinite}
+.avatar-frame-obsidian{border:3px solid #c084fc!important;box-shadow:0 0 0 2px rgba(15,23,42,.9),0 0 20px rgba(192,132,252,.55)!important;animation:sdObsidianFrame 2.4s ease-in-out infinite}
+.profile-effect-crown{filter:drop-shadow(0 0 8px rgba(251,191,36,.75)) drop-shadow(0 0 20px rgba(245,158,11,.55));animation:sdCrownAura 2s ease-in-out infinite}
+.profile-effect-starlight{filter:drop-shadow(0 0 8px rgba(255,255,255,.8)) drop-shadow(0 0 22px rgba(167,139,250,.65));animation:sdStarAura 1.7s ease-in-out infinite}
+@keyframes sdEclipseSpin{to{transform:rotate(360deg)}}
+@keyframes sdPulseFrame{0%,100%{box-shadow:0 0 0 2px rgba(34,211,238,.2),0 0 8px rgba(34,211,238,.45)}50%{box-shadow:0 0 0 4px rgba(34,211,238,.42),0 0 26px rgba(34,211,238,.95)}}
+@keyframes sdCyberFrame{0%,100%{filter:brightness(.9)}50%{filter:brightness(1.35) drop-shadow(0 0 12px rgba(56,189,248,.8))}}
+@keyframes sdObsidianFrame{0%,100%{box-shadow:0 0 0 2px rgba(15,23,42,.95),0 0 12px rgba(192,132,252,.35)}50%{box-shadow:0 0 0 3px rgba(139,92,246,.6),0 0 28px rgba(192,132,252,.85)}}
+@keyframes sdCrownAura{0%,100%{filter:drop-shadow(0 0 6px rgba(251,191,36,.5))}50%{filter:drop-shadow(0 0 16px rgba(251,191,36,1))}}
+@keyframes sdStarAura{0%,100%{opacity:.88;filter:drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 12px rgba(167,139,250,.45))}50%{opacity:1;filter:drop-shadow(0 0 14px rgba(255,255,255,1)) drop-shadow(0 0 28px rgba(167,139,250,.9))}}
+@media (prefers-reduced-motion:reduce){.avatar-frame-eclipse,.avatar-frame-pulse,.avatar-frame-cyber,.avatar-frame-obsidian,.profile-effect-crown,.profile-effect-starlight{animation:none!important}}
+</style>
+</head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
 <div class="sd-section-label">ANA MENÜ</div><nav class="sd-nav">
@@ -6784,7 +6800,7 @@ const COSMETICS_LIST = [
   {id:"c_plasma_frame",name:"Plazma Çerçeve",nameEn:"Plasma Frame",price:575,type:"frame",desc:"Kırmızı-mor plazma neon çerçevesi.",class:"avatar-frame-plasma"},
   {id:"c_aurora_effect",name:"Aurora Efekti",nameEn:"Aurora Effect",price:450,type:"effect",desc:"Cyan ve mor aurora parıltısı.",class:"profile-effect-aurora"},
   {id:"c_dark_aura",name:"Karanlık Aura",nameEn:"Dark Aura",price:375,type:"effect",desc:"Koyu indigo aura ve gölge efekti.",class:"profile-effect-dark"},
-  {id:"c_badge_legend",name:"Legend Rozeti",nameEn:"Legend Badge",price:1000,type:"badge",desc:"Nadir koleksiyon rozeti.",class:"badge-legend"}
+  {id:"c_badge_legend",name:"Legend Rozeti",nameEn:"Legend Badge",price:1000,type:"badge",desc:"Nadir koleksiyon rozeti.",class:"badge-legend"},
   {id:"c_eclipse_frame",name:"Eclipse Çerçeve",nameEn:"Eclipse Frame",price:425,type:"frame",desc:"Mor-siyah yıldırım neon avatar çerçevesi.",class:"avatar-frame-eclipse"},
   {id:"c_pulse_frame",name:"Pulse Çerçeve",nameEn:"Pulse Frame",price:475,type:"frame",desc:"Pembe-cyan nabız neon avatar çerçevesi.",class:"avatar-frame-pulse"},
   {id:"c_cyber_frame",name:"Cyber Çerçeve",nameEn:"Cyber Frame",price:525,type:"frame",desc:"Dijital cyan teknoloji avatar çerçevesi.",class:"avatar-frame-cyber"},
