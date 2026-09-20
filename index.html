@@ -4465,6 +4465,11 @@ footer{margin-left:248px!important}
 /* Admin controls: visible on desktop and tablet for the configured admin account. */
 @media (min-width:769px){html.scriptdepo-admin #adminBtn{display:inline-flex!important;}html.scriptdepo-admin #sdAdminNav{display:flex!important;}}
 @media (min-width:769px) and (max-width:1100px){html.scriptdepo-admin #sdAdminNav{align-items:center;justify-content:center;box-shadow:inset 0 0 0 1px rgba(239,68,68,.22),0 0 16px rgba(239,68,68,.08);}html.scriptdepo-admin #sdAdminNav i{color:#f87171!important;}html.scriptdepo-admin #adminBtn{width:42px;min-width:42px;padding:0;justify-content:center;}html.scriptdepo-admin #adminBtn span{display:none;}}
+
+/* Community contribution panel */
+.sd-community-box{margin:14px 12px 0;padding:14px;border:1px solid rgba(124,58,237,.28);border-radius:18px;background:linear-gradient(135deg,rgba(124,58,237,.13),rgba(6,182,212,.07));box-shadow:0 10px 30px rgba(0,0,0,.16)}
+.sd-community-box h4{font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--text-secondary);margin-bottom:5px}.sd-community-box p{font-size:11px;color:var(--text-muted);line-height:1.45;margin-bottom:10px}.sd-community-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px}.sd-community-actions button{min-width:0;padding:9px 7px;border-radius:12px;font-size:11px;font-weight:700;cursor:pointer;border:1px solid var(--border-color);color:var(--text-primary);background:rgba(255,255,255,.04);transition:.2s}.sd-community-actions button:hover{border-color:var(--accent-light);transform:translateY(-1px);background:rgba(124,58,237,.12)}.sd-community-actions button i{margin-right:5px}.sd-community-actions .sd-game-add:hover{border-color:#34d399;background:rgba(16,185,129,.1)}
+@media(max-width:768px){.sd-community-box{margin:12px 0}.sd-community-actions button{padding:10px 6px}}
 </style></head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
@@ -4481,6 +4486,7 @@ footer{margin-left:248px!important}
 <button onclick="openGuideModal('executors');sdNav(this)"><i class="fa-solid fa-gear"></i><span>Ayarlar &amp; Executor</span><b>›</b></button>
 <button id="sdAdminNav" class="admin-only" aria-hidden="true" onclick="openAdminModal();sdNav(this)"><i class="fa-solid fa-shield-halved"></i><span>Admin Paneli</span><b>›</b></button>
 </nav>
+<div class="sd-community-box" id="sdCommunityBox"><h4><i class="fa-solid fa-users"></i> Topluluğa Katkıda Bulun</h4><p>Giriş yapan herkes kendi scriptini veya Roblox oyununu paylaşabilir.</p><div class="sd-community-actions"><button type="button" onclick="openAddScriptModal()"><i class="fa-solid fa-code"></i> Script Ekle</button><button type="button" class="sd-game-add" onclick="openAddGameModal()"><i class="fa-solid fa-gamepad"></i> Oyun Ekle</button></div></div>
 <div class="sd-side-bottom"><div class="sd-side-coin" onclick="openCoinStoreModal('scripts')" style="cursor:pointer"><div><small>BAKİYE</small><b><i class="fa-solid fa-coins"></i> <span id="sdSideCoin">0</span> Coin</b></div><i class="fa-solid fa-plus"></i></div><button class="sd-buy-btn" onclick="openCoinStoreModal('scripts')"><i class="fa-solid fa-cart-shopping"></i> Coin Satın Al <i class="fa-solid fa-chevron-right"></i></button><div class="sd-help-box"><i class="fa-solid fa-rocket"></i><span>Daha fazla coin kazanmak için görevlerini tamamla!</span><i class="fa-solid fa-chevron-right"></i></div><div class="sd-side-footer">ScriptDepo • 2026</div></div>
 </aside>>
 
@@ -4693,7 +4699,8 @@ footer{margin-left:248px!important}
       <div><i class="fa-solid fa-coins"></i><span>Coin</span><b id="sdHeroCoins">0</b></div>
     </div>
   </div>
-</section>
+</section><div class="sd-community-dashboard-note"><i class="fa-solid fa-users"></i><span><b>Topluluk içerikleri:</b> Giriş yapan herkes script ve oyun ekleyebilir.</span><button class="btn btn-outline btn-sm" type="button" onclick="openAddScriptModal()">Script Ekle</button><button class="btn btn-outline btn-sm" type="button" onclick="openAddGameModal()">Oyun Ekle</button></div>
+
 
 <div class="sd-dashboard-strip" aria-label="Hızlı erişim">
   <button class="sd-quick-card" type="button" onclick="resetFilters()">
@@ -5332,7 +5339,7 @@ footer{margin-left:248px!important}
           </div>
 
           <button type="submit" class="btn btn-primary" style="margin-top: 8px;">
-            <i class="fa-solid fa-rocket"></i> <span id="addScriptSubmitText">Herkese Açık Ekle! (+25 Coin)</span>
+            <i class="fa-solid fa-rocket"></i> <span id="addScriptSubmitText">Topluluğa Ekle</span>
           </button>
         </form>
       </div>
@@ -9100,7 +9107,7 @@ async function handleNewScriptSubmit(e) {
     coinPrice, image: image || 'https://i.postimg.cc/vT1sHWqq/Gemini-Generated-Image-xefq68xefq68xefq.png',
     code: safeCodeForFirestore, userId: adminEdit ? (scriptsData.find(x => x.id === id)?.userId || currentUser.uid) : currentUser.uid,
     userName: currentUser.displayName || currentUser.email || 'Kullanıcı',
-    isPremium: coinPrice > 0, isKeyless: true, workingVotes: 0, patchedVotes: 0,
+    isPremium: coinPrice > 0, isCommunity: !adminEdit, isKeyless: true, workingVotes: 0, patchedVotes: 0,
     downloads: 0, views: 0, copies: 0, status: 'active', version: 'v1.0', createdAt: Date.now()
   };
 
@@ -9155,6 +9162,7 @@ function previewAddGameImage(url) {
 
 function handleNewGameSubmit(e) {
   e.preventDefault();
+  if (!currentUser) { showToast("Oyun eklemek için önce giriş yapmalısın.", "fa-right-to-bracket", "blue"); openModal('authModal'); return; }
   const name = document.getElementById('addGameName').value.trim();
   const link = document.getElementById('addGameLink').value.trim();
   const image = document.getElementById('addGameImage').value.trim() || DEFAULT_SCRIPT_IMAGE;
@@ -9168,6 +9176,7 @@ function handleNewGameSubmit(e) {
     desc: desc,
     userId: currentUser ? currentUser.uid : "anon",
     userName: currentUser ? userProfile.displayName : "Topluluk",
+    isCommunity: true,
     createdAt: Date.now()
   };
 
