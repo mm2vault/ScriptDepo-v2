@@ -4564,6 +4564,56 @@ footer{margin-left:248px!important}
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
+</script><style id="sdAdminPolishV3">
+body.scriptdepo-admin #adminPanel .admin-panel-content{display:grid!important;grid-template-columns:minmax(0,1fr);gap:18px!important}
+body.scriptdepo-admin #adminPanel .admin-section{background:var(--bg-card,#111827)!important;border:1px solid var(--border-color,#273244)!important;border-radius:20px!important;padding:18px!important;box-shadow:0 10px 30px rgba(0,0,0,.12)!important}
+body.scriptdepo-admin #adminPanel .admin-section>h3,body.scriptdepo-admin #adminPanel .admin-section>h4{margin:0 0 14px!important;display:flex!important;align-items:center!important;gap:9px!important}
+body.scriptdepo-admin #adminPanel .admin-form,body.scriptdepo-admin #adminPanel .form-grid{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:12px!important}
+body.scriptdepo-admin #adminPanel .admin-form>*:last-child,body.scriptdepo-admin #adminPanel .form-grid>*:last-child{grid-column:1/-1}
+body.scriptdepo-admin #adminPanel input,body.scriptdepo-admin #adminPanel textarea,body.scriptdepo-admin #adminPanel select{min-height:44px!important;width:100%!important;box-sizing:border-box!important}
+body.scriptdepo-admin #adminPanel textarea{min-height:90px!important;resize:vertical!important}
+body.scriptdepo-admin #adminPanel .admin-cosmetic-preview-stage{display:grid!important;grid-template-columns:minmax(190px,280px) minmax(0,1fr)!important;gap:18px!important;align-items:center!important}
+body.scriptdepo-admin #adminPanel .preview-avatar-wrap{width:min(100%,280px)!important;aspect-ratio:1!important;margin:auto!important}
+body.scriptdepo-admin #adminPanel .admin-cosmetic-preview{overflow:hidden!important}
+body.scriptdepo-admin #adminPanel .admin-cosmetic-actions{display:flex!important;gap:10px!important;flex-wrap:wrap!important;margin-top:14px!important}
+body.scriptdepo-admin #adminPanel .admin-cosmetic-list{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(240px,1fr))!important;gap:12px!important}
+body.scriptdepo-admin #adminPanel .admin-cosmetic-card{min-width:0!important;border:1px solid var(--border-color,#273244)!important;border-radius:16px!important;padding:12px!important;background:rgba(255,255,255,.025)!important}
+body.scriptdepo-admin #adminPanel .admin-cosmetic-card img,body.scriptdepo-admin #adminPanel .admin-cosmetic-card video{max-width:100%!important}
+@media(max-width:720px){
+body.scriptdepo-admin #adminPanel .admin-form,body.scriptdepo-admin #adminPanel .form-grid,body.scriptdepo-admin #adminPanel .admin-cosmetic-preview-stage{grid-template-columns:1fr!important}
+body.scriptdepo-admin #adminPanel .admin-section{padding:13px!important;border-radius:16px!important}
+}
+</style><script id="sdSmartCosmeticAI">
+window.sdSmartCosmeticAnalyze=async function(file){
+  const type=String(file?.type||"").toLowerCase();
+  const name=String(file?.name||"").toLowerCase();
+  const isVideo=type.startsWith("video/");
+  const isGif=type==="image/gif"||name.endsWith(".gif");
+  const isImage=type.startsWith("image/");
+  let role=isVideo?"animated-video":isGif?"animated-gif":"profile-overlay";
+  let action=isVideo?"preserve-video":isGif?"preserve-animation":"remove-background-and-fit";
+  let reason=isVideo?"Video must stay animated.":isGif?"GIF must stay animated and transparent frames must remain intact.":"Static image can be cleaned and fitted automatically.";
+  if(isImage&&!isGif){
+    try{
+      const bitmap=await createImageBitmap(file);
+      const ratio=bitmap.width/Math.max(1,bitmap.height);
+      if(ratio<0.65||ratio>1.8){action="remove-background-and-safe-fit";reason="Unusual aspect ratio detected; AI cleanup plus safe-area fitting selected.";}
+      bitmap.close?.();
+    }catch(_){}
+  }
+  return {role,action,reason,isVideo,isGif,isImage};
+};
+window.sdSmartCosmeticPrepare=async function(file){
+  const plan=await window.sdSmartCosmeticAnalyze(file);
+  if(plan.isVideo||plan.isGif)return {file,plan};
+  if(typeof window.sdAiRemoveBackground==="function"){
+    try{
+      const cleaned=await window.sdAiRemoveBackground(file,()=>{});
+      return {file:cleaned instanceof Blob?cleaned:file,plan:{...plan,processed:true}};
+    }catch(e){return {file,plan:{...plan,processed:false,warning:"AI cleanup failed; original image retained."}};}
+  }
+  return {file,plan:{...plan,processed:false}};
+};
 </script></head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
@@ -9716,8 +9766,9 @@ async function adminCreateCosmetic() {
   let uploadFile = file;
   try {
     if (!isVideo && !isGif && typeof sdProcessCosmeticImage === 'function') {
-      showToast('AI görseli profil için hazırlıyor...', 'fa-wand-magic-sparkles', 'blue');
-      uploadFile = await Promise.race([sdProcessCosmeticImage(file), new Promise((_, r) => setTimeout(() => r(new Error('AI zaman aşımı')), 120000))]);
+      showToast('AI medyayı analiz edip hazırlıyor...', 'fa-wand-magic-sparkles', 'blue');
+      const smart = await Promise.race([window.sdSmartCosmeticPrepare(file), new Promise((_, r) => setTimeout(() => r(new Error('AI zaman aşımı')), 120000))]);
+      uploadFile = smart.file;
     }
     const id = editingCosmeticId || ('admin_cosmetic_' + Date.now());
     const mediaUrl = await uploadAdminCosmeticFile(uploadFile, id);
