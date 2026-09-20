@@ -4470,6 +4470,18 @@ footer{margin-left:248px!important}
 @keyframes sdStarAura{0%,100%{opacity:.88;filter:drop-shadow(0 0 6px rgba(255,255,255,.55)) drop-shadow(0 0 12px rgba(167,139,250,.45))}50%{opacity:1;filter:drop-shadow(0 0 14px rgba(255,255,255,1)) drop-shadow(0 0 28px rgba(167,139,250,.9))}}
 @media (prefers-reduced-motion:reduce){.avatar-frame-eclipse,.avatar-frame-pulse,.avatar-frame-cyber,.avatar-frame-obsidian,.profile-effect-crown,.profile-effect-starlight{animation:none!important}}
 </style>
+<style id="sdAnimatedCosmetics">
+/* Extra animated avatar cosmetics */
+.avatar-frame-pulse{position:absolute;inset:-7px;border-radius:50%;pointer-events:none;z-index:3;border:2px solid transparent;background:conic-gradient(from 0deg,#ff4fd8,#7c3cff,#22d3ee,#ff4fd8) border-box;mask:linear-gradient(#000 0 0) padding-box,linear-gradient(#000 0 0);mask-composite:exclude;animation:sdPulseSpin 2.2s linear infinite;filter:drop-shadow(0 0 7px rgba(236,72,153,.8));}
+.avatar-frame-eclipse{position:absolute;inset:-8px;border-radius:50%;pointer-events:none;z-index:3;border:2px solid #8b5cf6;box-shadow:0 0 8px #8b5cf6,0 0 20px rgba(59,130,246,.5);animation:sdEclipse 2.8s ease-in-out infinite;}
+.avatar-frame-cyber{position:absolute;inset:-8px;border-radius:50%;pointer-events:none;z-index:3;border:2px dashed #22d3ee;box-shadow:0 0 8px rgba(34,211,238,.9),inset 0 0 10px rgba(34,211,238,.25);animation:sdCyber 1.5s steps(2,end) infinite;}
+.profile-effect-starlight{position:relative;animation:sdStarAura 2s ease-in-out infinite;}
+@keyframes sdPulseSpin{to{transform:rotate(360deg)}}
+@keyframes sdEclipse{0%,100%{transform:scale(.98) rotate(-8deg);opacity:.72}50%{transform:scale(1.04) rotate(8deg);opacity:1}}
+@keyframes sdCyber{0%,100%{opacity:.65;filter:brightness(.9)}50%{opacity:1;filter:brightness(1.45)}}
+@keyframes sdStarAura{0%,100%{filter:drop-shadow(0 0 3px rgba(255,255,255,.35))}50%{filter:drop-shadow(0 0 12px rgba(168,85,247,.85)) drop-shadow(0 0 5px rgba(34,211,238,.7))}}
+@media(prefers-reduced-motion:reduce){.avatar-frame-pulse,.avatar-frame-eclipse,.avatar-frame-cyber,.profile-effect-starlight{animation:none!important}}
+</style>
 </head>
 <body><aside class="sd-sidebar" id="scriptDepoSidebar">
 <div class="sd-brand" onclick="resetFilters()" style="cursor:pointer"><div class="sd-crown-logo"><i class="fa-solid fa-crown"></i></div><div><strong><span style="color:#a78bfa">SCRIPT</span><span style="color:#fff">DEPO</span></strong><span>Roblox Script Platform</span></div></div>
@@ -6807,6 +6819,10 @@ const COSMETICS_LIST = [
   {id:"c_obsidian_frame",name:"Obsidyen Çerçeve",nameEn:"Obsidian Frame",price:600,type:"frame",desc:"Koyu siyah ve mor kristal avatar çerçevesi.",class:"avatar-frame-obsidian"},
   {id:"c_crown_effect",name:"Kraliyet Aura",nameEn:"Royal Aura",price:650,type:"effect",desc:"Avatar çevresinde taç temalı altın aura efekti.",class:"profile-effect-crown"},
   {id:"c_starlight_effect",name:"Yıldız Işığı",nameEn:"Starlight",price:500,type:"effect",desc:"Profil avatarına yıldız/parıltı aura efekti.",class:"profile-effect-starlight"},
+  {id:"c_animated_pulse",name:"Animated Pulse",nameEn:"Animated Pulse",price:525,type:"frame",desc:"Hareketli pembe-cyan nabız çerçevesi.",class:"avatar-frame-pulse",gifUrl:"https://i.imgur.com/TLBHiUn.gif"},
+  {id:"c_animated_eclipse",name:"Animated Eclipse",nameEn:"Animated Eclipse",price:575,type:"frame",desc:"Hareketli mor-siyah eclipse çerçevesi.",class:"avatar-frame-eclipse",gifUrl:"https://i.imgur.com/5mFOKEl.gif"},
+  {id:"c_animated_cyber",name:"Animated Cyber",nameEn:"Animated Cyber",price:625,type:"frame",desc:"Hareketli cyber neon avatar çerçevesi.",class:"avatar-frame-cyber",gifUrl:"https://i.imgur.com/0aseHjC.gif"},
+  {id:"c_animated_starlight",name:"Animated Starlight",nameEn:"Animated Starlight",price:500,type:"effect",desc:"Hareketli yıldız ışığı profil efekti.",class:"profile-effect-starlight"},
 ];
 
 const I18N = {
@@ -7112,6 +7128,8 @@ function syncFromFirestore() {
           });
 
           const deleted = new Set(getDeletedScriptIds());
+          // Geçici Firebase/snapshot sorunlarında mevcut listeyi kaybetme.
+          const previousScripts = Array.isArray(scriptsData) ? [...scriptsData] : [];
           const savedScripts = localStorage.getItem('scriptHubCustomScripts');
           let localCustom = [];
           try { localCustom = savedScripts ? JSON.parse(savedScripts) : []; } catch (_) { localCustom = []; }
@@ -7133,7 +7151,11 @@ function syncFromFirestore() {
           });
 
           localCustom.forEach(s => {
-            if (!deleted.has(s.id) && !remoteById.has(s.id)) merged.push(s);
+            if (!deleted.has(s.id) && !remoteById.has(s.id) && !merged.some(m => m.id === s.id)) merged.push(s);
+          });
+          // Önceden yüklenmiş topluluk scriptlerini de koru; boş/eksik snapshot listeyi silemesin.
+          previousScripts.forEach(s => {
+            if (!deleted.has(s.id) && !remoteById.has(s.id) && !INITIAL_PREMIUM_SCRIPTS.some(p => p.id === s.id) && !merged.some(m => m.id === s.id)) merged.push(s);
           });
 
           scriptsData = normalizeUnverifiedScriptStats(merged);
