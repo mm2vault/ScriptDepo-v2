@@ -7210,6 +7210,28 @@ function saveUserProfile() {
   }
 }
 
+function ensureScriptCatalogIntegrity() {
+  if (Array.isArray(scriptsData) && scriptsData.length > 0) return true;
+
+  try {
+    const cached = JSON.parse(localStorage.getItem('scriptHubLastKnownGoodScripts') || '[]');
+    if (Array.isArray(cached) && cached.length > 0) {
+      scriptsData = normalizeUnverifiedScriptStats(cached);
+      return true;
+    }
+  } catch (_) {}
+
+  const deleted = new Set(typeof getDeletedScriptIds === 'function' ? getDeletedScriptIds() : []);
+  const fallback = (Array.isArray(INITIAL_PREMIUM_SCRIPTS) ? INITIAL_PREMIUM_SCRIPTS : [])
+    .filter(s => s && s.id && !deleted.has(s.id));
+  if (fallback.length > 0) {
+    scriptsData = normalizeUnverifiedScriptStats(fallback);
+    try { localStorage.setItem('scriptHubLastKnownGoodScripts', JSON.stringify(scriptsData.slice(0, 300))); } catch (_) {}
+    return true;
+  }
+  return false;
+}
+
 function syncFromFirestore() {
   syncCustomCosmetics();
   if (!db) return;
@@ -7922,6 +7944,7 @@ function getFilteredGames() {
 }
 
 function renderMainGrid() {
+  ensureScriptCatalogIntegrity();
   const container = document.getElementById('mainGridContainer');
   const emptyState = document.getElementById('emptyState');
   const paginationWrapper = document.getElementById('paginationWrapper');
@@ -10070,6 +10093,8 @@ window.addEventListener('DOMContentLoaded', () => {
     }).catch(() => {});
   }
 
+  ensureScriptCatalogIntegrity();
+  renderMainGrid();
   syncFromFirestore();
 });
 
