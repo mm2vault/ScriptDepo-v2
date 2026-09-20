@@ -597,8 +597,7 @@ header {
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-secondary);
-  transition: all 0.2s;
+  color: var(--text-secondary);  transition: all 0.2s;
   user-select: none;
   backdrop-filter: blur(10px);
 }
@@ -1197,8 +1196,7 @@ header {
 }
 .avatar-frame-rainbow {
   box-shadow: 0 0 0 3px #a855f7, 0 0 15px #06b6d4;
-}
-.name-purple {
+}.name-purple {
   color: #c084fc !important;
   font-weight: 700;
 }
@@ -1797,8 +1795,7 @@ header {
 
 .hero-actions {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
+  flex-wrap: wrap;  align-items: center;
   gap: 10px;
 }
 
@@ -2397,8 +2394,7 @@ header {
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.8px;
-  margin: 14px 0 8px 0;
-}
+  margin: 14px 0 8px 0;}
 .drawer-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -2997,8 +2993,7 @@ header {
   transform: translateY(0);
 }
 .btn-view-code {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid var(--border-color);
+  background: rgba(255, 255, 255, 0.05);  border: 1px solid var(--border-color);
   color: var(--text-primary);
   padding: 9px 10px;
   border-radius: 12px;
@@ -3597,7 +3592,6 @@ header {
     justify-content: center !important;
   }
 }
-
 @media (max-width: 420px) {
   .code-btn-group {
     grid-template-columns: 1fr !important;
@@ -4119,7 +4113,7 @@ header {
 @media(max-width:600px){.admin-coin-grant{grid-template-columns:1fr}.admin-coin-grant button{width:100%}}
 </style>
 <style id="cosmetic-frame-fixes">
-.avatar-frame-neon{box-shadow:0 0 0 3px #8b5cf6,0 0 18px #06b6d4!important}
+.avatar-frame-neon{box-shadow:0 0 0 3px #8b5cf6,0 0 18px #06b6d4!important}.avatar-frame-diamond{box-shadow:0 0 0 3px #e2e8f0,0 0 18px #67e8f9,0 0 32px rgba(255,255,255,.55)!important}.avatar-frame-galaxy{box-shadow:0 0 0 3px #a78bfa,0 0 18px #ec4899,0 0 34px rgba(59,130,246,.5)!important}.avatar-frame-matrix{box-shadow:0 0 0 3px #22c55e,0 0 18px #16a34a,0 0 32px rgba(34,197,94,.45)!important}.avatar-frame-plasma{box-shadow:0 0 0 3px #f43f5e,0 0 18px #8b5cf6,0 0 34px rgba(244,63,94,.5)!important}.avatar-frame-diamond,.avatar-frame-galaxy,.avatar-frame-matrix,.avatar-frame-plasma{border-radius:50%;transition:box-shadow .2s ease}.profile-effect-aurora{filter:drop-shadow(0 0 8px rgba(34,211,238,.65)) drop-shadow(0 0 20px rgba(168,85,247,.55));animation:sdAuroraPulse 2.6s ease-in-out infinite}@keyframes sdAuroraPulse{0%,100%{filter:drop-shadow(0 0 7px rgba(34,211,238,.55)) drop-shadow(0 0 18px rgba(168,85,247,.45))}50%{filter:drop-shadow(0 0 13px rgba(34,211,238,.9)) drop-shadow(0 0 28px rgba(168,85,247,.7))}}.profile-effect-dark{filter:drop-shadow(0 0 8px rgba(15,23,42,.95)) drop-shadow(0 0 18px rgba(99,102,241,.5))}
 .avatar-frame-fire{box-shadow:0 0 0 3px #f97316,0 0 18px #ef4444!important}
 .avatar-frame-ice{box-shadow:0 0 0 3px #38bdf8,0 0 18px #93c5fd!important}
 .avatar-frame-gold,.avatar-frame-rainbow,.avatar-frame-neon,.avatar-frame-fire,.avatar-frame-ice{border-radius:50%;transition:box-shadow .2s ease}
@@ -4197,8 +4191,7 @@ input,select,textarea{max-width:100%}
  .script-card-body{padding:15px}
  .script-card .card-actions,.script-card-footer{display:grid;grid-template-columns:1fr 1fr;gap:8px}
  .script-card .card-actions .btn,.script-card-footer .btn{width:100%;min-height:42px}
- .tasks-grid{grid-template-columns:1fr}
- .task-card{min-width:0}
+ .tasks-grid{grid-template-columns:1fr} .task-card{min-width:0}
  .daily-tasks-banner{padding:15px}
  .hero-section{padding:16px!important;border-radius:20px!important}
  .hero-section h1{font-size:clamp(24px,7vw,34px)!important}
@@ -4797,8 +4790,7 @@ footer{margin-left:248px!important}
       </div>
 
       <div class="filter-group">
-        <div class="filter-label">
-          <i class="fa-solid fa-filter"></i>
+        <div class="filter-label">          <i class="fa-solid fa-filter"></i>
           <span id="typeLabelText">Tip:</span>
         </div>
         <select class="custom-select" id="typeSelect" onchange="applyFilters()">
@@ -5397,8 +5389,7 @@ footer{margin-left:248px!important}
   </div>
 
   <!-- Community Add Modal -->
-  <div class="modal-overlay" id="communityAddModal">
-    <div class="modal-container" style="max-width:620px;">
+  <div class="modal-overlay" id="communityAddModal">    <div class="modal-container" style="max-width:620px;">
       <div class="modal-header">
         <h3 class="modal-title"><i class="fa-solid fa-users" style="color:var(--accent-light);"></i> Topluluğa Ekle</h3>
         <button class="modal-close-btn" type="button" onclick="closeModal('communityAddModal')"><i class="fa-solid fa-xmark"></i></button>
@@ -5997,8 +5988,7 @@ function toggleSound() {
     playCoinSound();
     showToast("Ses efektleri açıldı!", "fa-volume-high", "green");
   } else {
-    showToast("Sesler kapatıldı.", "fa-volume-xmark");
-  }
+    showToast("Sesler kapatıldı.", "fa-volume-xmark");  }
 }
 
 function updateSoundIcon() {
@@ -6597,8 +6587,7 @@ const INITIAL_PREMIUM_SCRIPTS = [
     features: ["Unlock All Gamepasses", "Rainbow Vehicles", "Admin GUI", "Fly / Noclip"],
     executors: ["Delta", "Solara", "Wave", "Hydrogen", "Codex", "Vega X"],
     workingVotes: 260,
-    patchedVotes: 3,
-    code: "",
+    patchedVotes: 3,    code: "",
     isPremium: true,
     isKeyless: true,
     coinPrice: 0,
@@ -6808,6 +6797,12 @@ const COSMETICS_LIST = [
   {id:"c_effect_spark",name:"Spark Efekti",nameEn:"Spark Effect",price:250,type:"effect",desc:"Profil kartına canlı parıltı efekti verir.",class:"profile-effect-spark"},
   {id:"c_badge_vip",name:"VIP Rozeti",nameEn:"VIP Badge",price:750,type:"badge",desc:"Profilde VIP rozeti.",class:"badge-vip"},
   {id:"c_badge_creator",name:"Creator Rozeti",nameEn:"Creator Badge",price:600,type:"badge",desc:"İçerik üreticisi rozeti.",class:"badge-creator"},
+  {id:"c_diamond_frame",name:"Elmas Çerçeve",nameEn:"Diamond Frame",price:425,type:"frame",desc:"Buz mavisi elmas parıltılı profil çerçevesi.",class:"avatar-frame-diamond"},
+  {id:"c_galaxy_frame",name:"Galaksi Çerçeve",nameEn:"Galaxy Frame",price:475,type:"frame",desc:"Mor, pembe ve mavi galaksi parıltısı.",class:"avatar-frame-galaxy"},
+  {id:"c_matrix_frame",name:"Matrix Çerçeve",nameEn:"Matrix Frame",price:525,type:"frame",desc:"Yeşil dijital enerji çerçevesi.",class:"avatar-frame-matrix"},
+  {id:"c_plasma_frame",name:"Plazma Çerçeve",nameEn:"Plasma Frame",price:575,type:"frame",desc:"Kırmızı-mor plazma neon çerçevesi.",class:"avatar-frame-plasma"},
+  {id:"c_aurora_effect",name:"Aurora Efekti",nameEn:"Aurora Effect",price:450,type:"effect",desc:"Cyan ve mor aurora parıltısı.",class:"profile-effect-aurora"},
+  {id:"c_dark_aura",name:"Karanlık Aura",nameEn:"Dark Aura",price:375,type:"effect",desc:"Koyu indigo aura ve gölge efekti.",class:"profile-effect-dark"},
   {id:"c_badge_legend",name:"Legend Rozeti",nameEn:"Legend Badge",price:1000,type:"badge",desc:"Nadir koleksiyon rozeti.",class:"badge-legend"}
 ];
 
@@ -7197,8 +7192,7 @@ function syncFromFirestore() {
         const mergedGames = [...INITIAL_GAMES, ...remoteGames.filter(g => !INITIAL_GAMES.some(ig => ig.id === g.id))];
         localCustomGames.forEach(g => { if (!remoteById.has(g.id)) mergedGames.push(g); });
         gamesData = mergedGames;
-        if (activeCategory === 'games') renderMainGrid();
-      }
+        if (activeCategory === 'games') renderMainGrid();      }
     }, err => {});
   } catch (e) {}
 }
@@ -7798,7 +7792,6 @@ function renderMainGrid() {
   const itemsCountDisplay = document.getElementById('itemsCountDisplay');
 
   if (!container) return;
-
   // Executors Hub Mode (RBLXScripts Style)
   if (activeCategory === 'executors') {
     if (sectionTitle) sectionTitle.innerHTML = '<i class="fa-solid fa-microchip" style="color: var(--accent-light); margin-right: 8px;"></i> Roblox Executorlar & İndirme Merkezi';
@@ -8398,7 +8391,6 @@ function voteScriptStatus(scriptId, isWorking) {
     s.statusPercent = Math.round(((s.workingVotes || 0) / total) * 100);
     s.isPatched = (s.workingVotes || 0) < (s.patchedVotes || 0) && total >= 3;
   }
-
   // Coin reward
   userProfile.coins = (userProfile.coins || 0) + 2;
   saveUserProfile();
@@ -8998,7 +8990,6 @@ function openUserProfileModal() {
 
   openModal('userProfileModal');
 }
-
 function openEditProfileModal() {
   closeModal('userProfileModal');
   document.getElementById('editAvatarPreview').src = userProfile.photoURL;
@@ -9025,7 +9016,7 @@ function handleAvatarFileSelect(e) {
 }
 
 function previewEditAvatarUrl(url) {
-  if (url && url.startsWith('http')) {
+  if (url && (url.startsWith('http') || url.startsWith('data:image/'))) {
     document.getElementById('editAvatarPreview').src = url;
   }
 }
@@ -9111,6 +9102,7 @@ function openAddScriptModal() {
     openModal('authModal');
     return;
   }
+  if (!editingScriptId) resetScriptForm();
   openModal('addScriptModal');
 }
 
@@ -9186,6 +9178,7 @@ function openAddGameModal() {
     openModal('authModal');
     return;
   }
+  resetGameForm();
   openModal('addGameModal');
 }
 
@@ -9597,8 +9590,7 @@ function openTasksCountdownModal() {
 
 // ==================== MODAL HELPERS ====================
 function syncModalBodyLock() {
-  const hasOpenModal = !!document.querySelector('.modal-overlay.active');
-  document.body.classList.toggle('modal-open', hasOpenModal);
+  const hasOpenModal = !!document.querySelector('.modal-overlay.active');  document.body.classList.toggle('modal-open', hasOpenModal);
 }
 function openModal(id) {
   const m = document.getElementById(id);
