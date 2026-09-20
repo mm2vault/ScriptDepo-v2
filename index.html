@@ -9622,7 +9622,6 @@ async function adminDeleteCosmetic(id){
     const {data:delData,error:delError}=await supabaseClient.functions.invoke('profile-shop',{body:{action:'admin_delete_cosmetic',cosmeticId:id}});
     if(delError||!delData?.ok){showToast('Kozmetik silinemedi.','fa-circle-xmark','red');return;}
   }
-  if(db){try{await db.collection('cosmetics').doc(id).delete();}catch(e){console.warn('Firestore cosmetic mirror delete:',e.message);}}
   customCosmetics=customCosmetics.filter(c=>c.id!==id);applyCustomCosmeticStyles();renderAdminCosmetics();renderStoreCosmetics();renderStoreInventory();showToast('Kozmetik silindi.','fa-trash','red');
 }
 function openAdminModal() {
