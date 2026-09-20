@@ -9519,5 +9519,23 @@ function openExecutorGuideModal(execId) {
 
   
 </script>
+<div class="modal-overlay" id="executorGuideModal">
+  <div class="modal-container" style="max-width:720px;">
+    <div class="modal-header">
+      <h3 id="executorGuideTitle">Kurulum Rehberi</h3>
+      <button class="btn-icon" type="button" aria-label="Kapat" onclick="closeModal('executorGuideModal')">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+    <div class="modal-body" id="executorGuideBody"></div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" type="button" onclick="closeModal('executorGuideModal')">Kapat</button>
+      <a class="btn btn-primary" id="executorGuideDownloadBtn" href="#" target="_blank" rel="noopener noreferrer">
+        <i class="fa-solid fa-download"></i> İndir
+      </a>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
